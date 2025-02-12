@@ -32,6 +32,11 @@ namespace PawFect.DataAccess.Concrete.EfCore
                 .HasColumnType("decimal(18,2)");  // Product Price için uygun tür
         }
 
+        internal void AddRange(object products)
+        {
+            throw new NotImplementedException();
+        }
+
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Cart> Carts { get; set; }
