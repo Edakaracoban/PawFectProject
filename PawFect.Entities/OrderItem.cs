@@ -14,7 +14,7 @@ namespace PawFect.Entities
         public Product Product { get; set; } //siparişe ait ürüne ulaşılabilecek ürün adı vs
         public int ProductId { get; set; }
         public decimal Price { get; set; }
-        public int Count { get; set; }
+        public int Quantity { get; set; }
 
     }
 }
