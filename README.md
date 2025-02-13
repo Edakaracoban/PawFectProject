@@ -63,3 +63,7 @@ Magnific Lightbox - https://github.com/dimsemenov/Magnific-Popup
 TemplatesJungle.com'dan indirdiğiniz için teşekkür ederiz!
 
 Umarım bu çeviri işinize yarar! Başka bir şeye ihtiyacınız olursa bana bildirin. 😊 -->
+
+<!-- Product SeedDatabase test amacıyla oluşturulmuş olup referans olarak https://www.zoo.com.tr/ kaynak alınmıştır. -->
+
+<!--Blog SeedDatabase test amacıyla oluşturulmuş olup kaynak olarak https://www.petburada.com/ -->
