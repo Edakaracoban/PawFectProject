@@ -11,7 +11,7 @@ namespace PawFect.DataAccess.Concrete.EfCore
 {
     public class EfCoreOrderDal : EfCoreGenericRepository<Order, DataContext>, IOrderDal
     {
-        public void Create(Order order)
+        public override void Create(Order order)
         {
             using (var context = new DataContext())
             using (var transaction = context.Database.BeginTransaction())

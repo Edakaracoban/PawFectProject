@@ -11,7 +11,7 @@ namespace PawFect.DataAccess.Concrete.EfCore //Dataacces katmanı veri tabanına
 {
     public class EfCoreGenericRepository<T, TContext> : IRepository<T> where T : class where TContext : DbContext, new()
     {
-        public virtual void Create(T entity)
+        public virtual void Create(T entity) // polimorfizm
         {
             using (var context = new TContext())
             {
