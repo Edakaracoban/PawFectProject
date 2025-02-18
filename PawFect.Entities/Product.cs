@@ -19,7 +19,7 @@ namespace PawFect.Entities
         public string Image { get; set; }
         public string Description { get; set; }
         // Kategori ilişkisi için CategoryId ve Category özellikleri
-        public int CategoryId { get; set; }
+        public int? CategoryId { get; set; }
         public Category Category { get; set; }
 
     }

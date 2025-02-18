@@ -21,7 +21,7 @@ namespace PawFect.DataAccess.Concrete.EfCore
             .HasOne(p => p.Category)  // Her Product bir Category'ye sahiptir
             .WithMany(c => c.Products)  // Her Category birden fazla Product'a sahip olabilir
             .HasForeignKey(p => p.CategoryId)  // CategoryId, Product tablosunda yabancı anahtar olur
-            .OnDelete(DeleteBehavior.Restrict);  // Silme davranışını belirleyebilirsiniz
+            .OnDelete(DeleteBehavior.SetNull); //Eğer Category silinirse, ona bağlı Product'lardaki CategoryId değerleri NULL olarak güncellenir.
 
             modelBuilder.Entity<OrderItem>()
              .Property(o => o.Price)
@@ -30,11 +30,6 @@ namespace PawFect.DataAccess.Concrete.EfCore
             modelBuilder.Entity<Product>()
                 .Property(p => p.Price)
                 .HasColumnType("decimal(18,2)");  // Product Price için uygun tür
-        }
-
-        internal void AddRange(object products)
-        {
-            throw new NotImplementedException();
         }
 
         public DbSet<Product> Products { get; set; }

@@ -11,110 +11,60 @@ namespace PawFect.DataAccess.Concrete.EfCore //Dataacces katmanı veri tabanına
 {
     public class EfCoreGenericRepository<T, TContext> : IRepository<T> where T : class where TContext : DbContext, new()
     {
-        private readonly TContext _context;
-
-        public EfCoreGenericRepository(TContext context)
+        public virtual void Create(T entity)
         {
-            _context = context;
-        }
-        public void Create(T entity)
-        {
-            try
+            using (var context = new TContext())
             {
-                _context.Set<T>().Add(entity);
-                _context.SaveChanges();// changetracker değişiklikleri takip eder ve değişiklikleri veritabanına yansıtır
-            }
-            catch (Exception ex)
-            {
-                // Log the exception
-                throw new RepositoryException("An error occurred while creating the entity.", ex);
+                context.Set<T>().Add(entity);
+                context.SaveChanges(); //SaveChanges;insert,update,delete sorgularını oluşturup bir transaction
+                //eşliğinde veritabanına gönderip execute eden fonksiyondur.
             }
         }
 
         public virtual void Delete(T entity)
         {
-            try
+            using (var context = new TContext())
             {
-                _context.Set<T>().Remove(entity);
-                _context.SaveChanges();
-            }
-            catch (Exception)
-            {
-                throw new RepositoryException("An error occurred while deleting the entity.");
+                context.Set<T>().Remove(entity);
+                context.SaveChanges();
             }
         }
 
-        public virtual List<T> GetAll(Expression<Func<T, bool>> filter = null) //polymorphism
+        public List<T> GetAll(Expression<Func<T, bool>> filter = null)
         {
-            try
+            using (var context = new TContext())
             {
-                return filter == null ? _context.Set<T>().ToList() : _context.Set<T>().Where(filter).ToList();
-            }
-            catch (Exception)
-            {
-                throw new RepositoryException("An error occurred while getting the entities.");
+                return filter == null ? context.Set<T>().ToList() : context.Set<T>().Where(filter).ToList();
             }
         }
 
         public T GetById(int id)
         {
-            try
+            using (var context = new TContext())
             {
-                return _context.Set<T>().Find(id);
-            }
-            catch (Exception)
-            {
-                throw new RepositoryException("An error occurred while getting the entity by id.");
+                return context.Set<T>().Find(id);
             }
         }
-
+        // changetracker değişiklikleri takip eder ve değişiklikleri veritabanına yansıtır
         public T GetOne(Expression<Func<T, bool>> filter = null)
         {
-            try
+            using (var context = new TContext())
             {
-                return _context.Set<T>().Where(filter).FirstOrDefault();//verdiğimiz şarta uygun verilerin arasından ilkini getirir
-            }
-            catch (Exception)
-            {
-                throw new RepositoryException("An error occurred while getting the entity by filter.");
+                return context.Set<T>().Where(filter).FirstOrDefault();//verdiğimiz şarta uygun verilerin arasından ilkini getirir
             }
         }
 
         public virtual void Update(T entity)
         {
-            try
+            using (var context = new TContext())
             {
-                _context.Entry(entity).State = EntityState.Modified;
-                _context.SaveChanges();
-            }
-            catch (Exception)
-            {
-                throw new RepositoryException("An error occurred while updating the entity.");
+                context.Entry(entity).State = EntityState.Modified;
+                context.SaveChanges();
             }
         }
     }
+}
 
 
      
 
-    // Özel durumlar için özel bir istisna sınıfı
-    public class RepositoryException : Exception
-    {
-        // Parametresiz constructor
-        public RepositoryException()
-        {
-        }
-
-        // Hata mesajı ile constructor
-        public RepositoryException(string message)
-            : base(message)
-        {
-        }
-
-        // Hata mesajı ve iç istisna (inner exception) ile constructor
-        public RepositoryException(string message, Exception innerException)
-            : base(message, innerException)
-        {
-        }
-    }
-}

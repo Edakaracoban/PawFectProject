@@ -11,6 +11,5 @@ namespace PawFect.DataAccess.Abstract
     {
         List<Order> GetOrders(string userId, string UserName); //Kullanıcının idisine göre tüm siparişleri liste halinde döndürecek 
         Order GetOrderDetails(int id); //Sipariş detaylarını getirir
-
     }
 }
