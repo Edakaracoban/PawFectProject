@@ -100,11 +100,11 @@ namespace PawFect.DataAccess.Concrete.EfCore
 
         private static Category[] Categories =
         {
-            new Category(){Name="Köpek"},
-            new Category(){Name="Kedi"},
-            new Category(){Name="Kuş"},
-            new Category(){Name="Akvaryum"},
-            new Category(){Name="Hamster ve Tavşan"}
+            new Category(){Name="Köpek",Icon="dog.png"},
+            new Category(){Name="Kedi",Icon="cat.png"},
+            new Category(){Name="Kuş",Icon="bird.png"},
+            new Category(){Name="Akvaryum",Icon="fish.png"},
+            new Category(){Name="Hamster ve Tavşan",Icon="rabbit.png"}
         };
 
         private static Product[] Products = {
