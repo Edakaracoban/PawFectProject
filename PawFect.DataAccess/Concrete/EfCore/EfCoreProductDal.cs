@@ -130,7 +130,15 @@ namespace PawFect.DataAccess.Concrete.EfCore
                 }
             }
         }
-        
 
+        public Product GetProductById(int productId)
+        {
+            var context = new DataContext();
+            {
+                return context.Products
+                             .Include(p => p.Category)
+                             .FirstOrDefault(p => p.Id == productId);
+            }
+        }
     }
 }

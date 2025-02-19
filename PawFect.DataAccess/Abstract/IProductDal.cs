@@ -13,5 +13,6 @@ namespace PawFect.DataAccess.Abstract
         List<Product> GetProductsByCategory(string category); //Kategoriye göre ürünleri getirir
         void Update(Product entity, int categoryId);
         List<Product> SearchProductsByName(string query); // string query parametresi ile ürün arama yapılacak
+        Product GetProductById(int productId);
     }
 }

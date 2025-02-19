@@ -13,6 +13,7 @@ namespace PawFect.Business.Abstract
         Cart GetCartByUserId(string userId); // Kullanıcıya ait sepeti getir.
         void AddToCart(string userId, int productId, int quantity); // Ürün ekleme
         void DeleteFromCart(string userId, int productId); // Sepetten ürün silme
-        void ClearCart(string cartId); // Sepeti temizleme
+        void ClearCart(int cartId); // Sepeti temizleme
+        Product GetProductById(int productId); // Ürünü id'sine göre getirme
     }
 }

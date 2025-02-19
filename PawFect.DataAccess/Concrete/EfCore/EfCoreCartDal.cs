@@ -72,9 +72,8 @@ namespace PawFect.DataAccess.Concrete.EfCore//sepetle ilgili CRUD İŞLEMLERİ
 
         }
 
-        public override void Update(Cart entity)
+        public void Update(Cart entity)
         {
-
             try
             {
                 _context.Carts.Update(entity);
@@ -86,5 +85,6 @@ namespace PawFect.DataAccess.Concrete.EfCore//sepetle ilgili CRUD İŞLEMLERİ
             }
 
         }
+
     }
 }
