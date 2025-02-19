@@ -14,7 +14,5 @@ namespace PawFect.Business.Abstract
         void AddToCart(string userId, int productId, int quantity); // Ürün ekleme
         void DeleteFromCart(string userId, int productId); // Sepetten ürün silme
         void ClearCart(string cartId); // Sepeti temizleme
-        void Update (Cart cart); // Sepeti güncelleme
-
     }
 }

@@ -130,7 +130,7 @@ namespace PawFect.DataAccess.Concrete.EfCore
                 }
             }
         }
-
+        
 
     }
 }

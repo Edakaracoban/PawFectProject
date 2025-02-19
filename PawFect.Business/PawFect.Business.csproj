@@ -7,11 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Concrete\" />
+    <ProjectReference Include="..\PawFect.DataAccess\PawFect.DataAccess.csproj" />
+    <ProjectReference Include="..\PawFect.Entities\PawFect.Entities.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PawFect.Entities\PawFect.Entities.csproj" />
+    <Folder Include="Concrete\" />
   </ItemGroup>
 
 </Project>
