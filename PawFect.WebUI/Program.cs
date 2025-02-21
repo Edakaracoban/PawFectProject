@@ -18,6 +18,49 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
 var userManager = builder.Services.BuildServiceProvider().GetService<UserManager<ApplicationUser>>();
 var roleManager = builder.Services.BuildServiceProvider().GetService<RoleManager<IdentityRole>>();
 
+builder.Services.Configure<IdentityOptions>(options =>
+{ 
+    // password settings
+    options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireUppercase = true;
+    options.Password.RequireNonAlphanumeric = true;
+    options.Password.RequiredLength = 6;
+
+    var timeZone = TimeZoneInfo.FindSystemTimeZoneById("Turkey Standard Time");
+    var gmtPlus3Time = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, timeZone);
+
+    // Lockout settings.
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+    options.Lockout.MaxFailedAccessAttempts = 5;
+    options.Lockout.AllowedForNewUsers = true;
+
+    // User settings.
+    options.User.RequireUniqueEmail = true;
+
+    // SignIn settings.
+    options.SignIn.RequireConfirmedEmail = true;
+    options.SignIn.RequireConfirmedPhoneNumber = false;
+});
+
+//Cookie Options
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    // Cookie settings
+    options.LoginPath = "/Account/Login";
+    options.LogoutPath = "/Account/Logout";
+    options.AccessDeniedPath = "/Account/AccessDenied";
+    options.SlidingExpiration = true;
+    options.Cookie.HttpOnly = true;
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
+    options.Cookie = new CookieBuilder
+    {
+        Name = "PawFect.Security.Cookie",
+        HttpOnly = true,
+        SameSite = SameSiteMode.Strict,
+    };
+});
+
 
 builder.Services.AddScoped<IProductDal, EfCoreProductDal>();
 builder.Services.AddScoped<IProductService, ProductManager>();
@@ -47,15 +90,63 @@ if (!app.Environment.IsDevelopment())
 SeedDatabase.Seed(); // Database Seed , Product,Category,Blog
 
 app.UseHttpsRedirection();
-app.UseStaticFiles();
+app.UseStaticFiles(); //wwwroot içindeki js css dosyalarý
 
+// app.CustomStaticFiles(); //middleware node_modules dosyalarýný kullanabilmek için(moduls klasörüne eriþim)
+
+app.UseAuthentication(); //kimlik doðrulama iþlemleri
+app.UseAuthorization(); //yetkilendirme iþlemleri
 app.UseRouting();
 
-app.UseAuthorization();
+// endpoints
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}");
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    endpoints.MapControllerRoute(
+        name: "products",
+        pattern: "products/{category}",
+        defaults: new { controller = "Shop", action = "List" }
+    );
+    endpoints.MapControllerRoute(
+        name: "adminProducts",
+        pattern: "admin/products",
+        defaults: new { controller = "Admin", action = "ProductList" }
+    );
+    endpoints.MapControllerRoute(
+        name: "adminProducts",
+        pattern: "admin/products/{id}",
+        defaults: new { controller = "Admin", action = "EditProduct" }
+    );
+    endpoints.MapControllerRoute(
+         name: "adminProducts",
+         pattern: "admin/category",
+         defaults: new { controller = "Admin", action = "CategoryList" }
+    );
+    endpoints.MapControllerRoute(
+        name: "adminProducts",
+        pattern: "admin/categories/{id}",
+        defaults: new { controller = "Admin", action = "EditCategory" }
+    );
+    endpoints.MapControllerRoute(
+        name: "cart",
+        pattern: "cart",
+        defaults: new { controller = "Cart", action = "Index" }
+    );
+    endpoints.MapControllerRoute(
+        name: "checkout",
+        pattern: "checkout",
+        defaults: new { controller = "Cart", action = "Checkout" }
+    );
+    endpoints.MapControllerRoute(
+       name: "orders",
+       pattern: "orders",
+       defaults: new { controller = "Cart", action = "GetOrders" }
+   );
+
+}
+);
+
 
 SeedIdentity.Seed(userManager,roleManager,app.Configuration).Wait();
 app.Run();
