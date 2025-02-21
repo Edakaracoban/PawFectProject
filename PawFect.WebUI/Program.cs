@@ -1,7 +1,38 @@
-var builder = WebApplication.CreateBuilder(args);
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using PawFect.Business.Abstract;
+using PawFect.Business.Concrete;
+using PawFect.DataAccess.Abstract;
+using PawFect.DataAccess.Concrete.EfCore;
+using PawFect.WebUI.Identitiy;
 
-// Add services to the container.
-builder.Services.AddControllersWithViews();
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddRazorPages();
+builder.Services.AddDbContext<ApplicationIdentityDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("IdentityConnection"))
+);
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationIdentityDbContext>()
+    .AddDefaultTokenProviders();
+
+//SeedIdentity
+var userManager = builder.Services.BuildServiceProvider().GetService<UserManager<ApplicationUser>>();
+var roleManager = builder.Services.BuildServiceProvider().GetService<RoleManager<IdentityRole>>();
+
+
+builder.Services.AddScoped<IProductDal, EfCoreProductDal>();
+builder.Services.AddScoped<IProductService, ProductManager>();
+builder.Services.AddScoped<IBlogDal, EfCoreBlogDal>();
+builder.Services.AddScoped<IBlogService, BlogManager>();
+builder.Services.AddScoped<ICartDal, EfCoreCartDal>();
+builder.Services.AddScoped<ICartService, CartManager>();
+builder.Services.AddScoped<ICategoryDal, EfCoreCategoryDal>();
+builder.Services.AddScoped<ICategoryService, CategoryManager>();
+builder.Services.AddScoped<ICommentDal, EfCoreCommentDal>();
+builder.Services.AddScoped<ICommentService, CommentManager>();
+builder.Services.AddScoped<IOrderDal, EfCoreOrderDal>();
+builder.Services.AddScoped<IOrderService, OrderManager>();
+
+builder.Services.AddMvc().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Latest);
 
 var app = builder.Build();
 
@@ -12,6 +43,8 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+SeedDatabase.Seed(); // Database Seed , Product,Category,Blog
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
@@ -24,4 +57,5 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
+SeedIdentity.Seed(userManager,roleManager,app.Configuration).Wait();
 app.Run();
