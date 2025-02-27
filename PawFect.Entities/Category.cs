@@ -10,7 +10,7 @@ namespace PawFect.Entities
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public string Icon { get; set; }
+        public string? Icon { get; set; }
         // Bir kategori birden fazla ürüne sahip olabilir
         public List<Product> Products { get; set; }
     }

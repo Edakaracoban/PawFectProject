@@ -2,7 +2,7 @@
 
 namespace PawFect.WebUI.Models
 {
-    public class ProductDetailModel
+    public class ProductDetailsModel
     {
         public Product Product { get; set; }
         public int? CategoryId { get; set; }

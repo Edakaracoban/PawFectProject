@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using PawFect.Business.Abstract;
+using PawFect.Entities;
 using PawFect.WebUI.Models;
 using System.Diagnostics;
 
@@ -6,21 +8,34 @@ namespace PawFect.WebUI.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private IProductService _productService;
+        public HomeController(IProductService productService)
         {
-            _logger = logger;
+            _productService = productService;
         }
 
         public IActionResult Index()
-        {
-            return View();
+        {  
+            var products = _productService.GetAll();
+            if (products == null || !products.Any())
+            {
+                products = new List<Product>();
+            }
+            return View(new ProductListModel()
+            {
+                Products = products
+            });
         }
-
-        public IActionResult Privacy()
+        [HttpGet]
+        public async Task<IActionResult> Search(string query)
         {
-            return View();
+            if (string.IsNullOrWhiteSpace(query))
+            {
+                return RedirectToAction("Index");
+            }
+
+            var searchResults = _productService.SearchProductsByName(query);
+            return View("Index", searchResults);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

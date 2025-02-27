@@ -1,0 +1,105 @@
+﻿@model ResultModel
+
+<head>
+    <style>
+        /* Modal CSS */
+        .modal {
+            display: none; /* Başlangıçta gizli olacak */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Yarı saydam arka plan */
+            z-index: 1050; /* Üst üste gelmesini sağlar */
+            align-items: center;
+            justify-content: center;
+        }
+
+            .modal.show {
+                display: flex; /* Modal gösterildiğinde */
+            }
+
+        .modal-dialog {
+            max-width: 500px;
+            margin: 1.75rem auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #f8f9fa;
+            padding: 15px;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+
+        .close {
+            font-size: 1.5rem;
+            color: #000;
+            cursor: pointer;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            background-color: #f8f9fa;
+            padding: 10px;
+        }
+
+        .modal-body {
+            padding: 15px;
+            text-align: center;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            border: none;
+        }
+    </style>
+</head>
+
+<div class="modal" tabindex="-1" role="dialog" id="resultModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">@Model.Title</h5>  <!-- Dinamik başlık -->
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closeButton">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="@Model.Css">
+                <!-- Dinamik CSS kullanımı -->
+                <p>@Model.Message</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        // Sayfa yüklendikten sonra, TempData mesajı varsa modal'i göster
+        if (@(TempData["message"] != null)) {
+            $('#resultModal').addClass('show');  // Modal'i göster
+        }
+
+        // Çarpıya tıklanınca modal kapanacak
+        $('#closeButton').click(function() {
+            $('#resultModal').removeClass('show');  // Modal'i gizle
+        });
+
+        // Modal dışında bir alana tıklanırsa da modal kapanabilir
+        $('.modal').click(function(event) {
+            if ($(event.target).hasClass('modal')) {
+                $('#resultModal').removeClass('show');
+            }
+        });
+    });
+</script>

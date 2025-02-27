@@ -1,14 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
-using System.Xml.Linq;
-
-namespace PawFect.Entities
+﻿namespace PawFect.Entities
 {
     public class Product
     {
@@ -21,6 +11,11 @@ namespace PawFect.Entities
         // Kategori ilişkisi için CategoryId ve Category özellikleri
         public int? CategoryId { get; set; }
         public Category Category { get; set; }
+        public List<Comment> Comments { get; set; }
+        public Product()
+        {
+            Comments = new List<Comment>();
+        }
 
     }
 }

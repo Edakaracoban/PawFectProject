@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace PawFect.WebUI.Identitiy
+
+namespace PawFect.WebUI.Identity
 {
-    public static class SeedIdentity // static sınıfların instancesi oluşturulamaz.
+    public static class SeedIdentity //Static sınıfların instance'ı oluşturulamaz.Static sınıflarda static metotlar kullanılabilir.
     {
-        // Proje çalıştırıldığında otomatik olarak kullanıcı oluşturulacak.
-        // Bu method program.cs de çağırılacaktır. 
+        //webui çalıştırıldığında kullanıcı Yoksa otomatik olarak bu bilgilerle kullanıcı oluşturulacak.
         public static async Task Seed(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
         {
             var username = configuration["Data:AdminUser:username"];
@@ -16,16 +16,15 @@ namespace PawFect.WebUI.Identitiy
             if (await userManager.FindByEmailAsync(email) == null)
             {
                 await roleManager.CreateAsync(new IdentityRole(role));
-                var user = new ApplicationUser
+                var user = new ApplicationUser()
                 {
                     UserName = username,
                     Email = email,
                     FullName = "Eda Karaçoban",
                     EmailConfirmed = true
-
                 };
 
-                var result = await userManager.CreateAsync(user,password);
+                var result = await userManager.CreateAsync(user, password);
                 if (result.Succeeded)
                 {
                     await userManager.AddToRoleAsync(user, role);

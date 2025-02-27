@@ -4,16 +4,16 @@ using PawFect.Business.Abstract;
 using PawFect.Business.Concrete;
 using PawFect.DataAccess.Abstract;
 using PawFect.DataAccess.Concrete.EfCore;
-using PawFect.WebUI.Identitiy;
+using PawFect.WebUI.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
-builder.Services.AddDbContext<ApplicationIdentityDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("IdentityConnection"))
+builder.Services.AddDbContext<ApplicationIdentityDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("IdentityConnection"))
 );
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationIdentityDbContext>()
     .AddDefaultTokenProviders();
-
 //SeedIdentity
 var userManager = builder.Services.BuildServiceProvider().GetService<UserManager<ApplicationUser>>();
 var roleManager = builder.Services.BuildServiceProvider().GetService<RoleManager<IdentityRole>>();
@@ -78,6 +78,9 @@ builder.Services.AddScoped<IOrderService, OrderManager>();
 builder.Services.AddMvc().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Latest);
 
 var app = builder.Build();
+
+
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -148,5 +151,6 @@ app.UseEndpoints(endpoints =>
 );
 
 
-SeedIdentity.Seed(userManager,roleManager,app.Configuration).Wait();
+SeedIdentity.Seed(userManager, roleManager, app.Configuration).Wait();
+
 app.Run();

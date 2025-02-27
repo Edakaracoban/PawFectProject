@@ -4,7 +4,7 @@ namespace PawFect.WebUI.Models
 {
     public class RegisterModel
     {
-        [Required(ErrorMessage = "FullName gereklidir.")]
+        [Required]
         public string FullName { get; set; }
         [Required(ErrorMessage = "UserName gereklidir.")]
         public string UserName { get; set; }

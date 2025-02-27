@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace PawFect.WebUI.Identitiy
+namespace PawFect.WebUI.Identity
 {
     public class ApplicationUser : IdentityUser
     {

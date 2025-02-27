@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PawFect.Entities
+﻿namespace PawFect.Entities
 {
     public class OrderItem //siparişin elemanları
     {

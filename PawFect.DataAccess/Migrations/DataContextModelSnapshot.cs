@@ -302,7 +302,7 @@ namespace PawFect.DataAccess.Migrations
             modelBuilder.Entity("PawFect.Entities.Comment", b =>
                 {
                     b.HasOne("PawFect.Entities.Product", "Product")
-                        .WithMany()
+                        .WithMany("Comments")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -352,6 +352,11 @@ namespace PawFect.DataAccess.Migrations
             modelBuilder.Entity("PawFect.Entities.Order", b =>
                 {
                     b.Navigation("OrderItems");
+                });
+
+            modelBuilder.Entity("PawFect.Entities.Product", b =>
+                {
+                    b.Navigation("Comments");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,7 +1,4 @@
-﻿
-
-using PawFect.Entities;
-
+﻿using PawFect.Entities;
 namespace PawFect.WebUI.Models
 {
     public class CategoryModel

@@ -1,0 +1,68 @@
+﻿@model List<OrderListModel>
+@{
+    ViewData["title"] = "Orders";
+}
+
+<h1>My Orders</h1>
+<hr />
+@foreach (var order in Model)
+{
+    <div class="table-responsive mb-5">
+        <table class="table table-sm">
+            <thead class="table-light">
+                <tr>
+                    <th colspan="2"><strong>Order Number:</strong>#@order.OrderNumber</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var orderItem in order.OrderItems)
+                {
+                    <tr>
+                        <td>
+                            <img src="~/img/@orderItem.Image" class="img-fluid" alt="@orderItem.Name" style="max-width: 300px; height: auto;" />
+                        </td>
+                        <td style="text-align: center; vertical-align: middle;">
+                            @orderItem.Name
+                        </td>
+                        <td style="text-align: center; vertical-align: middle;">
+                            @orderItem.Price
+                        </td>
+                        <td style="text-align: center; vertical-align: middle;">
+                            @orderItem.Quantity
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="2"><strong>Customer Name:</strong>@order.FirstName</td>
+                    <td></td>
+                    <td rowspan="7" class="ps-4"><h4>Total: </h4> @order.TotalPrice().ToString("c")</td>
+                </tr>
+                <tr>
+                    <td colspan="2"><strong>Order Date:</strong></td>
+                    <td>@order.OrderDate</td>
+                </tr>
+                <tr>
+                    <td colspan="2"><strong>Address:</strong></td>
+                    <td>@order.Address</td>
+                </tr>
+                <tr>
+                    <td colspan="2"><strong>Phone:</strong></td>
+                    <td>@order.Phone</td>
+                </tr>
+                <tr>
+                    <td colspan="2"><strong>Email:</strong></td>
+                    <td>@order.Email</td>
+                </tr>
+                <tr>
+                    <td colspan="2"><strong>Payment Status:</strong></td>
+                    <td>@order.PaymentTypes</td>
+                </tr>
+        
+            </tfoot>
+        </table>
+    </div>
+}
