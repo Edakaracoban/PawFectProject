@@ -1,83 +1,113 @@
-﻿<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+﻿<header>
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">ETRADE</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <div class="mx-auto">
-                <ul class="navbar-nav d-flex justify-content-center">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" asp-controller="Home" asp-action="Index">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/products/all">Products</a>
-                    </li>
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        @if (User.IsInRole("admin"))
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link" aria-current="page" asp-controller="Admin" asp-action="CreateProduct">Add Product</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" aria-current="page" href="/admin/products">Admin Products</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" aria-current="page" asp-controller="Admin" asp-action="CreateCategory">Create Category</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" aria-current="page" asp-controller="Admin" asp-action="CategoryList">Category List</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" aria-current="page" asp-controller="Admin" asp-action="GetOrder">Orders</a>
-                            </li>
-                        }
-                        else
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link" aria-current="page" asp-controller="Cart" asp-action="Index">Cart</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" aria-current="page" asp-controller="Cart" asp-action="GetOrders">Orders</a>
-                            </li>
-                        }
-                    }
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            More
+        <div class="row py-3 border-bottom">
+            <div class="col-sm-4 col-lg-3 text-center text-sm-start">
+                <div class="main-logo">
+                    <a href="/Home/Index">
+                        <img src="~/img/logo.jpg" alt="logo" class="img-fluid">
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-sm-6 offset-sm-2 offset-md-0 col-lg-5 d-none d-lg-block">
+                <div class="search-bar row bg-light p-2 my-2 rounded-4">
+                    <div class="col-md-4 d-none d-md-block">
+                        <select class="form-select border-0 bg-transparent">
+                            <option>Tüm Kategoriler</option>
+                            <option>Kedi</option>
+                            <option>Köpek</option>
+                            <option>Kuş</option>
+                            <option>Akvaryum</option>
+                            <option>Hamster ve Tavşan</option>
+                        </select>
+                    </div>
+                    <div class="col-11 col-md-7">
+                        <form id="search-form" asp-action="Search" asp-controller="Home" method="get">
+                            <input type="text" class="form-control border-0 bg-transparent" placeholder="Ara..." name="query" />
+                        </form>
+                    </div>
+                    <div class="col-1">
+                        <svg id="search-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="cursor: pointer;">
+                            <path fill="currentColor" d="M21.71 20.29L18 16.61A9 9 0 1 0 16.61 18l3.68 3.68a1 1 0 0 0 1.42 0a1 1 0 0 0 0-1.39ZM11 18a7 7 0 1 1 7-7a7 7 0 0 1-7 7Z" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-8 col-lg-4 d-flex justify-content-end gap-5 align-items-center mt-4 mt-sm-0 justify-content-center justify-content-sm-end">
+                <div class="support-box text-end d-none d-xl-block">
+                    <span class="fs-6 text-muted">Destek Hattı</span>
+                    <h5 class="mb-0">+90-34984089</h5>
+                </div>
+
+                <ul class="d-flex justify-content-end list-unstyled m-0">
+                    <li>
+                        <a href="#" class="rounded-circle bg-light p-2 mx-1">
+                            <svg width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#user"></use></svg>
                         </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" asp-controller="Home" asp-action="Index">Home</a></li>
-                            <li><a class="dropdown-item" asp-controller="Shop" asp-action="List">Products</a></li>
-                        </ul>
+                    </li>
+                    <li>
+                        <a href="#" class="rounded-circle bg-light p-2 mx-1">
+                            <svg width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#heart"></use></svg>
+                        </a>
+                    </li>
+                    <li class="d-lg-none">
+                        <a href="#" class="rounded-circle bg-light p-2 mx-1" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart">
+                            <svg width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#cart"></use></svg>
+                        </a>
+                    </li>
+                    <li class="d-lg-none">
+                        <a href="#" class="rounded-circle bg-light p-2 mx-1" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSearch" aria-controls="offcanvasSearch">
+                            <svg width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#search"></use></svg>
+                        </a>
                     </li>
                 </ul>
+
+                <div class="cart text-end d-none d-lg-block dropdown">
+                    <button class="border-0 bg-transparent d-flex flex-column gap-2 lh-1" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart">
+                        <span class="fs-6 text-muted dropdown-toggle">Sepetiniz</span>
+                        <span class="cart-total fs-5 fw-bold">₺1290.00</span>
+                    </button>
+                </div>
             </div>
 
-            <div class="d-flex align-items-center">
-                <ul class="navbar-nav">
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        <li class="nav-item">
-                            <a class="nav-link" aria-current="page" asp-controller="Account" asp-action="Manage">@User.Identity.Name</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" aria-current="page" asp-controller="Account" asp-action="Logout">Logout</a>
-                        </li>
-                    }
-                    else
-                    {
-                        <li class="nav-item">
-                            <a class="nav-link" aria-current="page" asp-controller="Account" asp-action="Login">Login</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" aria-current="page" asp-controller="Account" asp-action="Register">Register</a>
-                        </li>
-                    }
-                </ul>
-            </div>
         </div>
     </div>
-</nav>
+    <div class="container-fluid">
+        <div class="row py-3">
+        </div>
+    </div>
+</header>
+
+<script>
+    document.getElementById("search-icon").addEventListener("click", function () {
+        document.getElementById("search-form").submit();
+    });
+</script>
+@* <style>/* Yeni düzenlemeler */ *@
+@*     @media (max-width: 767px) { *@
+@*     .col-lg-3, .col-lg-4 { *@
+@*         flex: 0 0 100%; *@
+@*         max-width: 100%; *@
+@*     } *@
+
+@*     .search-bar { *@
+@*         display: block; *@
+@*     } *@
+
+@*     .support-box { *@
+@*         display: none; *@
+@*     } *@
+
+@*     .d-none { *@
+@*         display: block !important; *@
+@*     } *@
+@* } *@
+
+@* /* Başlık logo ve arama barı yerleşimi */ *@
+@* .main-logo img { *@
+@*     max-width: 100%; *@
+@*     height: auto; *@
+@* }</style> *@
+
+

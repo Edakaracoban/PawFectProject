@@ -85,7 +85,7 @@ namespace PawFect.DataAccess.Concrete.EfCore
             new Blog
             {
                 Image = "kedi-mamalarindaki-taurin-ve-taurinin-on-b1fe.jpg",
-                Header = "Kemirgenler İçin Doğru Taban Malzemesi Seçimi",
+                Header = "Kedi Mamalarındaki Taurinin Önemi",
                 Title = "Kediler için taurinin önemi abartılamaz. Taurin, bir kedinin genel sağlığı ve refahı için çok önemli olan esansiyel bir amino asittir. Diğer hayvanlardan farklı olarak kediler taurini kendi başlarına sentezleyemezler ve onu diyetlerinden almak zorundadırlar. Taurin, bir kedinin görme ve kalp fonksiyonunda hayati bir rol oynar. Diyetlerinde yeterli miktarda taurin bulunmayan kedilerde körlük ve kalp hastalığı da dahil olmak üzere bir dizi sağlık sorunu yaşar. Aslında taurin eksikliği, kedi mamasına taurin eklemenin bu sağlık sorunlarını önleyebileceği keşfedilmeden önce bir zamanlar kedilerde önde gelen ölüm nedeniydi. Kedilerin taurin ihtiyaçlarını karşılamak için protein açısından zengin bir beslenmeye ihtiyaçları vardır. Birçok yüksek kaliteli kedi maması bu gereksinimleri karşılayacak şekilde formüle edilmiştir, ancak kedinizi beslediğiniz mamanın yeterli miktarda taurin içerdiğinden emin olmak önemlidir. Gastrointestinal bozukluklar gibi bazı kedi sağlığı koşullarının, kedinin diyetindeki taurini absorbe etme yeteneğini etkileyebileceğini de belirtmekte fayda vardır. Bu durumlarda diyetlerine ek taurin takviyesi yapılması gerekebilir. Taurin, bir kedinin yalnızca fiziksel sağlığını değil aynı zamanda zihinsel ve duygusal sağlığını da destekler. Gelişim için gereklidir. Bir kedi sahibi olarak, kedinizin mamasının içeriğine dikkat etmeniz ve onun bu temel amino asitten yeterince aldığından emin olmanız çok önemlidir.",
                 SubTitle = "Kedi"
             }
@@ -110,7 +110,7 @@ namespace PawFect.DataAccess.Concrete.EfCore
                    Image = "felicia-smallmini-dusuk-tahilli-kuzu-e-28d9-b.jpg" ,
                    Description ="Optimum düzeyde protein, yağ ve karbonhidrat dengesi ile mama, köpeğinize ömrü boyunca düzenli enerji ve iyi bir vücut yapısı temin etmek için formüle edilmiştir. Hassas sindirim sistemine sahip veya kuzunun mükemmel lezzetini tercih eden köpekler için idealdir.",
                    Stock=0,
-                  Category = new Category() { Name = "Köpek" }
+                  Category = Categories.FirstOrDefault(c => c.Name == "Köpek")
                 },
                 new Product(){
                     Name = "Royal Canin X-Small Köpek Maması 1,5 kg",
