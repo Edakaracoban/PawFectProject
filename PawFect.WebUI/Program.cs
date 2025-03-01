@@ -76,12 +76,7 @@ builder.Services.AddScoped<IOrderDal, EfCoreOrderDal>();
 builder.Services.AddScoped<IOrderService, OrderManager>();
 
 builder.Services.AddMvc().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Latest);
-
 var app = builder.Build();
-
-
-
-
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -89,14 +84,9 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-
 SeedDatabase.Seed(); // Database Seed , Product,Category,Blog
-
 app.UseHttpsRedirection();
 app.UseStaticFiles(); //wwwroot içindeki js css dosyalarý
-
-// app.CustomStaticFiles(); //middleware node_modules dosyalarýný kullanabilmek için(moduls klasörüne eriþim)
-
 app.UseAuthentication(); //kimlik doðrulama iþlemleri
 app.UseAuthorization(); //yetkilendirme iþlemleri
 app.UseRouting();
