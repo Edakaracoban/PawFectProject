@@ -2,7 +2,7 @@
 
 namespace PawFect.WebUI.ViewComponents
 {
-	public class _SocialMediaViewComponents:ViewComponent
+	public class _SvgLayout:ViewComponent
 	{
 		public IViewComponentResult Invoke()
 		{

@@ -115,6 +115,7 @@ namespace PawFect.WebUI.Controllers
         public async Task<IActionResult> Login(LoginModel model)
         {
             ModelState.Remove("ReturnUrl");
+
             if (!ModelState.IsValid)
             {
                 TempData.Put("message", new ResultModel()
@@ -133,10 +134,22 @@ namespace PawFect.WebUI.Controllers
                 ModelState.AddModelError("", "Bu email adresi ile kayıtlı kullanıcı bulunamadı");
                 return View(model);
             }
+
             var result = await _signInManager.PasswordSignInAsync(user, model.Password, true, true);
+
             if (result.Succeeded)
             {
-                return Redirect(model.ReturnUrl ?? "~/");
+                // Admin kontrolü
+                if (await _userManager.IsInRoleAsync(user, "Admin"))
+                {
+                   
+                    return RedirectToAction("Index", "Admin"); // Admin sayfasına yönlendirme
+                }
+                else
+                {
+                    // Eğer admin değilse, normal sayfaya yönlendir
+                    return Redirect(model.ReturnUrl ?? "~/");
+                }
             }
             else if (result.IsLockedOut)
             {
@@ -150,20 +163,15 @@ namespace PawFect.WebUI.Controllers
             }
 
             ModelState.AddModelError("", "Email veya şifre hatalı");
-
             return View(model);
         }
+
 
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
-            TempData.Put("message", new ResultModel()
-            {
-                Title = "Oturum Hesabı Kapatıldı",
-                Message = "Hesabınız güvenli bir şekilde sonlandırıldı",
-                Css = "success"
-            });
-            return Redirect("~/");
+
+            return RedirectToAction("Index", "Home");//login sayfasına yönlendir
         }
 
         public IActionResult ForgotPassword()

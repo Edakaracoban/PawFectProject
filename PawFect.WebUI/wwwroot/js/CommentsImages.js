@@ -11,6 +11,10 @@ $(document).ready(function () {
     productId = $("#comment").data("product-id")
     $(CommentBodyId).load("/Comment/ShowProductComments?id="+productId)
 })
+window.addEventListener('load', function () {
+    const preloader = document.querySelector('.preloader-wrapper');
+    preloader.style.display = 'none';
+});
 
 function doComment(btn, e, commentId, spanId) {
     var button = $(btn)

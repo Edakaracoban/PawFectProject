@@ -25,7 +25,7 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequireLowercase = true;
     options.Password.RequireUppercase = true;
     options.Password.RequireNonAlphanumeric = true;
-    options.Password.RequiredLength = 6;
+    options.Password.RequiredLength = 11;
 
     var timeZone = TimeZoneInfo.FindSystemTimeZoneById("Turkey Standard Time");
     var gmtPlus3Time = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, timeZone);
