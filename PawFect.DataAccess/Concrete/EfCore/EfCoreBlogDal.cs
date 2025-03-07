@@ -11,6 +11,17 @@ namespace PawFect.DataAccess.Concrete.EfCore
 {
     public class EfCoreBlogDal : EfCoreGenericRepository<Blog, DataContext>, IBlogDal
     {
+       
+        public Blog GetBlogDetails(int id)
+        {
+            using (var context = new DataContext())
+            {
+                return context.Blogs
+                           .Where(p => p.Id == id)
+                           .FirstOrDefault();
+            }
+        }
+
         public List<Blog> SearchBlogsByTitle(string query)
         {
             if (string.IsNullOrWhiteSpace(query))

@@ -1,0 +1,77 @@
+﻿@model List<BlogModel>
+<div class="banner-ad large bg-info block-1">
+    <div class="swiper main-swiper">
+        <div class="swiper-wrapper">
+            @foreach (var item in Model)
+            {
+                <div class="swiper-slide">
+                    <div class="row banner-content p-5">
+                        <div class="content-wrapper col-md-7">
+                            <div class="categories my-">@item.Header</div>
+                            <div>
+                                @((item.Title.Length > 400) ? item.Title.Substring(0, 400) + "..." : item.Title)
+                            </div>
+
+                            <a href="/Blog/Details/@item.Id" class="btn btn-outline-dark btn-lg fs-6 rounded-1 px-4 py-3 mt-3">Yazımızın tamamını okumak için tıklayın..</a>
+                        </div>
+                        <div class="img-wrapper col-md-5">
+                            <img src="@Url.Content("~/img/" + item.Image)" class="img-fluid">
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="swiper-pagination"></div>
+    </div>
+</div>
+
+<div class="banner-ad bg-success-subtle block-2">
+    <div class="row banner-content p-5">
+        <div class="content-wrapper col-md-7">
+            <div class="categories sale mb-3 pb-3"></div>
+            <h3 class="banner-title">Yaş Mamalarda %20 İNDİRİM</h3>
+        </div>
+        <div class="img-wrapper col-md-5">
+            <img src="~/img/450178_detay_1675239080129.png">
+        </div>
+    </div>
+</div>
+<div class="banner-ad bg-success-subtle block-3">
+    <div class="row banner-content p-5">
+        <div class="content-wrapper col-md-7">
+            <div class="categories sale mb-3 pb-3"></div>
+            <h3 class="banner-title">Seçili Ürünlerde %20 İNDİRİM</h3>
+        </div>
+        <div class="img-wrapper col-md-5">
+            <img src="~/img/large_351211-junior-3kg-o-n-yu-z_1657107371460.png">
+        </div>
+    </div>
+</div>
+<style>
+    .banner-content {
+        display: flex; /* Flexbox düzeni */
+        align-items: center;
+        justify-content: space-between;
+    }
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+</style>
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
+<script>
+
+    var swiper = new Swiper('.main-swiper', {
+        loop: true, // Döngü modunu aç
+        pagination: {
+            el: '.swiper-pagination', // Pagination için element
+            clickable: true, // Pagination'ı tıklanabilir yap
+        },
+        autoplay: {
+            delay: 5000, // 5 saniyede bir geçiş
+        },
+        slidesPerView: 1,
+        spaceBetween: 10,
+    });
+</script>

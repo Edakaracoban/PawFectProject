@@ -1,17 +1,44 @@
 ﻿@model CategoryListViewModel
+<section class="py-5 overflow-hidden">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="section-header d-flex flex-wrap justify-content-between mb-5">
+                    <h2 class="section-title">Kategoriler</h2
+                    <div class="d-flex align-items-center">
+                        <div class="swiper-buttons">
+                            <button class="swiper-prev category-carousel-prev btn btn-yellow">❮</button>
+                            <button class="swiper-next category-carousel-next btn btn-yellow">❯</button>
+                        </div>
+                    </div>
+        </div>
+             </div>
+        </div>
+                <div class="row">
+            <div class="col-md-12">
+                <div class="category-carousel swiper">
+                    <div class="swiper-wrapper">
+                        @foreach (var item in Model.Categories)
+                        {
+                            <a href="/Category/Index/@item.Id" class="nav-link category-item swiper-slide">
+                                <img src="@Url.Content("~/img/" + item.Icon)" alt="Category Thumbnail" class="category-icon">
+                                <h3 class="category-title">@item.Name</h3>
+                            </a>
+                        }                  
+                    </div>
+                </div>
+                    </div>
+</section>
 
-<ul class="list-group category-list">
-    <a href="/products/all">
-    <li class="list-group-item list-group-item-action">
-        <strong>All Products</strong>
-    </li>
-    </a>
-    @foreach (var category in Model.Categories)
-    {
-       <a asp-controller="Shop" asp-action="List" asp-route-category="@category.Name.ToLower()"
-       class="list-group-item list-group-item-action @(Model.SelectedCategory == category.Name.ToLower() ? "active" : "")">
-   
-        @category.Name
-        </a>
-    }
-</ul>
+<style>
+    .section-header {
+    margin-top: -20px; /* Bu değeri ihtiyaca göre ayarlayın */
+    padding-top: 0; /* Bu da padding'i sıfırlayarak öğe arasındaki boşluğu kaldırır */
+}
+    .category-icon {
+    width: 100px; /* Genişliği ayarlayın */
+    height: auto; /* Yükseklik oranı korunarak genişlik ayarlandı */
+    object-fit: cover; /* Resmin kırpılmasını engeller */
+}
+
+</style>

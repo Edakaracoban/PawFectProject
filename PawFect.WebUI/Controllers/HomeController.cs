@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using PawFect.Business.Abstract;
 using PawFect.Entities;
-using PawFect.WebUI.Extensions;
 using PawFect.WebUI.Models;
 using System.Diagnostics;
 
@@ -22,12 +21,6 @@ namespace PawFect.WebUI.Controllers
             {
                 products = new List<Product>();
             }
-            //TempData.Put("message", new ResultModel()
-            //{
-            //    Title = "Hoþgeldiniz",
-            //    Message = "Baþlamak için pencereyi kapatýn",
-            //    Css = "success"
-            //}); // pencere direkt açýlmýyor?
             return View(new ProductListModel()
             {
                 Products = products

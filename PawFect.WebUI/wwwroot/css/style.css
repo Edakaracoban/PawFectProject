@@ -218,21 +218,13 @@ h1,h2,h3,h4,h5,h6 {
 .container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
   --bs-gutter-x: 3rem;
 }
-/*----------------------------------------------*/
-/* 6. SITE STRUCTURE */
-/*----------------------------------------------*/
-/* 6.1 Header
---------------------------------------------------------------*/
-
-
-/* *** Start editing below this line *** */
 .container-fluid {
   max-width: 1600px;
 }
 .banner-blocks {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  grid-template-rows: repeat(2, 1fr);
+  grid-template-rows: repeat(3, 1fr);
   grid-gap: 2rem;
 }
 .block-1 { grid-area: 1 / 1 / 3 / 8; }
@@ -240,10 +232,11 @@ h1,h2,h3,h4,h5,h6 {
 .block-3 { grid-area: 2 / 8 / 3 / 13; }
 
 @media screen and (max-width:1140px) {
-  .banner-blocks {
-    grid-template-columns: 1fr;
-    grid-template-rows: repeat(4, 1fr);
-  }
+    .banner-blocks {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(3, 1fr);
+        grid-gap: 1rem;
+    }
   .block-1 { grid-area: 1 / 1 / 3 / 2; }
   .block-2 { grid-area: 3 / 1 / 4 / 2; }
   .block-3 { grid-area: 4 / 1 / 5 / 2; }
@@ -260,7 +253,7 @@ h1,h2,h3,h4,h5,h6 {
   background: #e6f3fb;
 }
 .banner-ad .swiper-pagination {
-  bottom: 40px;
+  bottom: 10px;
   left: 0;
   right: 0;
 }
@@ -275,44 +268,16 @@ h1,h2,h3,h4,h5,h6 {
 .banner-ad .swiper-pagination .swiper-pagination-bullet.swiper-pagination-bullet-active{
   background: #FFC43F;
 }
-.banner-ad .swiper-slide {
-  min-height: 630px;
-  display: flex;
-}
-/* .banner-ad .banner-content {
-  padding: 52px;
-}
-.banner-ad.large .banner-content {
-  padding: 90px;
-} */
+    .banner-ad .swiper-slide {
+        min-height: 500px;
+        display: flex;
+        padding-bottom: 40px;
+    }
 .banner-ad .banner-content .categories {
   font-family: 'Garamond';
   font-size: 37px;
   text-transform: capitalize;
   color: var(--dark-color);
-}
-.banner-ad .banner-content .sale {
-  position: relative;
-  display: inline-block;
-}
-.banner-ad .banner-content .sale:before {
-  content: '';
-  width: 80px;
-  border-bottom: 1px solid #111;
-  position: absolute;
-  bottom: 6px;
-}
-.banner-ad .banner-content .sale:after {
-  content: 'SALE';
-  font-family: var(--body-font);
-  position: absolute;
-  font-size: 11px;
-  line-height: 15px;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  color: #252525;
-  bottom: 0;
-  right: 0;
 }
 .banner-ad .banner-content .banner-title {
   letter-spacing: 0.02em;
@@ -324,7 +289,6 @@ h1,h2,h3,h4,h5,h6 {
 .banner-ad.large .banner-content .banner-title {
   font-size: 54px;
 }
-
 /* Swiper carousel */
 .swiper-prev,
 .swiper-next {
@@ -363,7 +327,7 @@ h1,h2,h3,h4,h5,h6 {
   background: #FFFFFF;
   border: 1px solid #FBFBFB;
   box-shadow: 0px 5px 22px rgba(0, 0, 0, 0.04);
-  border-radius: 16px;
+  border-radius: 20px;
   text-align: center;
   padding: 60px 20px;
   margin: 20px 0;
@@ -415,24 +379,26 @@ h1,h2,h3,h4,h5,h6 {
 }
 .product-tabs .nav-tabs .nav-link.active, 
 .product-tabs .nav-tabs .nav-item.show .nav-link {
-  /* border: none; */
+
   border-bottom: 3px solid var(--accent-color);
 }
 
-/* product-grid */
-/* .product-grid {
-  gap: 25px;
-} */
 .product-item {
-  position: relative;
-  padding: 16px;
-  background: #FFFFFF;
-  border: 1px solid #FBFBFB;
-  box-shadow: 0px 5px 22px rgba(0, 0, 0, 0.04);
-  border-radius: 16px;
-  margin-bottom: 30px;
-  transition: box-shadow 0.3s ease-out;
+    display: flex;
+    flex-direction: column; /* Dikey hizalama */
+    justify-content: space-between; /* Öðeleri yukarýdan aþaðýya düzgün þekilde yerleþtir */
+    height: 100%; /* Ürünlerin yüksekliðini eþit yap */
+    position: relative;
+    padding: 16px;
+    background: #FFFFFF;
+    border: 1px solid #FBFBFB;
+    box-shadow: 0px 5px 22px rgba(0, 0, 0, 0.04);
+    border-radius: 16px;
+    margin-bottom: 50px;
+    transition: box-shadow 0.3s ease-out;
+    height: 440px;
 }
+
 .product-item:hover {
   box-shadow: 0px 21px 44px rgba(0, 0, 0, 0.08);
 }

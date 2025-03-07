@@ -7,11 +7,26 @@ namespace PawFect.WebUI.EmailService
 {
     public static class MailHelper //e-posta göndermek için kullanılan bir yardımcı sınıf olan MailHelper'ı içeriyor. 
     {
+        // Geçici olarak gönderilen e-posta adreslerini tutan set
+        private static HashSet<string> SentEmailAddresses = new HashSet<string>();
+
+        // E-posta gönderme fonksiyonu
         public static bool SendEmail(string body, string to, string subject, bool isHtml = true)
         {
+            // Eğer e-posta adresine daha önce gönderilmişse, göndermemek için false döneriz
+            if (SentEmailAddresses.Contains(to))
+            {
+                return false;
+            }
+
+            // E-posta adresini ekliyoruz
+            SentEmailAddresses.Add(to);
+
+            // E-posta gönderme işlemi
             return SendEmail(body, new List<string> { to }, subject, isHtml);
         }
 
+        // Birden fazla e-posta adresine e-posta gönderen fonksiyon
         private static bool SendEmail(string body, List<string> to, string subject, bool isHtml)
         {
             bool result = false;
@@ -21,7 +36,7 @@ namespace PawFect.WebUI.EmailService
                 var message = new MailMessage();
                 message.From = new MailAddress("ucuncubinyilakademimailservice@gmail.com");
 
-                to.ForEach(x => //birden çok mail adresine mail gönderme
+                to.ForEach(x =>
                 {
                     message.To.Add(new MailAddress(x));
                 });
@@ -30,8 +45,7 @@ namespace PawFect.WebUI.EmailService
                 message.Body = body;
                 message.IsBodyHtml = isHtml;
 
-                //mail server ayarları
-                using (var smtp = new SmtpClient("smtp.gmail.com", 587)) //smtp : secure mail transfer protocol
+                using (var smtp = new SmtpClient("smtp.gmail.com", 587))
                 {
                     smtp.EnableSsl = true;
                     smtp.Credentials = new NetworkCredential("ucuncubinyilakademimailservice@gmail.com", "wdpy prpp pekv nfll");

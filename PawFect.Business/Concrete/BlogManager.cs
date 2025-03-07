@@ -32,6 +32,11 @@ namespace PawFect.Business.Concrete
            return _blogDal.GetAll();
         }
 
+        public Blog GetBlogDetails(int id)
+        {
+           return _blogDal.GetBlogDetails(id);
+        }
+
         public List<Blog> SearchBlogsByTitle(string query)
         {
             return _blogDal.SearchBlogsByTitle(query);

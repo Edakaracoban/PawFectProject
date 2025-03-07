@@ -56,35 +56,35 @@ namespace PawFect.DataAccess.Concrete.EfCore
         {
             new Blog
             {
-                Image = "muhabbet-kuslarinda-ureme-ve-yumurtlama-845c.jpg",
+                Image = "muhabbet.jpg",
                 Header = "Muhabbet Kuşlarında Üreme ve Yumurtlama",
                 Title = "Muhabbet kuşlarında üreme ve yumurtlama süreci, sağlıklı bir ortam ve uygun çiftleşme koşulları sağlandığında meydana gelir. Üreme döneminde dişi ve erkek kuşların davranışlarında bazı belirgin değişiklikler gözlemlenir. Muhabbet kuşlarında yumurtlama zamanı, kuşların olgunlaşması, çiftleşme politikaları ve uygun çevre koşullarına bağlıdır. Dişi muhabbet kuşları genellikle 6-12 aylık olduklarında üreme olgunluğuna erişirler. Bu yaşadıklarında yumurtlayabilirler, ancak en ideal çiftleşme yaşı 12-18 ay arasıdır. Erkek muhabbet kuşları da aynı yaşlarda çiftleşme olgunluğuna ulaşır, ancak genellikle dişiler kadar hızlı üremeyi engelleyenler.Yuva Kutusu : Dişi muhabbet kuşlarının yumurtlanabilmesi için kafeste uygun bir yuva kutusu bulunmalıdır. Yuva kutusu rahat, temiz ve güvenli olmalıdır. Işık ve Sıcaklık : Günlük ışık oluşumu 12 saat veya daha fazla olması, üreme değişimini tetikleyebilir. Ayrıca sıcaklık sıcaklığı da önemlidir; 18-25°C arası bir sıcaklık idealdir. Beslenme : Yumurtlama öncesi ve sırasında dişi kuşun yeterli miktarda protein alması gerekir. Yumurtlamaya hazırlık olarak anne, saklanan yumurta, miktar ve kalsiyum kaynağı olarak mürekkep balığı ruhsatı sunulmalıdır.",
                 SubTitle = "Kuş"
             },
             new Blog
             {
-                Image = "kopeklerde-kuaforun-onemi-5a2d.jpg",
+                Image = "white-sitting-dog-png-images-full-hd-11616039842beowken7t6.png",
                 Header = "Köpeklerde Kuaförün Önemi",
                 Title = "Köpeklerin tüylerinin bakımı, sağlıklı, temiz ve rahat olmaları için oldukça önemlidir. Düzenli tüy bakımı, sadece estetik açıdan değil, aynı zamanda köpeğinizin cilt sağlığı ve genel sağlığı için de gereklidir. Köpek tıraşı, yalnızca estetik bir işlem değil, köpeğin sağlığı ve genel performansı için son derece önemlidir. İşte köpek traşının önemini açıklayan bazı temel noktalar: Düzenli traş, köpeğin cildinin hava almasına olanak tanır ve cilt sağlığını korur. Uzayan ve dolaşan tüyler, derinin nefes almasını engelleyebilir. Tıraş sırasında köpeğin parazitleri gözlemlenebilir, dolayısıyla olası parazitler (pire, kene gibi) veya cilt sorunları erken fark edilebilir. Düzenli tıraş, köpeğin aşırı tüy dökmesini kontrol olarak alır. Bu, evde tüy miktarının sağlanması yardımcı olur ve köpeğinizin daha temiz kalmasını sağlar. Uzun ve kalıcı tüy yapısına sahip köpeklerin tüylerin dolaşması yaygın bir sorundur. Dolaşan tüyler bazı deri hastalıklarına neden olabilir. Düzenli traş, bu durumu engeller.Köpeğin düzenli olarak traş edilmesi, tüylerin arasında gizlenebilecek pire, kene gibi parazitlerin erken fark edilmesi yardımcı olur. ",
                 SubTitle = "Köpek"
             },
             new Blog
             {
-                Image = "sokakta-yavru-kedi-bulursan-yapman-gerek-72fb.jpg",
+                Image = "Sitting-Kitten-PNG-Image-Background.png",
                 Header = "Sokakta Yavru Kedi Bulursan Yapman Gerekenler",
                 Title = "Sokakta yeni doğan bir kedi yavrusunu bulduysanız, onun annesini aramak için dikkatli olmak ve anneyi kaçırmadan hareket etmek önemlidir. İşte yapılması gereken adımlar. Doğru atılacak her adım yavru kedinin hayatta kalması için önemli kriterlerdir. Sokakta Yavru Kedi Bulursan Yapman Gerekenler. Kediler hakkında Sokakta yeni doğan bir kedi yavrusunu bulduysanız, onun annesini aramak için dikkatli olmak ve anneyi kaçırmadan hareket etmek önemlidir. İşte yapılması gereken adımlar. Doğru atılacak her adım yavru kedinin hayatta kalması için önemli kriterlerdir. 1.Değerlendirme​ Anneyi Arayın : Yavru kedinin annesi yakınlarda olabilir. Anne kedi genellikle yiyecek aramak için kısa süreliğine yavrunun yanından ayrılır. Yavruyu hemen almadan önce birkaç saat gözlemleyin. Yavrunun Durumunu Kontrol Edin : Üşüyorsa, zayıf görünüyorsa, susuz veya aç gibi görünüyorsa hemen müdahale edin.Yavru kediler ilk birkaç haftada kendi vücut ısılarını düzenleyemezler. Annesiz kalınması durumunda bu daha kritiktir. Yavrunun beden ısısını ölçerek ona yaşam şansı tanımak bizlerin asli görevlerindendir. İlk 2 hafta yavrularda beden ısısı 30-32°C , ardından 27-29°C derecelerde olmalıdır. Yavru kediyi bir kutuya veya taşıma çantasına koyarak, sıcak bir ortamı sağlamak şarttır. Ortamı sürekli kontrol ederek aşırı sıcak veya soğuk olmadığından emin olunmalıdır.",
                 SubTitle = "Kedi"
             },
             new Blog
             {
-                Image = "kemirgenler-icin-dogru-taban-malzemesi-s-9588.jpg",
+                Image = "pngtree-cute-little-hamster-for-valentine-themed-decoration-png-image_11369855.png",
                 Header = "Kemirgenler İçin Doğru Taban Malzemesi Seçimi",
                 Title = "Taban malzemesini seçerken, kemirgeninizin sağlık durumunu ve ihtiyaçlarını göz önünde bulundurarak tozsuz, emici, kokuyu hapseden ve zararlı kimyasallar içermeyen doğal malzemeleri tercih etmek en iyisidir. Kemirgenler için doğru taban malzemesi seçimi, onların sağlığı ve konforu açısından oldukça önemlidir. Seçilecek malzeme, kemirgenin türüne, büyüklüğüne ve çevresel ihtiyaçlarına göre belirlenmelidir. İşte yaygın kullanılan bazı taban malzemeleri ve özellikleri: Ahşap Peletler: Oldukça emici ve doğal bir malzemedir. Ancak biraz sert olduğu için kemirgenlerin rahat etmesi için üzerine yumuşak bir malzeme eklemek gerekebilir. Kağıt Peletler: Emiciliği yüksek, tozsuz ve yumuşaktır. Uygun Olduğu Türler: Genellikle tavşan ve büyük kemirgenler için daha uygundur. Çam veya Sedir Tabanlı Talaş: Bu tür malzemeler genellikle tavsiye edilmez, çünkü çam ve sedir talaşları kemirgenlerin solunum yollarına zarar verebilecek aromatik yağlar içerir. Gazete Kağıdı: Mürekkep içerdiği için kemirgenlerin sağlığına zarar verebilir. Aromalı veya Parfümlü Malzemeler: Kemirgenlerin hassas solunum sistemlerine zarar verebilir. Çam ve Sedir Talaşı: Alerjik reaksiyonlara ve solunum yolu sorunlarına neden olabilecek uçucu yağlar içerir.",
                 SubTitle = "Hamster ve Tavşan"
             },
             new Blog
             {
-                Image = "kedi-mamalarindaki-taurin-ve-taurinin-on-b1fe.jpg",
+                Image = "Cute-Cat-PNG-Pic.png",
                 Header = "Kedi Mamalarındaki Taurinin Önemi",
                 Title = "Kediler için taurinin önemi abartılamaz. Taurin, bir kedinin genel sağlığı ve refahı için çok önemli olan esansiyel bir amino asittir. Diğer hayvanlardan farklı olarak kediler taurini kendi başlarına sentezleyemezler ve onu diyetlerinden almak zorundadırlar. Taurin, bir kedinin görme ve kalp fonksiyonunda hayati bir rol oynar. Diyetlerinde yeterli miktarda taurin bulunmayan kedilerde körlük ve kalp hastalığı da dahil olmak üzere bir dizi sağlık sorunu yaşar. Aslında taurin eksikliği, kedi mamasına taurin eklemenin bu sağlık sorunlarını önleyebileceği keşfedilmeden önce bir zamanlar kedilerde önde gelen ölüm nedeniydi. Kedilerin taurin ihtiyaçlarını karşılamak için protein açısından zengin bir beslenmeye ihtiyaçları vardır. Birçok yüksek kaliteli kedi maması bu gereksinimleri karşılayacak şekilde formüle edilmiştir, ancak kedinizi beslediğiniz mamanın yeterli miktarda taurin içerdiğinden emin olmak önemlidir. Gastrointestinal bozukluklar gibi bazı kedi sağlığı koşullarının, kedinin diyetindeki taurini absorbe etme yeteneğini etkileyebileceğini de belirtmekte fayda vardır. Bu durumlarda diyetlerine ek taurin takviyesi yapılması gerekebilir. Taurin, bir kedinin yalnızca fiziksel sağlığını değil aynı zamanda zihinsel ve duygusal sağlığını da destekler. Gelişim için gereklidir. Bir kedi sahibi olarak, kedinizin mamasının içeriğine dikkat etmeniz ve onun bu temel amino asitten yeterince aldığından emin olmanız çok önemlidir.",
                 SubTitle = "Kedi"

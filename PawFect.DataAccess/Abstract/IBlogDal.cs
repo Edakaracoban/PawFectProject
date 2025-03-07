@@ -10,5 +10,6 @@ namespace PawFect.DataAccess.Abstract
     public interface IBlogDal : IRepository<Blog>
     {
         List<Blog> SearchBlogsByTitle(string query); // string query parametresi ile ürün arama yapılacak
+        Blog GetBlogDetails(int id);
     }
 }

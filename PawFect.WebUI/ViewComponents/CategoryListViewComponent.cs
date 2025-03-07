@@ -10,7 +10,7 @@ namespace PawFect.WebUI.ViewComponents
 
         public CategoryListViewComponent(ICategoryService categoryService)
         {
-                _categoryService = categoryService;
+            _categoryService = categoryService;
         }
 
         public IViewComponentResult Invoke()
@@ -18,11 +18,11 @@ namespace PawFect.WebUI.ViewComponents
             return View(
                 new CategoryListViewModel()
                 {
-                    
+
                     Categories = _categoryService.GetAll()
                 }
-                
-                );
+
+            );
         }
     }
 }

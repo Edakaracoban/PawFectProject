@@ -1,6 +1,6 @@
 ﻿using PawFect.Business.Abstract;
 using PawFect.WebUI.EmailService;
-using PawFect.WebUI.Extensions;
+
 using PawFect.WebUI.Identity;
 using PawFect.WebUI.Models;
 using Microsoft.AspNetCore.Identity;
@@ -68,12 +68,7 @@ namespace PawFect.WebUI.Controllers
         {
             if (userId == null || token == null)
             {
-                TempData.Put("message", new ResultModel()
-                {
-                    Title = "Geçersiz Token",
-                    Message = "Hesap Onay Bilgileri Yanlış",
-                    Css = "danger"
-                });
+              
                 return Redirect("~");//anasayfaya yönlendir.
             }
             var user = await _userManager.FindByIdAsync(userId);
@@ -83,21 +78,11 @@ namespace PawFect.WebUI.Controllers
                 if (result.Succeeded)
                 {
                     _cartService.InitialCart(userId);
-                    TempData.Put("message", new ResultModel()
-                    {
-                        Title = "Hesap Onayı",
-                        Message = "Hesabınız Onaylandı",
-                        Css = "success"
-                    });
+                 
                     return RedirectToAction("Login", "Account");//login sayfasına yönlendir.
                 }
             }
-            TempData.Put("message", new ResultModel()
-            {
-                Title = "Hesap Onayı",
-                Message = "Hesabınız Onaylanmamıştır",
-                Css = "danger"
-            });
+           
             return Redirect("~");//anasayfaya yönlendir.
         }
 
@@ -118,12 +103,7 @@ namespace PawFect.WebUI.Controllers
 
             if (!ModelState.IsValid)
             {
-                TempData.Put("message", new ResultModel()
-                {
-                    Title = "Giriş Bilgileri",
-                    Message = "Bilgileriniz Hatalıdır",
-                    Css = "danger"
-                });
+                
                 return View(model);
             }
 
@@ -153,12 +133,7 @@ namespace PawFect.WebUI.Controllers
             }
             else if (result.IsLockedOut)
             {
-                TempData.Put("message", new ResultModel()
-                {
-                    Title = "Hesap Kilitlendi",
-                    Message = "Hesabınız geçici olarak kilitlenmiştir. Lütfen 5 dk sonra tekrar deneyin.",
-                    Css = "danger"
-                });
+             
                 return View(model);
             }
 
@@ -184,13 +159,7 @@ namespace PawFect.WebUI.Controllers
         {
             if (string.IsNullOrEmpty(email))
             {
-                TempData.Put("message", new ResultModel()
-                {
-                    Title = "Şifremi Unuttum",
-                    Message = "Lütfen Email adresini boş bırakmayınız",
-                    Css = "danger"
-                });
-
+            
                 return View();
             }
 
@@ -210,20 +179,10 @@ namespace PawFect.WebUI.Controllers
                 string body = $"Şifrenizi yenilemek için linke <a href='{resetUrl}'> tıklayınız.</a>"; //tıklayınıza hperlink oluşturur.
                 //Email Service
                 MailHelper.SendEmail(body, email, "ETRADE Şifre Sıfırlama");//mailhelper sınıfı static olduğu için direkt adı ile erişim sağlayabiliriz.
-                TempData.Put("message", new ResultModel()
-                {
-                    Title = "Şifre Sıfırlama",
-                    Message = "Şifre sıfırlama linki email adresinize gönderilmiştir.",
-                    Css = "success"
-                });
+              
                 return RedirectToAction("Login");
             }
-            TempData.Put("message", new ResultModel()
-            {
-                Title = "Şifremi Unuttum",
-                Message = "Bu email adresi ile kayıtlı kullanıcı bulunamadı",
-                Css = "danger"
-            });
+         
             return View();
         }
         public IActionResult ResetPassword(string token)
@@ -249,12 +208,7 @@ namespace PawFect.WebUI.Controllers
 
             if (user is null)
             {
-                TempData.Put("message", new ResultModel()
-                {
-                    Title = "Şifremi Unuttum",
-                    Message = "Bu Email adresi ile kullanıcı bulunamadı.",
-                    Css = "danger"
-                });
+               
                 return RedirectToAction("Home", "Index");
             }
 
@@ -266,13 +220,7 @@ namespace PawFect.WebUI.Controllers
             }
             else
             {
-                TempData.Put("message", new ResultModel()
-                {
-                    Title = "Şifremi Unuttum",
-                    Message = "Şifreniz uygun değildir.",
-                    Css = "danger"
-                });
-
+               
                 return View(model);
             }
         }
@@ -281,12 +229,7 @@ namespace PawFect.WebUI.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                TempData.Put("message", new ResultModel()
-                {
-                    Title = "Bağlantı Hatası",
-                    Message = "Kullanıcı bilgileri bulunamadı tekrar deneyin.",
-                    Css = "danger"
-                });
+              
                 return View();
             }
 
@@ -306,24 +249,13 @@ namespace PawFect.WebUI.Controllers
             if (!ModelState.IsValid)
             {
 
-                TempData.Put("message", new ResultModel()
-                {
-                    Title = "Giriş Bilgileri",
-                    Message = "Bilgileriniz Hatalıdır",
-                    Css = "danger"
-                });
-
+               
                 return View(model);
             }
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                TempData["message"] = new ResultModel()
-                {
-                    Title = "Bağlantı Hatası",
-                    Message = "Kullanıcı bilgileri bulunamadı, lütfen tekrar deneyin.",
-                    Css = "danger"
-                };
+              
                 return RedirectToAction("Login", "Account");
             }
 
@@ -348,12 +280,7 @@ namespace PawFect.WebUI.Controllers
                 string body = $"Şifrenizi yenilemek için linke <a href='{resetUrl}'> tıklayınız.</a>";
 
                 MailHelper.SendEmail(body, model.Email, "ETRADE Şifre Sıfırlama");
-                TempData.Put("message", new ResultModel()
-                {
-                    Title = "Şifre Sıfırlama",
-                    Message = "Şifre sıfırlama linki email adresinize gönderilmiştir.",
-                    Css = "success"
-                });
+              
                 return RedirectToAction("Login");
             }
 
@@ -363,21 +290,11 @@ namespace PawFect.WebUI.Controllers
             if (result.Succeeded)
             {
                 await _signInManager.RefreshSignInAsync(user);//kullanıcı bilgilerini güncelledikten sonra oturumu günceller.
-                TempData.Put("message", new ResultModel()
-                {
-                    Title = "Hesap Bilgileri Güncellendi",
-                    Message = "Bilgileriniz başarıyla güncellenmiştir.",
-                    Css = "success"
-                });
+              
                 return RedirectToAction("Index", "Home");
             }
 
-            TempData.Put("message", new ResultModel()
-            {
-                Title = "Hata",
-                Message = "Bilgileriniz güncellenemedi. Lütfen tekrar deneyin.",
-                Css = "danger"
-            });
+         
             return View(model);
         }
 

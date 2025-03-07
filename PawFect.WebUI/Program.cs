@@ -18,6 +18,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
 var userManager = builder.Services.BuildServiceProvider().GetService<UserManager<ApplicationUser>>();
 var roleManager = builder.Services.BuildServiceProvider().GetService<RoleManager<IdentityRole>>();
 
+
 builder.Services.Configure<IdentityOptions>(options =>
 { 
     // password settings
@@ -136,7 +137,10 @@ app.UseEndpoints(endpoints =>
        pattern: "orders",
        defaults: new { controller = "Cart", action = "GetOrders" }
    );
-
+    endpoints.MapControllerRoute(
+    name: "blogdetails",
+    pattern: "blog/details/{id}",
+    defaults: new { controller = "Blog", action = "Details" });
 }
 );
 

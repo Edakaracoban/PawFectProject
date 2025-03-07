@@ -2,8 +2,7 @@
 
 namespace PawFect.WebUI.ViewComponents
 {
-
-	public class _FooterViewComponents : ViewComponent
+	public class _MailViewComponents:ViewComponent
 	{
 		public IViewComponentResult Invoke()
 		{
