@@ -11,7 +11,7 @@ namespace PawFect.WebUI.Models
 
         [Required(ErrorMessage = "Şifre gereklidir.")]
         [DataType(DataType.Password)]
-        [StringLength(6, MinimumLength = 6, ErrorMessage = "Şifre en az 6 karakter uzunluğunda olmalıdır.")]
+        [StringLength(10, MinimumLength = 6, ErrorMessage = "Şifre en az 6 karakter uzunluğunda olmalıdır.")]
         [RegularExpression(@"^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$",
                     ErrorMessage = "Şifre en az bir büyük harf, bir rakam ve bir özel karakter içermelidir.")]
         public string Password { get; set; }

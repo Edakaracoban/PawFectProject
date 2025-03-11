@@ -1,8 +1,6 @@
 ﻿
 @model LoginModel
-@{
-    Layout = null;
-}
+
 <!DOCTYPE html>
 <html lang="tr">
 @await Component.InvokeAsync("_HeadLayout")
@@ -21,7 +19,7 @@
                             <div class="row justify-content-center">
                                 <div class="col-lg-6 col-md-8 col-sm-12">
                                     <div class="card shadow-lg p-4">
-                                        <form asp-action="Login" asp-controller="Account" method="post">
+                                        <form asp-action="Login" asp-controller="Account" method="POST">
                                             @Html.AntiForgeryToken()
                                             <input type="hidden" name="ReturnUrl" value="@Model.ReturnUrl" />
 

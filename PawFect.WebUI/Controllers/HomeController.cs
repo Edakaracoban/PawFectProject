@@ -26,7 +26,7 @@ namespace PawFect.WebUI.Controllers
                 Products = products
             });
         }
-        [HttpGet]
+        [HttpPost]
         public async Task<IActionResult> Search(string query)
         {
             if (string.IsNullOrWhiteSpace(query))
@@ -35,7 +35,18 @@ namespace PawFect.WebUI.Controllers
             }
 
             var searchResults = _productService.SearchProductsByName(query);
-            return View("Index", searchResults);
+
+
+            var model = new ProductListModel
+            {
+                Products = searchResults.ToList() 
+            };
+
+            return View("Search", model);
+        }
+        public IActionResult Search()
+        {
+            return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

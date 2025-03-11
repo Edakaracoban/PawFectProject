@@ -63,9 +63,8 @@ namespace PawFect.DataAccess.Concrete.EfCore
 
             using (var context = new DataContext())
             {
-                return context.Products
-                              .Where(p => EF.Functions.Like(p.Name, $"%{query}%")) // case-insensitive search büyük küçük harf duyarlılığı olmadan arama yapılacak
-                              .Include(p => p.Category)
+                return context.Products    
+                             .Where(p => EF.Functions.Like(p.Name, $"%{query}%")) // case-insensitive search büyük küçük harf duyarlılığı olmadan arama yapılacak
                               .ToList();
             }
         }
