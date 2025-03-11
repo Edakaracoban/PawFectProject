@@ -85,6 +85,14 @@
             });
         }
     </script>
+    <script>
+        document.getElementById("search-icon").addEventListener("click", function() {
+            document.getElementById("search-form").submit();
+        });
+            $(document).ready(function() {
+            $('.dropdown-toggle').dropdown();
+        });
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

@@ -8,36 +8,38 @@
 <body>
     @await Component.InvokeAsync("_SvgLayout")
     <partial name="_navbar" />
-    <section class="py-3">
+
+    <div class="py-5">
         <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="container py-5">
-                        <div class="bootstrap-tabs product-tabs">
-                            <div class="tab-content" id="nav-tabContent">
-                                <div class="tab-pane fade show active" id="nav-all" role="tabpanel" aria-labelledby="nav-all-tab">
-                                    <div class="product-grid row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
-                                        @if (Model.Products != null && Model.Products.Count > 0)
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="bootstrap-tabs product-tabs">
+                        <div class="tabs-header d-flex justify-content-between border-bottom my-5">
+                        </div>
+                        <div class="tab-content" id="nav-tabContent">
+                            <div class="tab-pane fade show active" id="nav-all" role="tabpanel" aria-labelledby="nav-all-tab">
+                                <div class="product-grid row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
+                                    @if (Model.Products != null && Model.Products.Count > 0)
+                                    {
+                                        @foreach (Product product in Model.Products)
                                         {
-                                            @foreach (Product product in Model.Products)
-                                            {
-                                                <partial name="_products" for="@product" />
-                                            }
+                                            <partial name="_products" for="@product" />
                                         }
-                                        else
-                                        {
-                                            <p>Ürün Bulanamadı.</p>
-                                        }
-                                    </div>
+                                    }
+                                    else
+                                    {
+                                        <p>Ürün Bulanamadı.</p>
+                                    }
                                 </div>
                             </div>
                         </div>
-                       
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+
+
     <footer class="py-5">
         <div class="container-fluid">
             <div class="row">

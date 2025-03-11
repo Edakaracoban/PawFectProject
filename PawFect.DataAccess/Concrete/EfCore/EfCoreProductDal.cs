@@ -139,5 +139,24 @@ namespace PawFect.DataAccess.Concrete.EfCore
                              .FirstOrDefault(p => p.Id == productId);
             }
         }
+        public List<Product> GetAll(Expression<Func<Product, bool>> filter = null)
+        {
+            using (var context = new DataContext())
+            {
+                // Query products
+                var query = context.Set<Product>().AsQueryable();
+
+                // Apply filter if it exists
+                if (filter != null)
+                {
+                    query = query.Where(filter);
+                }
+
+                // Include Category for Product
+                query = query.Include(p => p.Category);  // Eager load Category
+
+                return query.ToList();
+            }
+        }
     }
 }

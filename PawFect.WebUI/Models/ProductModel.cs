@@ -23,5 +23,6 @@ namespace PawFect.WebUI.Models
         [Required(ErrorMessage = "Kategori seçilmelidir.")]
         public int? CategoryId { get; set; }
         public Category Category { get; set; }
+
     }
 }

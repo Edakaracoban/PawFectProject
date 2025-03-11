@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PawFect.DataAccess.Abstract;
+using PawFect.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +28,26 @@ namespace PawFect.DataAccess.Concrete.EfCore //Dataacces katmanı veri tabanına
             {
                 context.Set<T>().Remove(entity);
                 context.SaveChanges();
+            }
+        }
+
+        public List<Product> GetAll(Expression<Func<Product, bool>> filter = null)
+        {
+            using (var context = new TContext())
+            {
+                // Query products
+                var query = context.Set<Product>().AsQueryable();
+
+                // Apply filter if it exists
+                if (filter != null)
+                {
+                    query = query.Where(filter);
+                }
+
+                // Include Category for Product
+                query = query.Include(p => p.Category);  // Eager load Category
+
+                return query.ToList();
             }
         }
 

@@ -123,7 +123,7 @@ namespace PawFect.WebUI.Controllers
                 if (await _userManager.IsInRoleAsync(user, "Admin"))
                 {
                    
-                    return RedirectToAction("Index", "Home"); // Admin sayfasına yönlendirme
+                    return RedirectToAction("Admin", "ProductList"); // Admin sayfasına yönlendirme
                 }
                 else
                 {

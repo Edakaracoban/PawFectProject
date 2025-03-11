@@ -35,5 +35,6 @@ namespace PawFect.WebUI.Controllers
                 Title=blog.Title,
             });
         }
+       
     }
 }
