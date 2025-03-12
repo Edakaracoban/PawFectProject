@@ -31,62 +31,82 @@
                         </form>
                     </div>
                 </div>
-          
             </div>
-          
             <div class="col-sm-8 col-lg-4 d-flex justify-content-end gap-5 align-items-center mt-4 mt-sm-0 justify-content-center justify-content-sm-end">
-                <div>
-                    <a class="rounded-circle  p-2 mx-1 login-link d-flex flex-column">
-                        <svg width="24" height="24" viewBox="0 0 24 24"></svg>
-                    </a>
-                </div>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <div class="d-lg-none">
+                        <a class="nav-link rounded-circle bg-light p-2 mx-1 login-link" asp-controller="Account" asp-action="Manage">@User.Identity.Name</a>
+                    </div>
+                    <div class="d-lg-none">
+                        <a href="/Account/Logout" class="rounded-circle bg-light p-2 mx-1 login-link">
+                            <svg width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#user"></use></svg>
+                        </a>
+                    </div>
+                    <div class="d-lg-none">
+                        <a href="/Shop/List" class="rounded-circle bg-light p-2 mx-1 login-link">
+                            <svg width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#cart"></use></svg>
+                        </a>
+                    </div>
+                }
+                else
+                {
+                    <div class="d-lg-none">
+                        <a href="/Account/Login" class="rounded-circle bg-light p-2 mx-1 login-link">
+                            <svg width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#user"></use></svg>
+                        </a>
+                    </div>
+                }
+
                 <div class="support-box text-end d-none d-xl-block ">
                     <span class="fs-6 text-muted login-link">Destek Hattı</span>
                     <h5 class="mb-0 login-link">44045480</h5>
                 </div>
                 <div class="support-box text-end d-none d-xl-block ">
-                <ul class="d-flex justify-content-end list-unstyled m-0">
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        <li class="cart text-end d-none d-xl-block">
+                    <ul class="d-flex justify-content-end list-unstyled m-0">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="cart text-end d-none d-xl-block">
                                 <a class="nav-link login-link d-flex flex-column" aria-current="page" asp-controller="Account" asp-action="Manage">@User.Identity.Name</a>
-                        </li>
-                        <li>
+                            </li>
+                            <li>
                                 <a href="/Account/Logout" class="rounded-circle bg-light p-2 mx-1 login-link d-flex flex-column">
-                                <svg width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#user"></use></svg>
+                                    <svg width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#user"></use></svg>
                                 </a>
-                        </li>
+                            </li>
                             <li>
                                 <a class="rounded-circle  p-2 mx-1 login-link d-flex flex-column">
                                     <svg width="24" height="24" viewBox="0 0 24 24"></svg>
                                 </a>
                             </li>
-                        <li class="cart text-end d-none d-lg-block">
-                            <a href="/Shop/List" class="border-0 bg-transparent d-flex flex-column gap-2 lh-1 text-decoration-none login-link">
-                                <span class="fs-6 text-muted">Sepetiniz</span>
-                                <span class="cart-total fs-5 fw-bold">₺1290.00</span>
-                            </a>
-                        </li>
-                        <li class="d-lg-none">
-                            <a href="/Shop/List" class="rounded-circle bg-light p-2 mx-1 login-link" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart">
-                                <svg width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#cart"></use></svg>
-                            </a>
-                        </li>
-                        <li class="d-lg-none">
-                            <a href="/Home/Search" class="rounded-circle bg-light p-2 mx-1 login-link" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSearch" aria-controls="offcanvasSearch">
-                                <svg width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#search"></use></svg>
-                            </a>
-                        </li>
-                    }
-                    else
-                    {
-                        <li>
-                            <a href="/Account/Login" class="rounded-circle bg-light p-2 mx-1 login-link">
-                                <svg width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#user"></use></svg>
-                            </a>
-                        </li>
-                    }
-                </ul>
+                            <li class="cart text-end d-none d-lg-block">
+                                <a href="/Shop/List" class="border-0 bg-transparent d-flex flex-column gap-2 lh-1 text-decoration-none login-link">
+                                    <span class="fs-6 text-muted">Sepetiniz</span>
+                                    <span class="cart-total fs-5 fw-bold">₺1290.00</span>
+                                </a>
+                            </li>
+                            <div class="d-lg-none">
+                                <a href="/Shop/List" class="rounded-circle bg-light p-2 mx-1 login-link" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart">
+                                    <svg width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#cart"></use></svg>
+                                </a>
+                            </div>
+
+                        }
+                        else
+                        {
+                            <li>
+                                <a href="/Account/Login" class="rounded-circle bg-light p-2 mx-1 login-link">
+                                    <svg width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#user"></use></svg>
+                                </a>
+                            </li>
+                            <li class="d-lg-none">
+                                <a href="/Account/Login" class="rounded-circle bg-light p-2 mx-1 login-link">
+                                    <svg width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#user"></use></svg>
+                                </a>
+                            </li>
+                        }
+
+                    </ul>
                 </div>
             </div>
         </div>
