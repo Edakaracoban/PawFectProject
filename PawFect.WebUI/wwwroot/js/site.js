@@ -147,3 +147,5 @@
     }); // End of a document
 
 })(jQuery);
+document.getElementById("mainContent").classList.remove("d-none");
+document.getElementById("mainContent").classList.add("col-md-12");

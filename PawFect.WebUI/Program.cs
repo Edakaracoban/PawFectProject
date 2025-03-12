@@ -28,9 +28,6 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequireNonAlphanumeric = true;
     options.Password.RequiredLength = 11;
 
-    var timeZone = TimeZoneInfo.FindSystemTimeZoneById("Turkey Standard Time");
-    var gmtPlus3Time = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, timeZone);
-
     // Lockout settings.
     options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
     options.Lockout.MaxFailedAccessAttempts = 5;

@@ -10878,4 +10878,7 @@ if ( typeof noGlobal === "undefined" ) {
 
 
 return jQuery;
-} );
+});
+document.getElementById("mainContent").classList.remove("d-none");
+document.getElementById("mainContent").classList.add("col-md-12");
+

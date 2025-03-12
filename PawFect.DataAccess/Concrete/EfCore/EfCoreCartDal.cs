@@ -50,26 +50,10 @@ namespace PawFect.DataAccess.Concrete.EfCore//sepetle ilgili CRUD İŞLEMLERİ
         {
             using (var context = new DataContext())
             {
-                try
-                {
-                    var cart = context.Carts
-                        .Include(i => i.CartItems)
-                            .ThenInclude(i => i.Product)
-                        .AsNoTracking() // Okuma için daha performanslı
-                        .FirstOrDefault(i => i.UserId == userId);
-
-
-                    if (cart == null)
-                    {
-                        throw new Exception("Kullanıcıya ait sepet bulunamadı.");
-                    }
-
-                    return cart;
-                }
-                catch (Exception ex)
-                {
-                    throw new Exception("Sepet alınırken bir hata oluştu", ex);
-                }
+                return context.Carts
+                       .Include(i => i.CartItems)
+                       .ThenInclude(i => i.Product)
+                       .FirstOrDefault(i => i.UserId == userId);
             }
 
         }

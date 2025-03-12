@@ -8,7 +8,7 @@
                     </a>
                 </div>
             </div>
-            <div class="col-sm-6 offset-sm-2 offset-md-0 col-lg-5 d-none d-lg-block">
+            <div class="col-sm-6 offset-sm-2 offset-md-0 col-lg-5">
                 <div class="search-bar row bg-light p-2 my-2 rounded-4">
                     <div class="col-md-4 d-none d-md-block">
                         <select class="form-select border-0 bg-transparent">
@@ -20,57 +20,116 @@
                             <option>Hamster ve Tavşan</option>
                         </select>
                     </div>
-                    <div class="col-11 col-md-7">
-                        <form id="search-form" asp-action="Search" asp-controller="Home" method="POST">
-                            <input type="text" class="form-control border-0 bg-transparent" placeholder="Ara..." name="query" />
+                    <div class="col-11 col-md-7" id="search-container" style="display: none; display: flex; align-items: center;">
+                        <form id="search-form" asp-action="Search" asp-controller="Home" method="POST" class="w-100 d-flex">
+                            <input type="text" class="form-control border-0 bg-transparent login-link" placeholder="Ara..." name="query" id="search-input" />
+                            <button type="submit" class="btn border-0 bg-transparent p-0 ms-2" style="cursor: pointer;">
+                                <svg id="search-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="cursor: pointer;" class="login-link">
+                                    <path fill="currentColor" d="M21.71 20.29L18 16.61A9 9 0 1 0 16.61 18l3.68 3.68a1 1 0 0 0 1.42 0a1 1 0 0 0 0-1.39ZM11 18a7 7 0 1 1 7-7a7 7 0 0 1-7 7Z" />
+                                </svg>
+                            </button>
                         </form>
                     </div>
-                    <div class="col-1">
-                        <svg id="search-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="cursor: pointer;">
-                            <path fill="currentColor" d="M21.71 20.29L18 16.61A9 9 0 1 0 16.61 18l3.68 3.68a1 1 0 0 0 1.42 0a1 1 0 0 0 0-1.39ZM11 18a7 7 0 1 1 7-7a7 7 0 0 1-7 7Z" />
-                        </svg>
-                    </div>
                 </div>
+          
             </div>
+          
             <div class="col-sm-8 col-lg-4 d-flex justify-content-end gap-5 align-items-center mt-4 mt-sm-0 justify-content-center justify-content-sm-end">
-                <div class="support-box text-end d-none d-xl-block">
-                    <span class="fs-6 text-muted">Destek Hattı</span>
-                    <h5 class="mb-0">+90-5414003518</h5>
-                </div>
-                <ul class="d-flex justify-content-end list-unstyled m-0">
-                    <li>
-                        <a href="/Account/Login" class="rounded-circle bg-light p-2 mx-1">
-                            <svg width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#user"></use></svg>
-                        </a>
-                    </li>
-                    
-                    <li class="d-lg-none">
-                        <a href="/Cart/Checkout" class="rounded-circle bg-light p-2 mx-1" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart">
-                            <svg width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#cart"></use></svg>
-                        </a>
-                    </li>
-                    <li class="d-lg-none">
-                        <a href="/Home/Search" class="rounded-circle bg-light p-2 mx-1" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSearch" aria-controls="offcanvasSearch">
-                            <svg width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#search"></use></svg>
-                        </a>
-                    </li>
-                </ul>
-                <div class="cart text-end d-none d-lg-block dropdown">
-                    <a href="/Shop/List" class="border-0 bg-transparent d-flex flex-column gap-2 lh-1 text-decoration-none">
-                        <span class="fs-6 text-muted dropdown-toggle">Sepetiniz</span>
-                        <span class="cart-total fs-5 fw-bold">₺1290.00</span>
+                <div>
+                    <a class="rounded-circle  p-2 mx-1 login-link d-flex flex-column">
+                        <svg width="24" height="24" viewBox="0 0 24 24"></svg>
                     </a>
                 </div>
+                <div class="support-box text-end d-none d-xl-block ">
+                    <span class="fs-6 text-muted login-link">Destek Hattı</span>
+                    <h5 class="mb-0 login-link">44045480</h5>
+                </div>
+                <div class="support-box text-end d-none d-xl-block ">
+                <ul class="d-flex justify-content-end list-unstyled m-0">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li class="cart text-end d-none d-xl-block">
+                                <a class="nav-link login-link d-flex flex-column" aria-current="page" asp-controller="Account" asp-action="Manage">@User.Identity.Name</a>
+                        </li>
+                        <li>
+                                <a href="/Account/Logout" class="rounded-circle bg-light p-2 mx-1 login-link d-flex flex-column">
+                                <svg width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#user"></use></svg>
+                                </a>
+                        </li>
+                            <li>
+                                <a class="rounded-circle  p-2 mx-1 login-link d-flex flex-column">
+                                    <svg width="24" height="24" viewBox="0 0 24 24"></svg>
+                                </a>
+                            </li>
+                        <li class="cart text-end d-none d-lg-block">
+                            <a href="/Shop/List" class="border-0 bg-transparent d-flex flex-column gap-2 lh-1 text-decoration-none login-link">
+                                <span class="fs-6 text-muted">Sepetiniz</span>
+                                <span class="cart-total fs-5 fw-bold">₺1290.00</span>
+                            </a>
+                        </li>
+                        <li class="d-lg-none">
+                            <a href="/Shop/List" class="rounded-circle bg-light p-2 mx-1 login-link" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart">
+                                <svg width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#cart"></use></svg>
+                            </a>
+                        </li>
+                        <li class="d-lg-none">
+                            <a href="/Home/Search" class="rounded-circle bg-light p-2 mx-1 login-link" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSearch" aria-controls="offcanvasSearch">
+                                <svg width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#search"></use></svg>
+                            </a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li>
+                            <a href="/Account/Login" class="rounded-circle bg-light p-2 mx-1 login-link">
+                                <svg width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#user"></use></svg>
+                            </a>
+                        </li>
+                    }
+                </ul>
+                </div>
             </div>
-
         </div>
     </div>
-
 </header>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    document.getElementById("search-icon").addEventListener("click", function() {
-        document.getElementById("search-form").submit();
+    document.querySelector('.d-lg-none a[href="/Home/Search"]').addEventListener('click', function(event) {
+        event.preventDefault();  // Prevent the default link action
+        var searchContainer = document.getElementById('search-container');
+        var searchInput = document.getElementById('search-input');
+
+        if (searchContainer.style.display === "none" || searchContainer.style.display === "") {
+            searchContainer.style.display = "flex";  // Use flex to ensure layout remains
+            searchInput.focus();  // Focus on the input field
+        } else {
+            searchContainer.style.display = "none";
+        }
+    });
+
+    document.getElementById('search-input').addEventListener('keypress', function(event) {
+        if (event.key === 'Enter') {
+            document.getElementById('search-form').submit();
+        }
     });
 </script>
+
+<style>
+    #search-container {
+        display: none;
+        flex: 1; /* Ensure it takes up available space */
+    }
+
+    .login-link:hover {
+        color: red;
+    }
+
+
+    #search-icon {
+        cursor: pointer;
+        width: 24px;
+        height: 24px;
+    }
+</style>

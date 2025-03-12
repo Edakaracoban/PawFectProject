@@ -1,6 +1,5 @@
 ﻿using PawFect.Business.Abstract;
 using PawFect.WebUI.EmailService;
-
 using PawFect.WebUI.Identity;
 using PawFect.WebUI.Models;
 using Microsoft.AspNetCore.Identity;
@@ -52,13 +51,13 @@ namespace PawFect.WebUI.Controllers
                     userId = user.Id,
                     token = code
                 });
-                string siteUrl = "https://localhost:7076";
+                string siteUrl = "https://localhost:7197";
                 string activeUrl = $"{siteUrl}{callbackUrl}";
                 //send email
                 string body = $"Hesabınızı onaylayınız. <br> <br> Lütfen email hesabını onaylamak için linke <a href='{activeUrl}'> tıklayınız.</a>"; //tıklayınıza hperlink oluşturur.
 
                 //Email Service
-                MailHelper.SendEmail(body, model.Email, "ETRADE Hesap Aktifleştirme Onayı");//mailhelper sınıfı static olduğu için direkt adı ile erişim sağlayabiliriz.
+                MailHelper.SendEmail(body, model.Email, "PAWFECT Hesap Aktifleştirme Onayı");//mailhelper sınıfı static olduğu için direkt adı ile erişim sağlayabiliriz.
                 return RedirectToAction("Login", "Account");
             }
 
@@ -68,7 +67,6 @@ namespace PawFect.WebUI.Controllers
         {
             if (userId == null || token == null)
             {
-              
                 return Redirect("~");//anasayfaya yönlendir.
             }
             var user = await _userManager.FindByIdAsync(userId);
@@ -78,11 +76,9 @@ namespace PawFect.WebUI.Controllers
                 if (result.Succeeded)
                 {
                     _cartService.InitialCart(userId);
-                 
                     return RedirectToAction("Login", "Account");//login sayfasına yönlendir.
                 }
             }
-           
             return Redirect("~");//anasayfaya yönlendir.
         }
 
@@ -122,7 +118,6 @@ namespace PawFect.WebUI.Controllers
                 // Admin kontrolü
                 if (await _userManager.IsInRoleAsync(user, "Admin"))
                 {
-                   
                     return RedirectToAction("Admin", "ProductList"); // Admin sayfasına yönlendirme
                 }
                 else
@@ -133,7 +128,6 @@ namespace PawFect.WebUI.Controllers
             }
             else if (result.IsLockedOut)
             {
-             
                 return View(model);
             }
 
