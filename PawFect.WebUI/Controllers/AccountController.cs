@@ -99,7 +99,6 @@ namespace PawFect.WebUI.Controllers
 
             if (!ModelState.IsValid)
             {
-                
                 return View(model);
             }
 
@@ -118,7 +117,7 @@ namespace PawFect.WebUI.Controllers
                 // Admin kontrolü
                 if (await _userManager.IsInRoleAsync(user, "Admin"))
                 {
-                    return RedirectToAction("Admin", "ProductList"); // Admin sayfasına yönlendirme
+                    return RedirectToAction("ProductList", "Admin"); // Admin sayfasına yönlendirme
                 }
                 else
                 {
@@ -153,7 +152,6 @@ namespace PawFect.WebUI.Controllers
         {
             if (string.IsNullOrEmpty(email))
             {
-            
                 return View();
             }
 
@@ -167,12 +165,12 @@ namespace PawFect.WebUI.Controllers
                     userId = user.Id,
                     token = code
                 });
-                string siteUrl = "https://localhost:7076";
+                string siteUrl = "https://localhost:7197";
                 string resetUrl = $"{siteUrl}{callbackUrl}";
                 //send email
                 string body = $"Şifrenizi yenilemek için linke <a href='{resetUrl}'> tıklayınız.</a>"; //tıklayınıza hperlink oluşturur.
                 //Email Service
-                MailHelper.SendEmail(body, email, "ETRADE Şifre Sıfırlama");//mailhelper sınıfı static olduğu için direkt adı ile erişim sağlayabiliriz.
+                MailHelper.SendEmail(body, email, "PAWFECT Şifre Sıfırlama");//mailhelper sınıfı static olduğu için direkt adı ile erişim sağlayabiliriz.
               
                 return RedirectToAction("Login");
             }
@@ -190,6 +188,7 @@ namespace PawFect.WebUI.Controllers
 
             return View(model);
         }
+
         [HttpPost]
         public async Task<IActionResult> ResetPassword(ResetPasswordModel model)
         {
@@ -202,7 +201,6 @@ namespace PawFect.WebUI.Controllers
 
             if (user is null)
             {
-               
                 return RedirectToAction("Home", "Index");
             }
 
@@ -214,7 +212,6 @@ namespace PawFect.WebUI.Controllers
             }
             else
             {
-               
                 return View(model);
             }
         }
@@ -223,7 +220,6 @@ namespace PawFect.WebUI.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-              
                 return View();
             }
 
@@ -242,19 +238,13 @@ namespace PawFect.WebUI.Controllers
 
             if (!ModelState.IsValid)
             {
-
-               
                 return View(model);
             }
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-              
                 return RedirectToAction("Login", "Account");
             }
-
-
-
 
             user.FullName = model.FullName;
             user.UserName = model.UserName;
@@ -268,7 +258,7 @@ namespace PawFect.WebUI.Controllers
                     userId = user.Id,
                     token = code
                 });
-                string siteUrl = "https://localhost:7076";
+                string siteUrl = "https://localhost:7197";
                 string resetUrl = $"{siteUrl}{callbackUrl}";
                 //send email
                 string body = $"Şifrenizi yenilemek için linke <a href='{resetUrl}'> tıklayınız.</a>";
@@ -280,15 +270,12 @@ namespace PawFect.WebUI.Controllers
 
             var result = await _userManager.UpdateAsync(user);
 
-
             if (result.Succeeded)
             {
                 await _signInManager.RefreshSignInAsync(user);//kullanıcı bilgilerini güncelledikten sonra oturumu günceller.
               
                 return RedirectToAction("Index", "Home");
             }
-
-         
             return View(model);
         }
 

@@ -28,13 +28,11 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequireNonAlphanumeric = true;
     options.Password.RequiredLength = 11;
 
-    // Lockout settings.
-    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-    options.Lockout.MaxFailedAccessAttempts = 5;
-    options.Lockout.AllowedForNewUsers = true;
+    
 
     // User settings.
     options.User.RequireUniqueEmail = true;
+    options.Lockout.AllowedForNewUsers = true;
 
     // SignIn settings.
     options.SignIn.RequireConfirmedEmail = true;
