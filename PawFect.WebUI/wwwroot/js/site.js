@@ -147,3 +147,41 @@
     }); // End of a document
 
 })(jQuery);
+
+    document.getElementById("search-icon").addEventListener("click", function() {
+        document.getElementById("search-form").submit();
+        });
+    $(document).ready(function() {
+        $('.dropdown-toggle').dropdown();
+        });
+        <script>
+    window.onload = function() {
+        var messageBox = document.getElementById("messageBox");
+        if (messageBox) {
+            if (window.innerWidth <= 576) {
+                // Mobil ekranlarda daha geniş kutu
+                messageBox.style.width = "90%";
+                messageBox.style.maxWidth = "100%";
+            } else {
+                // Masaüstü ekranlarda normal genişlik
+                messageBox.style.width = "80%";
+                messageBox.style.maxWidth = "400px";
+            }
+        }
+    }
+
+    // Ekran boyutu değişirse CSS güncellenir
+    window.onresize = function() {
+        var messageBox = document.getElementById("messageBox");
+        if (messageBox) {
+            if (window.innerWidth <= 576) {
+                messageBox.style.width = "90%";
+                messageBox.style.maxWidth = "100%";
+            } else {
+                messageBox.style.width = "80%";
+                messageBox.style.maxWidth = "400px";
+            }
+        }
+    }
+</script>
+

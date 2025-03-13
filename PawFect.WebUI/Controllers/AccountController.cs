@@ -58,6 +58,7 @@ namespace PawFect.WebUI.Controllers
 
                 //Email Service
                 MailHelper.SendEmail(body, model.Email, "PAWFECT Hesap Aktifleştirme Onayı");//mailhelper sınıfı static olduğu için direkt adı ile erişim sağlayabiliriz.
+                TempData["Message"] = "Hesabınız Onaylandı.Mailinizi Kontrol Ediniz.";
                 return RedirectToAction("Login", "Account");
             }
 
@@ -76,6 +77,7 @@ namespace PawFect.WebUI.Controllers
                 if (result.Succeeded)
                 {
                     _cartService.InitialCart(userId);
+                    TempData["Message"] = "Hesabınız Onaylandı";
                     return RedirectToAction("Login", "Account");//login sayfasına yönlendir.
                 }
             }
@@ -152,6 +154,7 @@ namespace PawFect.WebUI.Controllers
         {
             if (string.IsNullOrEmpty(email))
             {
+                TempData["Message"] = "Lütfen Email adresini boş bırakmayınız.";
                 return View();
             }
 
@@ -171,10 +174,11 @@ namespace PawFect.WebUI.Controllers
                 string body = $"Şifrenizi yenilemek için linke <a href='{resetUrl}'> tıklayınız.</a>"; //tıklayınıza hperlink oluşturur.
                 //Email Service
                 MailHelper.SendEmail(body, email, "PAWFECT Şifre Sıfırlama");//mailhelper sınıfı static olduğu için direkt adı ile erişim sağlayabiliriz.
-              
+
+                //Burada kullanıcıya Şifre sıfırlama linki email adresinize gönderilmiştir. Mesajını kutucuk ile nasıl gösteririm?
+                TempData["Message"] = "Şifre sıfırlama linki, email adresinize gönderilmiştir.";
                 return RedirectToAction("Login");
             }
-         
             return View();
         }
         public IActionResult ResetPassword(string token)
@@ -263,7 +267,7 @@ namespace PawFect.WebUI.Controllers
                 //send email
                 string body = $"Şifrenizi yenilemek için linke <a href='{resetUrl}'> tıklayınız.</a>";
 
-                MailHelper.SendEmail(body, model.Email, "ETRADE Şifre Sıfırlama");
+                MailHelper.SendEmail(body, model.Email, "PAWFECT Şifre Sıfırlama");
               
                 return RedirectToAction("Login");
             }
