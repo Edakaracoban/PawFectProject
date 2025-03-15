@@ -52,6 +52,10 @@ namespace PawFect.WebUI.Controllers
             IPagedList<BlogModel> pagedBlogs = blogModelList.ToPagedList(page, pageSize);  // Dönen product modelleri listeliyoruz.
             return View(pagedBlogs);
         }
+        public IActionResult CreateBlog()
+        {
+            return View();
+        }
        
     }
 
