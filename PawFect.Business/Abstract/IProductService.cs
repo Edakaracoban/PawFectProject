@@ -16,7 +16,7 @@ namespace PawFect.Business.Abstract
         void Create(Product entity);
         void Update(Product entity, int categoryId);
         void Delete(Product entity);
-        List<Product> SearchProductsByName(string query); // string query parametresi ile ürün arama yapılacak
+        List<Product> SearchProductsByName(string query, string category); // string query parametresi ile ürün arama yapılacak
         public List<Product> GetProductsByCategoryId(int? categoryId);
     }
 }

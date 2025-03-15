@@ -54,20 +54,30 @@ namespace PawFect.DataAccess.Concrete.EfCore
             }
         }
 
-        public List<Product> SearchProductsByName(string query)
+        public List<Product> SearchProductsByName(string query, string category)
         {
-            if (string.IsNullOrWhiteSpace(query))
-            {
-                return new List<Product>(); 
-            }
-
             using (var context = new DataContext())
             {
-                return context.Products    
-                             .Where(p => EF.Functions.Like(p.Name, $"%{query}%")) // case-insensitive search büyük küçük harf duyarlılığı olmadan arama yapılacak
-                              .ToList();
+                // Start with the Products query
+                var productsQuery = context.Products.AsQueryable();
+
+                // Apply the query filter if provided (case-insensitive)
+                if (!string.IsNullOrWhiteSpace(query))
+                {
+                    productsQuery = productsQuery.Where(p => EF.Functions.Like(p.Name, $"%{query}%"));
+                }
+
+                // Apply the category filter if provided
+                if (!string.IsNullOrWhiteSpace(category))
+                {
+                    productsQuery = productsQuery.Where(p => p.Category.Name == category);
+                }
+
+                // Execute the query and return the filtered list
+                return productsQuery.ToList();
             }
         }
+
 
         public void Update(Product entity, int categoryId)
         {

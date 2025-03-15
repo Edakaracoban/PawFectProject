@@ -567,3 +567,39 @@ h1,h2,h3,h4,h5,h6 {
     height: 740px;
   }
 }
+
+/* General styles for category section */
+.section-header {
+    margin-top: -20px; /* Adjust this value as necessary */
+    padding-top: 0; /* Remove extra padding */
+}
+
+.category-icon {
+    width: 50%; /* Adjust width to make the icons smaller */
+    height: auto; /* Maintain aspect ratio */
+    object-fit: cover; /* Prevent image stretching */
+}
+
+#category-carousel-section .swiper-wrapper {
+    display: flex; /* Ensure items are laid out in a row */
+    width: 100%; /* Take up full width */
+    height: auto;
+}
+
+#category-carousel-section .swiper-slide {
+    flex: 1 0 20%; /* Adjust to fit 5 items */
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20%; /* Adjust to make sure items are evenly spaced */
+    height: auto;
+}
+
+#category-carousel-section .category-item {
+    text-align: center;
+    display: block;
+    text-decoration: none; /* Remove underline */
+    color: inherit;
+}
+

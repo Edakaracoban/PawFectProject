@@ -52,9 +52,9 @@ namespace PawFect.Business.Concrete
             return _productDal.GetProductsByCategoryId(categoryId);
         }
 
-        public List<Product> SearchProductsByName(string query)
+        public List<Product> SearchProductsByName(string query, string category)
         {
-            return _productDal.SearchProductsByName(query);
+            return _productDal.SearchProductsByName(query,category);
         }
 
         public void Update(Product entity, int categoryId)

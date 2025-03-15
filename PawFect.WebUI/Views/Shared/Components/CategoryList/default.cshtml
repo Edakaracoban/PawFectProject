@@ -1,20 +1,20 @@
 ﻿@model CategoryListViewModel
-<section class="py-5 overflow-hidden">
+<section class="py-5 overflow-hidden" id="category-carousel-section">
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
                 <div class="section-header d-flex flex-wrap justify-content-between mb-5">
-                    <h2 class="section-title">Kategoriler</h2
+                    <h2 class="section-title">Kategoriler</h2>
                     <div class="d-flex align-items-center">
                         <div class="swiper-buttons">
                             <button class="swiper-prev category-carousel-prev btn btn-yellow">❮</button>
                             <button class="swiper-next category-carousel-next btn btn-yellow">❯</button>
                         </div>
                     </div>
+                </div>
+            </div>
         </div>
-             </div>
-        </div>
-                <div class="row">
+        <div class="row">
             <div class="col-md-12">
                 <div class="category-carousel swiper">
                     <div class="swiper-wrapper">
@@ -24,21 +24,42 @@
                                 <img src="@Url.Content("~/img/" + item.Icon)" alt="Category Thumbnail" class="category-icon">
                                 <h3 class="category-title">@item.Name</h3>
                             </a>
-                        }                  
+                        }
                     </div>
                 </div>
-                    </div>
+            </div>
+        </div>
+    </div>
 </section>
 
-<style>
-    .section-header {
-    margin-top: -20px; /* Bu değeri ihtiyaca göre ayarlayın */
-    padding-top: 0; /* Bu da padding'i sıfırlayarak öğe arasındaki boşluğu kaldırır */
-}
-    .category-icon {
-    width: 100px; /* Genişliği ayarlayın */
-    height: auto; /* Yükseklik oranı korunarak genişlik ayarlandı */
-    object-fit: cover; /* Resmin kırpılmasını engeller */
-}
-
-</style>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var swiper = new Swiper('.category-carousel', {
+            loop: true, // Optionally enable looping
+            slidesPerView: 5, // 5 items per view by default
+            spaceBetween: 10, // Adjust the space between slides
+            navigation: {
+                nextEl: '.swiper-next',
+                prevEl: '.swiper-prev',
+            },
+            breakpoints: {
+                // Adjust number of items based on screen size
+                1200: {
+                    slidesPerView: 5, // 5 items for large screens
+                },
+                992: {
+                    slidesPerView: 4, // 4 items for medium screens
+                },
+                768: {
+                    slidesPerView: 3, // 3 items for small screens
+                },
+                576: {
+                    slidesPerView: 2, // 2 items for extra small screens
+                },
+                0: {
+                    slidesPerView: 1, // 1 item for very small screens
+                }
+            }
+        });
+    });
+</script>

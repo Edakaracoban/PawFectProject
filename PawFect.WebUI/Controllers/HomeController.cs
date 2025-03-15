@@ -27,23 +27,24 @@ namespace PawFect.WebUI.Controllers
             });
         }
         [HttpPost]
-        public async Task<IActionResult> Search(string query)
+        public async Task<IActionResult> Search(string query, string category)
         {
-            if (string.IsNullOrWhiteSpace(query))
+            if (string.IsNullOrWhiteSpace(query) && string.IsNullOrWhiteSpace(category))
             {
                 return RedirectToAction("Index");
             }
 
-            var searchResults = _productService.SearchProductsByName(query);
-
+            // Search by query and/or category
+            var searchResults = _productService.SearchProductsByName(query, category); // Assuming the service method takes both parameters
 
             var model = new ProductListModel
             {
-                Products = searchResults.ToList() 
+                Products = searchResults.ToList()
             };
 
             return View("Search", model);
         }
+
         public IActionResult Search()
         {
             return View();

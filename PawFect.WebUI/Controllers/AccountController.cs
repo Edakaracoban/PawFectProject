@@ -278,7 +278,7 @@ namespace PawFect.WebUI.Controllers
             {
                 await _signInManager.RefreshSignInAsync(user);//kullanıcı bilgilerini güncelledikten sonra oturumu günceller.
               
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Login", "Account");
             }
             return View(model);
         }

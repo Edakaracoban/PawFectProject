@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using PawFect.Business.Abstract;
+using PawFect.Entities;
 using PawFect.WebUI.EmailService;
 using PawFect.WebUI.Identity;
 using PawFect.WebUI.Models;
@@ -15,11 +18,15 @@ namespace PawFect.WebUI.Controllers
         private IProductService _productService;
         private UserManager<ApplicationUser> _userManager;
         private SignInManager<ApplicationUser> _signInManager;
-        public AdminController(IProductService productService, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        private ICategoryService _categoryService;
+        private IOrderService _orderService;
+        public AdminController(IProductService productService, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, ICategoryService categoryService, IOrderService orderService)
         {
             _productService = productService;
             _userManager = userManager;
             _signInManager = signInManager;
+            _categoryService = categoryService;
+            _orderService = orderService;
         }
         public IActionResult ProductList(int page = 1)
         {
@@ -29,6 +36,7 @@ namespace PawFect.WebUI.Controllers
           
             var productModelList = productList.Select(product => new ProductModel
             {
+
                 Id = product.Id,
                 Name = product.Name,
                 Stock = product.Stock,
@@ -101,7 +109,98 @@ namespace PawFect.WebUI.Controllers
             }
             return View(model);
         }
+
+
+        public IActionResult CreateProduct()
+        {
+            var category = _categoryService.GetAll();
+            ViewBag.Category = category.Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() });
+
+            return View(new ProductModel());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateProduct(ProductModel model, IFormFile file)
+        {
+            // Model validasyon kontrolü
+            if (ModelState.IsValid)
+            {
+                // Kategori seçilmemişse hata ekle
+                if (model.CategoryId == null)
+                {
+                    ModelState.AddModelError("", "Lütfen bir kategori seçiniz.");
+                    ViewBag.Category = _categoryService.GetAll().Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() });
+                    return View(model);
+                }
+
+                // Ürün oluşturuluyor
+                var entity = new Product()
+                {
+                    Name = model.Name,
+                    Description = model.Description,
+                    Price = model.Price,
+                    Stock = model.Stock,
+                    CategoryId = model.CategoryId,
+                };
+
+                // Eğer dosya yüklenmemişse, hata ver
+                if (file == null)
+                {
+                    ModelState.AddModelError("", "Lütfen bir resim yükleyin.");
+                    ViewBag.Category = _categoryService.GetAll().Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() });
+                    return View(model);
+                }
+
+                // Dosya yükleme dizini
+                var uploadDirectory = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "img");
+
+                // Eğer dizin yoksa oluştur
+                if (!Directory.Exists(uploadDirectory))
+                {
+                    Directory.CreateDirectory(uploadDirectory);
+                }
+
+                var fileName = file.FileName;
+                var filePath = Path.Combine(uploadDirectory, fileName);
+
+                // Dosyayı kaydetme işlemi
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                }
+
+                // Yüklenen resmin yolunu modeldeki Image alanına atıyoruz
+                model.Image = "/img/" + fileName;
+
+                // Ürünü veritabanına kaydediyoruz
+                entity.Image = model.Image;
+
+                // Kategoriyi güncelle
+                var category = _categoryService.GetById(model.CategoryId.Value);
+                if (category != null)
+                {
+                    category.Products.Add(entity); // Ürünü kategoriye ekliyoruz
+                    _categoryService.Update(category); // Kategoriyi güncelliyoruz
+                }
+
+                _productService.Create(entity);
+
+                return RedirectToAction("ProductList");
+            }
+
+            // Model geçerli değilse kategori listesi tekrar doldur
+            ViewBag.Category = _categoryService.GetAll().Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() });
+            return View(model);
+        }
+
+
+
+
+
     }
 
 
+
 }
+
+

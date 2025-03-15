@@ -15,7 +15,7 @@ namespace PawFect.WebUI.Models
         [Required(ErrorMessage = "Fiyat zorunludur.")]
         [Range(0, double.MaxValue, ErrorMessage = "Fiyat geçerli bir değer olmalıdır. Lütfen pozitif bir sayı giriniz.")]
         public decimal Price { get; set; }
-        [Url(ErrorMessage = "Geçerli bir URL giriniz.")]
+      
         public string Image { get; set; }
         [Required(ErrorMessage = "Ürün açıklaması zorunludur.")]
         [StringLength(200, MinimumLength = 5, ErrorMessage = "Ürün açıklaması min 5 max 200 karakter olmalıdır.")]
