@@ -11,7 +11,14 @@ namespace PawFect.DataAccess.Concrete.EfCore
 {
     public class EfCoreBlogDal : EfCoreGenericRepository<Blog, DataContext>, IBlogDal
     {
-       
+        public Blog GetBlogById(int Id)
+        {
+            var context = new DataContext();
+            {
+                return context.Blogs
+                             .FirstOrDefault(p => p.Id == Id);
+            }
+        }
         public Blog GetBlogDetails(int id)
         {
             using (var context = new DataContext())

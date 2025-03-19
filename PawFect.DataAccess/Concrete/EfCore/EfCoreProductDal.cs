@@ -30,7 +30,6 @@ namespace PawFect.DataAccess.Concrete.EfCore
             {
                 if (string.IsNullOrWhiteSpace(category))
                 {
- 
                     return context.Products.Include(p => p.Category).ToList();
                 }
                 return context.Products
@@ -39,7 +38,6 @@ namespace PawFect.DataAccess.Concrete.EfCore
                               .ToList();
             }
         }
-
 
         public List<Product> GetProductsByCategoryId(int? categoryId)
         {
@@ -58,26 +56,25 @@ namespace PawFect.DataAccess.Concrete.EfCore
         {
             using (var context = new DataContext())
             {
-                // Start with the Products query
+                
                 var productsQuery = context.Products.AsQueryable();
 
-                // Apply the query filter if provided (case-insensitive)
+                
                 if (!string.IsNullOrWhiteSpace(query))
                 {
                     productsQuery = productsQuery.Where(p => EF.Functions.Like(p.Name, $"%{query}%"));
                 }
 
-                // Apply the category filter if provided
+               
                 if (!string.IsNullOrWhiteSpace(category))
                 {
                     productsQuery = productsQuery.Where(p => p.Category.Name == category);
                 }
 
-                // Execute the query and return the filtered list
+             
                 return productsQuery.ToList();
             }
         }
-
 
         public void Update(Product entity, int categoryId)
         {
@@ -153,18 +150,15 @@ namespace PawFect.DataAccess.Concrete.EfCore
         {
             using (var context = new DataContext())
             {
-                // Query products
+
                 var query = context.Set<Product>().AsQueryable();
 
-                // Apply filter if it exists
                 if (filter != null)
                 {
                     query = query.Where(filter);
                 }
 
-                // Include Category for Product
-                query = query.Include(p => p.Category);  // Eager load Category
-
+                query = query.Include(p => p.Category); 
                 return query.ToList();
             }
         }

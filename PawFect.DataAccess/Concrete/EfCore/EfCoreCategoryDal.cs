@@ -49,6 +49,12 @@ namespace PawFect.DataAccess.Concrete.EfCore
             }
         }
 
-
+        public Category GetByIdFind(int id)
+        {
+            using (var context = new DataContext())
+            {
+                return context.Set<Category>().FirstOrDefault(x => x.Id == id); // Id kontrolü ile
+            }
+        }
     }
 }

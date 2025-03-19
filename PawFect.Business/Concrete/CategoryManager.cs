@@ -42,6 +42,11 @@ namespace PawFect.Business.Concrete
             return _categoryDal.GetById(id);
         }
 
+        public Category GetByIdFind(int id)
+        {
+            return _categoryDal.GetByIdFind(id);
+        }
+
         public Category GetByWithProducts(int id)
         {
             return _categoryDal.GetByIdWithProducts(id);

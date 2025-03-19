@@ -1,4 +1,6 @@
-﻿namespace PawFect.Entities
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace PawFect.Entities
 {
     public class Product
     {
@@ -6,6 +8,7 @@
         public string Name { get; set; }
         public int Stock { get; set; }
         public decimal Price { get; set; }
+        [Required]
         public string Image { get; set; }
         public string Description { get; set; }
         // Kategori ilişkisi için CategoryId ve Category özellikleri

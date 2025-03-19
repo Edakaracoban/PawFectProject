@@ -32,8 +32,8 @@ namespace PawFect.WebUI.Controllers
         {
             int pageSize = 10; //Her sayfada 10 ürün olsun
 
-            var productList = _productService.GetAll(); 
-          
+            var productList = _productService.GetAll();
+
             var productModelList = productList.Select(product => new ProductModel
             {
 
@@ -43,8 +43,8 @@ namespace PawFect.WebUI.Controllers
                 Price = product.Price,
                 Image = product.Image,
                 Description = product.Description,
-                CategoryId = product.CategoryId,
-                Category = product.Category 
+                CategoryId = product.CategoryId
+
             }).ToList();
 
             IPagedList<ProductModel> pagedProducts = productModelList.ToPagedList(page, pageSize);  // Dönen product modelleri listeliyoruz.
@@ -58,14 +58,13 @@ namespace PawFect.WebUI.Controllers
             {
                 return View();
             }
-
             var model = new AccountModel
             {
                 FullName = user.FullName,
                 UserName = user.UserName,
                 Email = user.Email
             };
-            return View(model);  
+            return View(model);
         }
         [HttpPost]
         public async Task<IActionResult> AdminManage(AccountModel model)
@@ -76,7 +75,6 @@ namespace PawFect.WebUI.Controllers
                 return View(model);
             }
             var user = await _userManager.GetUserAsync(User);
-       
             user.FullName = model.FullName;
             user.UserName = model.UserName;
             user.Email = model.Email;
@@ -93,114 +91,134 @@ namespace PawFect.WebUI.Controllers
                 string resetUrl = $"{siteUrl}{callbackUrl}";
                 //send email
                 string body = $"Şifrenizi yenilemek için linke <a href='{resetUrl}'> tıklayınız.</a>";
-
                 MailHelper.SendEmail(body, model.Email, "PAWFECT Şifre Sıfırlama");
-
                 return View(model);
             }
-
             var result = await _userManager.UpdateAsync(user);
-
             if (result.Succeeded)
             {
                 await _signInManager.RefreshSignInAsync(user);//kullanıcı bilgilerini güncelledikten sonra oturumu günceller.
-
                 return RedirectToAction("ProductList", "Admin");
             }
             return View(model);
         }
-
-
         public IActionResult CreateProduct()
         {
             var category = _categoryService.GetAll();
             ViewBag.Category = category.Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() });
-
             return View(new ProductModel());
         }
-
         [HttpPost]
-        public async Task<IActionResult> CreateProduct(ProductModel model, IFormFile file)
+        public async Task<IActionResult> CreateProduct(ProductModel model)
         {
-            // Model validasyon kontrolü
+            //if (file == null)
+            //{
+            //    ModelState.AddModelError("", "Lütfen bir resim yükleyin.");
+            //    ViewBag.Category = _categoryService.GetAll().Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() });
+            //    return View(model);
+            //}
+            //else
+            //{
+            //    var fileName = Path.GetFileName(file.FileName);
+            //    var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(fileName); // Benzersiz dosya adı
+            //    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img", uniqueFileName);
+
+            //    using (var stream = new FileStream(filePath, FileMode.Create))
+            //    {
+            //        await file.CopyToAsync(stream); // Dosya yükleniyor
+            //    }
+            //    model.Image = "/img/" + uniqueFileName;
+            //}
+            if (!ModelState.IsValid)
+            {
+                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    Console.WriteLine($"Error: {error.ErrorMessage}");
+                }
+            }
+
             if (ModelState.IsValid)
             {
-                // Kategori seçilmemişse hata ekle
-                if (model.CategoryId == null)
+                if (model.CategoryId == -1 || model.CategoryId == null)
                 {
                     ModelState.AddModelError("", "Lütfen bir kategori seçiniz.");
                     ViewBag.Category = _categoryService.GetAll().Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() });
                     return View(model);
                 }
 
-                // Ürün oluşturuluyor
                 var entity = new Product()
                 {
+                    Id = model.Id,
                     Name = model.Name,
                     Description = model.Description,
                     Price = model.Price,
                     Stock = model.Stock,
-                    CategoryId = model.CategoryId,
+                    Image = model.Image,
+                    CategoryId = model.CategoryId.Value
+
                 };
-
-                // Eğer dosya yüklenmemişse, hata ver
-                if (file == null)
-                {
-                    ModelState.AddModelError("", "Lütfen bir resim yükleyin.");
-                    ViewBag.Category = _categoryService.GetAll().Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() });
-                    return View(model);
-                }
-
-                // Dosya yükleme dizini
-                var uploadDirectory = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "img");
-
-                // Eğer dizin yoksa oluştur
-                if (!Directory.Exists(uploadDirectory))
-                {
-                    Directory.CreateDirectory(uploadDirectory);
-                }
-
-                var fileName = file.FileName;
-                var filePath = Path.Combine(uploadDirectory, fileName);
-
-                // Dosyayı kaydetme işlemi
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    await file.CopyToAsync(stream);
-                }
-
-                // Yüklenen resmin yolunu modeldeki Image alanına atıyoruz
-                model.Image = "/img/" + fileName;
-
-                // Ürünü veritabanına kaydediyoruz
-                entity.Image = model.Image;
-
-                // Kategoriyi güncelle
-                var category = _categoryService.GetById(model.CategoryId.Value);
-                if (category != null)
-                {
-                    category.Products.Add(entity); // Ürünü kategoriye ekliyoruz
-                    _categoryService.Update(category); // Kategoriyi güncelliyoruz
-                }
-
                 _productService.Create(entity);
-
                 return RedirectToAction("ProductList");
             }
-
-            // Model geçerli değilse kategori listesi tekrar doldur
             ViewBag.Category = _categoryService.GetAll().Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() });
             return View(model);
         }
+        public IActionResult EditProduct(int id)
 
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
+            var entity = _productService.GetProductDetails(id);
 
+            if (entity == null)
+            {
+                return NotFound();
+            }
 
+            var model = new ProductModel()
+            {
+                Id = entity.Id,
+                Name = entity.Name,
+                Description = entity.Description,
+                Price = entity.Price,
+                Stock = entity.Stock,
+                Image = entity.Image,
+                CategoryId= entity.CategoryId.Value
+            };
 
+            ViewBag.Categories = _categoryService.GetAll();
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditProduct(ProductModel model,int categoryId)
+        {
+            var entity = _productService.GetById(model.Id);
+            if (entity == null)
+            {
+                return NotFound();
+            }
+            entity.Name = model.Name;
+            entity.Description = model.Description;
+            entity.Price = model.Price;
+            entity.Stock = model.Stock;
+            entity.Image = model.Image;
+            entity.CategoryId = categoryId;
+            _productService.Update(entity, categoryId);
+            return RedirectToAction("ProductList");
+        }
+        [HttpPost]
+        public IActionResult DeleteProduct(int productId)
+        {
+            var product = _productService.GetById(productId);
+            if (product != null)
+            {
+                _productService.Delete(product);
+            }
+            return RedirectToAction("ProductList");
+        }
     }
-
-
-
 }
-
-

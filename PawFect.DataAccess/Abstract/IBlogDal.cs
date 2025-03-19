@@ -11,5 +11,6 @@ namespace PawFect.DataAccess.Abstract
     {
         List<Blog> SearchBlogsByTitle(string query); // string query parametresi ile ürün arama yapılacak
         Blog GetBlogDetails(int id);
+        Blog GetBlogById(int Id);
     }
 }

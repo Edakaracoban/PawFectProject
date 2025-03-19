@@ -11,6 +11,7 @@ namespace PawFect.DataAccess.Abstract
     {
         void DeleteFromCategory(int categoryId, int productId);
         Category GetByIdWithProducts(int id); //productidye göre kategorileri döndürecek
+        Category GetByIdFind(int id);
 
     }
 }

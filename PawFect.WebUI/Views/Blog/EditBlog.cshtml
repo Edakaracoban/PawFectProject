@@ -1,4 +1,4 @@
-﻿@model ProductModel
+﻿@model BlogModel
 @{
     Layout = null;
 }
@@ -55,7 +55,7 @@
                 <div class="col-md-12">
                     <div class="container py-5">
                         <div class="container py-5">
-                            <h2 class="text-center mb-5">Create Product</h2>
+                            <h2 class="text-center mb-5">Edit Blog</h2>
                             <div class="row justify-content-center">
                                 <div class="col-lg-6 col-md-12 col-sm-12">
                                     <div class="card shadow-lg p-4">
@@ -64,42 +64,36 @@
                                                 <div asp-validation-summary="ModelOnly" class="text-danger validation"></div>
                                             </div>
                                         </div>
-                                        <form asp-controller="Admin" asp-action="CreateProduct" method="POST" enctype="multipart/form-data">
+                                        <form asp-controller="Blog" asp-action="EditBlog" method="POST" enctype="multipart/form-data">
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <input type="hidden" name="Id" value="@Model.Id" />
                                                     <div class="mb-3">
-                                                        <label asp-for="Name" class="form-label fw-semibold">Product Name</label>
-                                                        <input asp-for="Name" class="form-control" placeholder="Product Name" />
-                                                        <span asp-validation-for="Name"></span>
+                                                        <label asp-for="Header" class="form-label fw-semibold">Header</label>
+                                                        <input asp-for="Header" class="form-control" placeholder="Header" />
+                                                        <span asp-validation-for="Header"></span>
                                                     </div>
                                                     <div class="mb-3">
-                                                        <label asp-for="Description" class="form-label fw-semibold">Description</label>
-                                                        <textarea asp-for="Description" class="form-control" placeholder="Description"></textarea>
-                                                        <span asp-validation-for="Description"></span>
+                                                        <label asp-for="Title" class="form-label fw-semibold">Title</label>
+                                                        <textarea asp-for="Title" style="height: 270px;" class="form-control" placeholder="Title"></textarea>
+                                                        <span asp-validation-for="Title"></span>
                                                     </div>
                                                     <div class="mb-3">
-                                                        <label asp-for="Stock" class="form-label fw-semibold">Stock</label>
-                                                        <input asp-for="Stock" class="form-control" placeholder="Stock" />
-                                                        <span asp-validation-for="Stock"></span>
+                                                        <label asp-for="SubTitle" class="form-label fw-semibold">SubTitle</label>
+                                                        <input asp-for="SubTitle" class="form-control" placeholder="SubTitle" />
+                                                        <span asp-validation-for="SubTitle"></span>
                                                     </div>
-                                                    <div class="mb-3">
-                                                        <label asp-for="Price" class="form-label fw-semibold">Price</label>
-                                                        <input asp-for="Price" class="form-control" type="number" placeholder="Price" />
-                                                        <span asp-validation-for="Price"></span>
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label class="form-label fw-semibold">Image</label><br />
-                                                        <input asp-for="Image" class="form-control" placeholder="ImageUrl" />
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label asp-for="CategoryId" class="form-label fw-semibold">Kategoriler</label>
-                                                        <select class="form-control" asp-for="CategoryId" asp-items="@ViewBag.Category" placeholder="Category">
-                                                            <option value="-1">Lütfen Kategori Seçiniz</option>
-                                                        </select>
+                                                    <div class="mb-3 d-flex justify-content-between align-items-center">
+                                                        <div class="d-flex">
+                                                            <img src="~/img/@Model.Image" width="80" id="imgPreview" class="mx-3" />
+                                                        </div>
+                                                        <div class="flex-grow-1">
+                                                            <label asp-for="Image" class="form-label fw-semibold">Image Url</label>
+                                                            <input asp-for="Image" class="form-control" placeholder="Image URL" />
+                                                        </div>
                                                     </div>
                                                     <div class="mb-3 text-center">
-                                                        <button type="submit" class="btn btn-primary w-100">Create Product</button>
+                                                        <button type="submit" class="btn btn-primary w-100">Save Blog</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -117,21 +111,12 @@
 </html>
 <script>
     const navItems = document.querySelectorAll('.custom-navbar .nav-item');
-
     navItems.forEach(item => {
         item.addEventListener('click', () => {
             navItems.forEach(el => el.classList.remove('active'));
             item.classList.add('active');
         });
     });
-        $('form').on('submit', function (e) {
-        var fileInput = $('input[type="file"]')[0];
-        if (!fileInput.files.length) {
-            alert('Lütfen bir dosya seçin.');
-            e.preventDefault();
-        }
-    });
-
 </script>
 <style>
     .btn-primary {
@@ -140,8 +125,9 @@
     }
 
         .btn-primary:hover {
-            background-color: #028c56; 
+            background-color: #028c56;
         }
+
     body {
         font-family: Arial, Helvetica, sans-serif;
     }
@@ -203,4 +189,3 @@
                     color: #fff;
                 }
 </style>
-

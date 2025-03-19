@@ -16,5 +16,6 @@ namespace PawFect.Business.Abstract
         void Delete(Blog entity);
         List<Blog> GetAll();
         Blog GetBlogDetails(int id);
+        Blog GetBlogById(int Id);
     }
 }

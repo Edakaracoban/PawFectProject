@@ -35,18 +35,16 @@ namespace PawFect.DataAccess.Concrete.EfCore //Dataacces katmanı veri tabanına
         {
             using (var context = new TContext())
             {
-                // Query products
+
                 var query = context.Set<Product>().AsQueryable();
 
-                // Apply filter if it exists
+               
                 if (filter != null)
                 {
                     query = query.Where(filter);
                 }
 
-                // Include Category for Product
-                query = query.Include(p => p.Category);  // Eager load Category
-
+                query = query.Include(p => p.Category); 
                 return query.ToList();
             }
         }
