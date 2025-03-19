@@ -19,7 +19,6 @@ namespace PawFect.WebUI.Controllers
 
         public IActionResult Details(int? id)
         {
-
             if (id == null)
             {
                 return NotFound();
@@ -38,6 +37,7 @@ namespace PawFect.WebUI.Controllers
                 Title = blog.Title,
             });
         }
+
         public IActionResult BlogList(int page = 1)
         {
             int pageSize = 5; //Her sayfada 5 ürün olsun
@@ -61,7 +61,6 @@ namespace PawFect.WebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateBlog(BlogModel model)
         {
-
             if (!ModelState.IsValid)
             {
                 foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
@@ -93,14 +92,11 @@ namespace PawFect.WebUI.Controllers
             {
                 return NotFound();
             }
-
             var entity = _blogService.GetBlogDetails(id);
-
             if (entity == null)
             {
                 return NotFound();
             }
-
             var model = new BlogModel()
             {
                 Id = entity.Id,
@@ -126,19 +122,18 @@ namespace PawFect.WebUI.Controllers
 
             entity.Image = model.Image;
             _blogService.Update(entity);
-            return RedirectToAction("BlogList","Blog");
+            return RedirectToAction("BlogList", "Blog");
         }
 
         [HttpPost]
         public IActionResult DeleteBlog(int blogId)
         {
+            ;
             var blog = _blogService.GetBlogById(blogId);
-
             if (blog != null)
             {
                 _blogService.Delete(blog);
             }
-
             return RedirectToAction("BlogList","Blog");
         }
     }
