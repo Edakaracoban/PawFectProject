@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis.Options;
 using PawFect.Business.Abstract;
 using PawFect.Entities;
 using PawFect.WebUI.Models;
@@ -9,13 +11,18 @@ namespace PawFect.WebUI.Controllers
     public class HomeController : Controller
     {
         private IProductService _productService;
-        public HomeController(IProductService productService)
+        private ICategoryService _categoryService;
+        public HomeController(IProductService productService, ICategoryService categoryService)
         {
             _productService = productService;
+            _categoryService = categoryService;
         }
 
         public IActionResult Index()
-        {  
+        {
+             
+            //var categories = _categoryService.GetAll();
+            //ViewBag.Category = new SelectList(categories, "Id", "Name");
             var products = _productService.GetAll();
             if (products == null || !products.Any())
             {
@@ -23,6 +30,7 @@ namespace PawFect.WebUI.Controllers
             }
             return View(new ProductListModel()
             {
+
                 Products = products
             });
         }

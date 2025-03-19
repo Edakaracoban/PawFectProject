@@ -186,7 +186,7 @@ namespace PawFect.WebUI.Controllers
                 Price = entity.Price,
                 Stock = entity.Stock,
                 Image = entity.Image,
-                CategoryId= entity.CategoryId.Value
+                CategoryId = entity.CategoryId.Value
             };
 
             ViewBag.Categories = _categoryService.GetAll();
@@ -194,7 +194,7 @@ namespace PawFect.WebUI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditProduct(ProductModel model,int categoryId)
+        public async Task<IActionResult> EditProduct(ProductModel model, int categoryId)
         {
             var entity = _productService.GetById(model.Id);
             if (entity == null)
@@ -220,5 +220,67 @@ namespace PawFect.WebUI.Controllers
             }
             return RedirectToAction("ProductList");
         }
+
+        public IActionResult CategoryList()
+        {
+            return View(new CategoryListModel() { Categories = _categoryService.GetAll() });
+        }
+        public IActionResult CreateCategory()
+        {
+            return View(new CategoryModel());
+        }
+
+        [HttpPost]
+        public IActionResult CreateCategory(CategoryModel model)
+        {
+            var entity = new Category()
+            {
+                Id=model.Id,
+                Name = model.Name,
+                Icon=model.Icon
+            };
+            _categoryService.Create(entity);
+            return RedirectToAction("CategoryList");
+        }
+        public IActionResult EditCategory(int? id)
+        {
+            var entity = _categoryService.GetByWithProducts(id.Value);
+            return View(
+                    new CategoryModel()
+                    {
+                        Id = entity.Id,
+                        Name = entity.Name,
+                        Icon = entity.Icon,
+                        Products = entity.Products.ToList()
+                    }
+                );
+        }
+        [HttpPost]
+        public IActionResult EditCategory(CategoryModel model)
+        {
+            var entity = _categoryService.GetById(model.Id);
+
+            if (entity == null)
+            {
+                return NotFound();
+            }
+            entity.Name = model.Name;
+            entity.Icon = model.Icon;
+            _categoryService.Update(entity);
+            return RedirectToAction("CategoryList");
+        }
+        //[HttpPost]
+        //public IActionResult DeleteCategory(int categoryId)
+        //{
+        //    var entity = _categoryService.GetById(categoryId);
+        //    var productsWithCategory = _productService.GetProductsByCategoryId(categoryId);
+        //    if (productsWithCategory.Any(p => p.CategoryId != null))
+        //    {
+        //        TempData["ErrorMessage"] = "Kategoriye ilişkin ürünler olduğu için kategori silinemez.";
+        //        return RedirectToAction("CategoryList");
+        //    }
+        //    _categoryService.Delete(entity);
+        //    return RedirectToAction("CategoryList");
+        //}
     }
 }

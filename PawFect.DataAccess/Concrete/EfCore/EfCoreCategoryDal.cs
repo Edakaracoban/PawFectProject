@@ -38,12 +38,6 @@ namespace PawFect.DataAccess.Concrete.EfCore
         {
             using (var context = new DataContext())
             {
-                var products = context.Products.Where(p => p.CategoryId == entity.Id).ToList();
-
-                foreach (var product in products)
-                {
-                    product.CategoryId = null;
-                }
                 context.Categories.Remove(entity);
                 context.SaveChanges();
             }

@@ -18,25 +18,30 @@
             <i class="fa fa-cubes"></i> Ürünler
         </a>
         <a class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Admin" ? "active" : "")"
-           asp-controller="Admin" asp-action="CategoryList">
-            <i class="fa fa-thumb-tack"></i> Kategoriler
-        </a>
-        <a class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Admin" ? "active" : "")"
            asp-controller="Admin" asp-action="CreateProduct">
             <i class="fa fa-th-list"></i> Ürün Oluştur
+        </a>
+        <a class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Admin" ? "active" : "")"
+           asp-controller="Admin" asp-action="CategoryList">
+            <i class="fa fa-thumb-tack"></i> Kategoriler
         </a>
         <a class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Admin" ? "active" : "")"
            asp-controller="Admin" asp-action="CreateCategory">
             <i class="fa fa-percent"></i> Kategori Oluştur
         </a>
-        <a class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Admin" ? "active" : "")"
-           asp-controller="Admin" asp-action="GetOrder">
-            <i class="fa fa-shopping-cart"></i> Siparişler
-        </a>
         <a class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Blog" ? "active" : "")"
            asp-controller="Blog" asp-action="BlogList">
             <i class="fa fa-newspaper-o"></i> Blog Listesi
         </a>
+        <a class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Blog" ? "active" : "")"
+           asp-controller="Blog" asp-action="CreateBlog">
+            <i class="fa fa-th-list"></i> Blog Oluştur
+        </a>
+        <a class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Admin" ? "active" : "")"
+           asp-controller="Admin" asp-action="GetOrder">
+            <i class="fa fa-shopping-cart"></i> Siparişler
+        </a>
+
         <a class="nav-item log @(ViewContext.RouteData.Values["controller"]?.ToString() == "Admin" ? "active" : "")"
            asp-controller="Admin" asp-action="AdminManage">
             <i class="fa fa-user-circle"></i> @User.Identity.Name
@@ -53,7 +58,7 @@
                     <div class="col-md-12">
                         <div class="container py-5">
                             <div class="container py-5">
-                                <h3 class="text-center mb-5">Edit Admin</h3>
+                                <h2 class="text-center mb-5">Edit Admin</h2>
                                 <div class="row justify-content-center">
                                     <div class="col-lg-6 col-md-8 col-sm-12">
                                         <div class="card shadow-lg p-4">
@@ -85,7 +90,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group mt-4 text-center">
-                                                    <button type="submit" class="btn btn-danger btn-lg w-100">Edit Admin</button>
+                                                    <button type="submit" class="btn btn-primary btn-lg w-100">Edit Admin</button>
                                                 </div>
                                             </form>
                                             <div asp-validation-summary="ModelOnly" class="text-danger validation mt-3"></div>
@@ -113,9 +118,19 @@
     });
 </script>
 <style>
+    .btn-primary {
+        background-color: #04AA6D;
+        border: none;
+    }
+
+        .btn-primary:hover {
+            background-color: #028c56;
+        }
+
     body {
         font-family: Arial, Helvetica, sans-serif;
     }
+
     .custom-navbar {
         width: 100%;
         background-color: #04AA6D;
@@ -123,6 +138,7 @@
         display: flex;
         justify-content: flex-start;
     }
+
         .custom-navbar a {
             float: left;
             padding: 12px;
@@ -130,33 +146,35 @@
             text-decoration: none;
             font-size: 17px;
         }
+
             .custom-navbar a:hover {
                 background-color: #000;
             }
+
         .custom-navbar .log {
             margin-left: auto;
-
-
         }
-            .custom-navbar .profile-logout.active {
-                margin-left: auto;
 
-            }
+        .custom-navbar .profile-logout.active {
+            margin-left: auto;
+        }
 
     .nav-item.active {
         background-color: #04AA6D;
         color: white;
-
     }
+
     .pagination-wrapper ul {
         display: flex;
         justify-content: center;
         list-style: none;
         padding: 0;
     }
+
         .pagination-wrapper ul li {
             margin: 0 5px;
         }
+
             .pagination-wrapper ul li a {
                 padding: 5px 10px;
                 border: 1px solid #ccc;
@@ -164,6 +182,7 @@
                 text-decoration: none;
                 color: #333;
             }
+
                 .pagination-wrapper ul li a:hover {
                     background-color: #04aa6d;
                     color: #fff;

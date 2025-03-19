@@ -11,8 +11,21 @@
             <div class="col-sm-6 offset-sm-2 offset-md-0 col-lg-5">
                 <div class="search-bar row bg-light p-2 my-2 rounded-4">
                     <div class="col-md-4 d-none d-md-block">
+                        @* < select class="form-control" asp-items="@(new SelectList(ViewBag.Category as IEnumerable<SelectListItem>, "Value", "Text"))" placeholder="Category"> *@
+                        @* <option value="-1"> Lütfen Kategori Seçiniz</option> *@
+                        @* </select> *@
+
+                        @* <select class="form-select border-0 bg-transparent" id="category-select" name="category"> *@
+
+                        @*     <option value=""> Tüm Kategoriler</option> *@
+
+                        @*         @foreach (var category in ViewBag.Category) *@
+                        @*         { *@
+                        @*         < option value = "@category.Value" > @category.Text </ option > *@
+                        @*         } *@
+                        @* </select> *@
                         <select class="form-select border-0 bg-transparent" id="category-select" name="category">
-                            >
+                            
                             <option value="">Tüm Kategoriler</option>
                             <option value="Kedi">Kedi</option>
                             <option value="Köpek">Köpek</option>

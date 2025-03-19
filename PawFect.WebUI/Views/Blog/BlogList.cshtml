@@ -18,25 +18,30 @@
             <i class="fa fa-cubes"></i> Ürünler
         </a>
         <a class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Admin" ? "active" : "")"
-           asp-controller="Admin" asp-action="CategoryList">
-            <i class="fa fa-thumb-tack"></i> Kategoriler
-        </a>
-        <a class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Admin" ? "active" : "")"
            asp-controller="Admin" asp-action="CreateProduct">
             <i class="fa fa-th-list"></i> Ürün Oluştur
+        </a>
+        <a class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Admin" ? "active" : "")"
+           asp-controller="Admin" asp-action="CategoryList">
+            <i class="fa fa-thumb-tack"></i> Kategoriler
         </a>
         <a class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Admin" ? "active" : "")"
            asp-controller="Admin" asp-action="CreateCategory">
             <i class="fa fa-percent"></i> Kategori Oluştur
         </a>
-        <a class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Admin" ? "active" : "")"
-           asp-controller="Admin" asp-action="GetOrder">
-            <i class="fa fa-shopping-cart"></i> Siparişler
-        </a>
         <a class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Blog" ? "active" : "")"
            asp-controller="Blog" asp-action="BlogList">
             <i class="fa fa-newspaper-o"></i> Blog Listesi
         </a>
+        <a class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Blog" ? "active" : "")"
+           asp-controller="Blog" asp-action="CreateBlog">
+            <i class="fa fa-th-list"></i> Blog Oluştur
+        </a>
+        <a class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Admin" ? "active" : "")"
+           asp-controller="Admin" asp-action="GetOrder">
+            <i class="fa fa-shopping-cart"></i> Siparişler
+        </a>
+        
         <a class="nav-item log @(ViewContext.RouteData.Values["controller"]?.ToString() == "Admin" ? "active" : "")"
            asp-controller="Admin" asp-action="AdminManage">
             <i class="fa fa-user-circle"></i> @User.Identity.Name
@@ -47,13 +52,8 @@
         </a>
     </div>
     <div class="container mt-5">
-        <div class="container mt-5">
-            <h2 class="mb-4">Blog Listesi</h2>
-            <div class="mb-3">
-                <a class="btn btn-primary btn-lg me-2" href="/blog/createblog">
-                    <i class="bi bi-plus-circle"></i> Blog Oluştur
-                </a>
-            </div>
+        <h2 class="mb-4">Blog Listesi</h2>
+        <div class="table-responsive">
             <table class="table table-striped table-bordered">
                 <thead>
                     <tr>
@@ -62,7 +62,7 @@
                         <th>Title</th>
                         <th>SubTitle</th>
                         <th>Image</th>
-                        <th></th>
+                        <th>İşlemler</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -80,7 +80,7 @@
                                 </td>
                                 <td class="text-center">
                                     <div class="btn-group">
-                                    <a href="/blog/blogs/@blog.Id" class="btn btn-warning btn-sm">Düzenle</a>
+                                        <a href="/blog/blogs/@blog.Id" class="btn btn-warning btn-sm">Düzenle</a>
                                         <a data-bs-toggle="modal" data-bs-target="#DeleteModal" data-id="@blog.Id" class="open-DeleteDialog btn btn-danger btn-sm" href="#">Delete</a>
                                     </div>
                                 </td>
@@ -95,7 +95,7 @@
                     }
                 </tbody>
             </table>
-        </div>
+        </div> 
         <div class="modal fade" id="DeleteModal" tabindex="-1" aria-labelledby="DeleteModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -149,14 +149,10 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 <style>
-    .btn-group {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-        .btn-group .btn {
+ .btn-group .btn {
             margin-bottom: 10px;
         }
+
     .btn-warning:hover {
         background-color: #e0a800;
         border-color: #d39e00;
@@ -254,6 +250,13 @@
                     background-color: #04aa6d;
                     color: #fff;
                 }
+    -wrapper ul li {
+        margin: 5px 0;
+    }
+    .table img {
+        margin: 0 auto;
+        display: block;
+    }
 </style>
 
 

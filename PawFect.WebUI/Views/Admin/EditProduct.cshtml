@@ -21,25 +21,30 @@
             <i class="fa fa-cubes"></i> Ürünler
         </a>
         <a class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Admin" ? "active" : "")"
-           asp-controller="Admin" asp-action="CategoryList">
-            <i class="fa fa-thumb-tack"></i> Kategoriler
-        </a>
-        <a class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Admin" ? "active" : "")"
            asp-controller="Admin" asp-action="CreateProduct">
             <i class="fa fa-th-list"></i> Ürün Oluştur
+        </a>
+        <a class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Admin" ? "active" : "")"
+           asp-controller="Admin" asp-action="CategoryList">
+            <i class="fa fa-thumb-tack"></i> Kategoriler
         </a>
         <a class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Admin" ? "active" : "")"
            asp-controller="Admin" asp-action="CreateCategory">
             <i class="fa fa-percent"></i> Kategori Oluştur
         </a>
-        <a class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Admin" ? "active" : "")"
-           asp-controller="Admin" asp-action="GetOrder">
-            <i class="fa fa-shopping-cart"></i> Siparişler
-        </a>
         <a class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Blog" ? "active" : "")"
            asp-controller="Blog" asp-action="BlogList">
             <i class="fa fa-newspaper-o"></i> Blog Listesi
         </a>
+        <a class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Blog" ? "active" : "")"
+           asp-controller="Blog" asp-action="CreateBlog">
+            <i class="fa fa-th-list"></i> Blog Oluştur
+        </a>
+        <a class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Admin" ? "active" : "")"
+           asp-controller="Admin" asp-action="GetOrder">
+            <i class="fa fa-shopping-cart"></i> Siparişler
+        </a>
+
         <a class="nav-item log @(ViewContext.RouteData.Values["controller"]?.ToString() == "Admin" ? "active" : "")"
            asp-controller="Admin" asp-action="AdminManage">
             <i class="fa fa-user-circle"></i> @User.Identity.Name
