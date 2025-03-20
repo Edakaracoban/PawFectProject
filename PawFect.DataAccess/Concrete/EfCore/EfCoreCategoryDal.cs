@@ -36,8 +36,18 @@ namespace PawFect.DataAccess.Concrete.EfCore
         }
         public override void Delete(Category entity)
         {
+            if (entity == null)
+            {
+                throw new ArgumentNullException(nameof(entity), "Silinecek kategori nesnesi null olamaz.");
+            }
             using (var context = new DataContext())
             {
+                var hasProducts = context.Products.Any(p => p.CategoryId == entity.Id);
+
+                if (hasProducts)
+                {
+                    throw new InvalidOperationException("Bu kategoriye ait ürünler var, kategori silinemez.");
+                }
                 context.Categories.Remove(entity);
                 context.SaveChanges();
             }

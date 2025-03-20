@@ -269,18 +269,32 @@ namespace PawFect.WebUI.Controllers
             _categoryService.Update(entity);
             return RedirectToAction("CategoryList");
         }
-        //[HttpPost]
-        //public IActionResult DeleteCategory(int categoryId)
-        //{
-        //    var entity = _categoryService.GetById(categoryId);
-        //    var productsWithCategory = _productService.GetProductsByCategoryId(categoryId);
-        //    if (productsWithCategory.Any(p => p.CategoryId != null))
-        //    {
-        //        TempData["ErrorMessage"] = "Kategoriye ilişkin ürünler olduğu için kategori silinemez.";
-        //        return RedirectToAction("CategoryList");
-        //    }
-        //    _categoryService.Delete(entity);
-        //    return RedirectToAction("CategoryList");
-        //}
+        [HttpPost]
+        public IActionResult DeleteCategory(int categoryId)
+        {
+            if (categoryId == 0 )
+            {
+                TempData["Message"] = "Geçersiz kategori ID.";
+                return RedirectToAction("CategoryList");
+            }
+
+            var entity = _categoryService.GetById(categoryId);
+            if (entity == null)
+            {
+                TempData["Message"] = "Kategori bulunamadı.";
+                return RedirectToAction("CategoryList");
+            }
+
+            var productsWithCategory = _productService.GetProductsByCategoryId(categoryId);
+            if (productsWithCategory.Any())
+            {
+                TempData["Message"] = "Kategoriye ilişkin ürünler olduğu için kategori silinemez.";
+                return RedirectToAction("CategoryList");
+            }
+
+            _categoryService.Delete(entity);
+            TempData["SuccessMessage"] = "Kategori başarıyla silindi.";
+            return RedirectToAction("CategoryList");
+        }
     }
 }

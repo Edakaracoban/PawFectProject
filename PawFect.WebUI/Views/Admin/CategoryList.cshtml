@@ -17,6 +17,14 @@
 <head>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        });
+    </script>
 </head>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <body>
@@ -83,8 +91,16 @@
                                 <img src="@Url.Content("~/img/" + category.Icon)" alt="Kategori Görseli" style="height:50px; width:50px;" />
                             </td>
                             <td>
-                                <a href="/admin/categories/@category.Id" class="btn btn-warning btn-sm">Düzenle</a>
-                                <a data-bs-toggle="modal" data-bs-target="#DeleteModal" data-id="@category.Id" class="open-DeleteDialog btn btn-danger btn-sm" href="#">Delete</a>
+                                <div class="d-flex justify-content-start">
+                                    <a href="/admin/categories/@category.Id" class="btn btn-warning btn-sm mb-2 mr-2">Düzenle</a>
+                                    <form action="/admin/DeleteCategory" method="POST" class="d-inline-block">
+                                        <input type="hidden" name="categoryId" value="@category.Id" />
+                                        <button type="submit" class="btn btn-danger btn-sm mb-2 deleteCategoryBtn" data-bs-toggle="tooltip"
+                                                data-bs-placement="top" title="Silme işlemi geri alınamaz! Bu işlem geri alınamaz.">
+                                            Sil
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     }
@@ -95,29 +111,8 @@
                         <td colspan="7" class="text-center">Listelenecek kategori bulunamadı.</td>
                     </tr>
                 }
-
             </tbody>
         </table>
-    </div>
-    <div class="modal fade" id="DeleteModal" tabindex="-1" aria-labelledby="DeleteModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Kategori Silme</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    Kategoriyi silmek istiyor musunuz ?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hayır</button>
-                    <form action="/admin/deletecategory" method="POST" style="display:inline">
-                        <input type="hidden" name="categoryId" id="categoryId" />
-                        <button type="submit" class="btn btn-danger" data-toggle="modal" data-target="#DeleteModal">Evet</button>
-                    </form>
-                </div>
-            </div>
-        </div>
     </div>
 </body>
 </html>
@@ -129,17 +124,7 @@
             item.classList.add('active');
         });
     });
-      $(document).on("click", ".open-DeleteDialog", function () {
-           var categoryId = $(this).data('id');
-           $(".modal-footer #categoryId").val(categoryId);
-           $('#DeleteModal').modal('show');
-      });
-         });
 </script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 <style>
     .btn-warning:hover {
         background-color: #e0a800;
