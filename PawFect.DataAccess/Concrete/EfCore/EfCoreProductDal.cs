@@ -14,13 +14,13 @@ namespace PawFect.DataAccess.Concrete.EfCore
     {
         public Product GetProductDetails(int id)
         {
-           using (var context = new DataContext())
+            using (var context = new DataContext())
             {
                 return context.Products
                            .Where(p => p.Id == id)
-                           .Include(p => p.Category) 
-                           .Include("Comments")  
-                           .FirstOrDefault(); 
+                           .Include(p => p.Category)
+                           .Include("Comments")
+                           .FirstOrDefault();
             }
         }
 
@@ -34,7 +34,7 @@ namespace PawFect.DataAccess.Concrete.EfCore
                 }
                 return context.Products
                               .Include(p => p.Category)
-                              .Where(p => p.Category.Name.ToLower().Contains(category.ToLower())) 
+                              .Where(p => p.Category.Name.ToLower().Contains(category.ToLower()))
                               .ToList();
             }
         }
@@ -56,22 +56,22 @@ namespace PawFect.DataAccess.Concrete.EfCore
         {
             using (var context = new DataContext())
             {
-                
+
                 var productsQuery = context.Products.AsQueryable();
 
-                
+
                 if (!string.IsNullOrWhiteSpace(query))
                 {
                     productsQuery = productsQuery.Where(p => EF.Functions.Like(p.Name, $"%{query}%"));
                 }
 
-               
+
                 if (!string.IsNullOrWhiteSpace(category))
                 {
                     productsQuery = productsQuery.Where(p => p.Category.Name == category);
                 }
 
-             
+
                 return productsQuery.ToList();
             }
         }
@@ -158,9 +158,42 @@ namespace PawFect.DataAccess.Concrete.EfCore
                     query = query.Where(filter);
                 }
 
-                query = query.Include(p => p.Category); 
+                query = query.Include(p => p.Category);
                 return query.ToList();
             }
         }
+
+        public int GetCountByCategory(string category)
+        {
+            using (var context = new DataContext())
+            {
+                var products = context.Products.AsQueryable();
+
+                if (!string.IsNullOrEmpty(category))
+                {
+                    products = products
+                        .Include(i => i.Category)  
+                        .Where(i => i.Category.Name.ToLower() == category.ToLower());
+                }
+                return products.Count();
+            }
+        }
+
+        public List<Product> GetProductsByCategory(string category, int page, int pageSize)
+        {
+            using (var context = new DataContext())
+            {
+                var products = context.Products.AsQueryable();
+
+                if (!string.IsNullOrEmpty(category) )
+                {
+                    products = products
+                        .Include(i => i.Category) 
+                        .Where(i => i.Category.Name.ToLower() == category.ToLower()); 
+                }
+                return products.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            }
+        }
+
     }
 }

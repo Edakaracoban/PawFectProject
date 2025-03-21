@@ -20,7 +20,7 @@
                     <div class="swiper-wrapper">
                         @foreach (var item in Model.Categories)
                         {
-                            <a href="/Category/Index/@item.Id" class="nav-link category-item swiper-slide">
+                            <a asp-controller="Shop" asp-action="List" asp-route-category="@item.Name.ToLower()" class="nav-link category-item swiper-slide @(Model.SelectedCategory== item.Name.ToLower() ? "active" : "")">
                                 <img src="@Url.Content("~/img/" + item.Icon)" alt="Category Thumbnail" class="category-icon">
                                 <h3 class="category-title">@item.Name</h3>
                             </a>

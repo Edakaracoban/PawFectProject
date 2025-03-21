@@ -18,5 +18,7 @@ namespace PawFect.Business.Abstract
         void Delete(Product entity);
         List<Product> SearchProductsByName(string query, string category); // string query parametresi ile ürün arama yapılacak
         public List<Product> GetProductsByCategoryId(int? categoryId);
+        List<Product> GetProductByCategory(string category, int page, int pageSize);
+        int GetCountByCategory(string category); // Kategorideki ürün sayısını getir.
     }
 }

@@ -17,5 +17,8 @@ namespace PawFect.DataAccess.Abstract
         Product GetProductById(int productId);
         List<Product> GetProductsByCategoryId(int? categoryId);
         public List<Product> GetAll(Expression<Func<Product, bool>> filter = null);
+        int GetCountByCategory(string category);
+        List<Product> GetProductsByCategory(string category, int page, int pageSize); //pagination çok data gelince kull.
+
     }
 }

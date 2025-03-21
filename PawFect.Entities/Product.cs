@@ -11,7 +11,6 @@ namespace PawFect.Entities
         [Required]
         public string Image { get; set; }
         public string Description { get; set; }
-        // Kategori ilişkisi için CategoryId ve Category özellikleri
         public int? CategoryId { get; set; }
         public Category Category { get; set; }
         public List<Comment> Comments { get; set; }
@@ -19,6 +18,5 @@ namespace PawFect.Entities
         {
             Comments = new List<Comment>();
         }
-
     }
 }
