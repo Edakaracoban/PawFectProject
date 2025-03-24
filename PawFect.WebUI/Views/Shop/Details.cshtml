@@ -1,60 +1,189 @@
 ﻿@model ProductDetailsModel
 @{
-    ViewData["title"] = "Product Detail";
+    Layout = null;
 }
+<!DOCTYPE html>
+<html lang="tr">
+@await Component.InvokeAsync("_HeadLayout")
+<body>
+    @await Component.InvokeAsync("_SvgLayout")
+    <partial name="_navbar" />
+    <section class="py-3">
+        <div class="container-fluid">
+            <div class="col-md-12">
+                <div class="row">
+                    <img src="@Url.Content("~/img/" + Model.Product.Image)" class="tab-image">
+                    @if (Model.Product.Stock == 0)
+                    {
+                        <h5 class="qty out-of-stock price">Stock Bitmiştir</h5>
+                    }
+                    else
+                    {
+                        <span class="rating">
+                            <svg width="24" height="24" class="text-primary">
+                                <use xlink:href="#star-solid"></use>
+                            </svg> 4.5
+                        </span>
+                    }
+                    <h1 class="mb-3">@Model.Product.Name</h1>
+                    <a href="#" class="btn btn-link p-0 mb-3" style="text-decoration: none; color: #007bff; font-weight: 500; transition: color 0.3s ease;" onmouseover="this.style.color='#0056b3'" onmouseout="this.style.color='#007bff'">
+                        KATEGORİ : @Model.Category.Name.ToUpper()
+                        <img src="@Url.Content("~/img/" + Model.Category.Icon)" alt="Category Thumbnail" class="category-icon">
+                    </a>
+                    <div class="mb-3">
+                        <h4 class="text-primary mb-3">@Model.Product.Price TL</h4>
+                        @if (!User.IsInRole("admin") && User.Identity.IsAuthenticated)
+                        {
+                            <form asp-controller="Cart" asp-action="AddToCart" method="POST">
+                                <input type="hidden" name="productId" value="@Model.Product.Id" />
+                                <div class="input-group cart-group">
+                                    <input type="number" name="quantity" value="1" min="1" step="1" class="form-control quantity" />
+                                    <div class="input-group-append">
+                                        <button type="submit" class="btn btn-outline-primary btn-md ms-3">
+                                            <i class="fas fa-cart-plus"></i>
+                                            Add To Cart
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        }
+                    </div>
+                    <div class="row">
+                        <ul class="nav nav-tabs mt-2" id="myTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="profile-tab" data-bs-toggle="tab" data-bs-target="#description" type="button" role="tab" aria-controls="profile" aria-selected="false">Description</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="home-tab" data-bs-toggle="tab" data-bs-target="#comment" type="button" role="tab" aria-controls="home" aria-selected="true">Comments</button>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="myTabContent">
+                            <br />
+                            <div class="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="home-tab" style="font-style: italic;">
+                                @Html.Raw(Model.Product.Description)
+                            </div>
+                            <div class="tab-pane fade" id="comment" role="tabpanel" aria-labelledby="profile-tab" data-product-id="@Model.Product.Id" data-url="@Url.Action(action: "ShowProductComments", controller: "Comment", new { id = Model.Product.Id })">
+                                <partial name="_PartialComments" for="@Model.Comments" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer class="py-5">
+        <div class="container-fluid">
+            <div class="row">
+                @await Component.InvokeAsync("_FooterViewComponents")
+            </div>
+        </div>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="/js/plugins.js"></script>
+    <script>
+        CommentBodyId = "#comment"
+        var productId = -1
+        function imageBox(smallImg) {
+            var fullImg = document.getElementById("image-box")
+            fullImg.src = smallImg.src
+        }
+        $(document).ready(function () {
+            var url = $("#comment").data("url")
+            $("#comment").load(url)
+            productId = $("#comment").data("product-id")
+            $(CommentBodyId).load("/Comment/ShowProductComments?id="+productId)
+        })
+        window.addEventListener('load', function () {
+            const preloader = document.querySelector('.preloader-wrapper');
+            preloader.style.display = 'none';
+        });
 
-<div class="row product-detail">
-    <div class="col-md-3">
-        <div class="row">
+        function doComment(btn, e, commentId, spanId) {
+            var button = $(btn)
+            var mode = button.data("edit-mode")
+            var editableContent = $("#comment_text_" + commentId)
 
+            if (e == 'new_clicked') {
+                var txt = $("#new_comment_text").val()
 
-       
-    </div>
-    <div class="col-md-9">
-        <h1 class="mb-3">@Model.Product.Name</h1>
-        <hr/>
-        <br/>
- 
-        <div class="mb-3">
-            <h4 class="text-primary mb-3">@Model.Product.Price TL</h4>
-            @if(!User.IsInRole("admin") && User.Identity.IsAuthenticated)
-            {
-                <form asp-controller="Cart" asp-action="AddToCart" method="POST">
-                    <input type="hidden" name="productId" value="@Model.Product.Id" />
-                     <div class="input-group cart-group">
-                         <input type="number" name="quantity" value="1" min="1" step="1" class="form-control quantity" />
-                         <div class="input-group-append">
-                            <button type="submit" class="btn btn-outline-primary btn-md ms-3">
-                                <i class="fas fa-cart-plus"></i>
-                                Add To Cart
-                             </button>
-
-                         </div>
-                     </div>
-                </form>
+                $.ajax({
+                    method: "POST",
+                    url: '/Comment/Create',
+                    data: { 'text': txt, 'productId': productId }
+                }).done(function (data) {
+                    if (data.result) {
+                        $(CommentBodyId).load("/Comment/ShowProductComments?id=" + productId)
+                    }
+                    else {
+                        alert("Yorum yapılırken bir hata oluştu!")
+                    }
+                }).fail(function (error) {
+                    alert("Sunucuda bir hata oluştu!")
+                })
             }
-        </div>
-    </div>
-</div>
-<div class="row">
-    <ul class="nav nav-tabs mt-2" id="myTab" role="tablist">
-        <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="profile-tab" data-bs-toggle="tab" data-bs-target="#description" type="button" role="tab" aria-controls="profile" aria-selected="false">Description</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="home-tab" data-bs-toggle="tab" data-bs-target="#comment" type="button" role="tab" aria-controls="home" aria-selected="true">Comments</button>
-        </li>
-    </ul>
-    <div class="tab-content" id="myTabContent"><br />
-        <div class="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="home-tab" style="font-style: italic;">
-            @Html.Raw(Model.Product.Description)
-        </div>
-        <div class="tab-pane fade" id="comment" role="tabpanel" aria-labelledby="profile-tab" data-product-id="@Model.Product.Id" data-url="@Url.Action(action:"ShowProductComments",controller:"Comment",new { id = Model.Product.Id})">
-            <partial name="_PartialComments" for="@Model.Comments" />
-        </div>
-    </div>
-</div>
+            else if (e == 'delete_clicked') {
+                var dialog_res = confirm("Yorum Silinsin mi?")
 
-@section Scripts{
-    <script src="~/js/CommentsImages.js"></script>
-}
+                if (!dialog_res) return false
+
+                $.ajax({
+                    method: "POST",
+                    url: '/Comment/Delete?id=' + commentId,
+                }).done(function (data) {
+                    if (data.result) {
+                        $(CommentBodyId).load("/Comment/ShowProductComments?id=" + productId)
+                    }
+                    else {
+                        alert("Yorum Silinemedi!")
+                    }
+                }).fail(function (error) {
+                    alert("Sunucuda bir hata oluştu!")
+                })
+            }
+            else if(e == 'edit_clicked') {
+                if (!mode) {
+                    button.data("edit-mode", true)
+                    button.removeClass("btn-warning")
+                    button.addClass("btn-success")
+                    var btnSpan = button.find("span")
+                    btnSpan.removeClass("fa-edit")
+                    btnSpan.addClass("fa-check")
+                    editableContent.addClass("editable-content")
+                    editableContent.addClass("editableComment")
+                    $(spanId).attr("contenteditable",true)
+                }
+                else {
+                    button.data("edit-mode", false)
+                    button.removeClass("btn-success")
+                    button.addClass("btn-warning")
+                    var btnSpan = button.find("span")
+                    btnSpan.removeClass("fa-check")
+                    btnSpan.addClass("fa-edit")
+                    editableContent.removeClass("editable-content")
+                    editableContent.removeClass("editableComment")
+                    $(spanId).attr("contenteditable", true)
+
+                    var txt = $(spanId).text().trim(' ')
+
+                    $.ajax({
+                        method: "POST",
+                        url: '/Comment/Edit',
+                        data: { 'text': txt, 'id': commentId }
+                    }).done(function (data) {
+                        if (data.result) {
+                            $(CommentBodyId).load("/Comment/ShowProductComments?id=" + productId)
+                        }
+                        else {
+                            alert("Yorum Güncellenemedi!")
+                        }
+                    }).fail(function (error) {
+                        alert("Sunucuda bir hata oluştu!")
+                    })
+                }
+            }
+        }</script>
+</body>
+</html>

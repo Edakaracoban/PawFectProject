@@ -42,8 +42,8 @@ namespace PawFect.WebUI.Controllers
             {
                 return RedirectToAction("Index");
             }
-            // Search by query and/or category
-            var searchResults = _productService.SearchProductsByName(query, category); // Assuming the service method takes both parameters
+
+            var searchResults = _productService.SearchProductsByName(query, category);
 
             var model = new ProductListModel
             {
@@ -57,6 +57,10 @@ namespace PawFect.WebUI.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+        public IActionResult NotFound()
+        {
+            return View();
         }
     }
 }

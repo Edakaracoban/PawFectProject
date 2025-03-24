@@ -1,13 +1,10 @@
 ﻿@using System.Security.Claims
-
 @model List<Comment>
-
 @{
     var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
     var usernames = ViewBag.UserNames as Dictionary<string, string> ?? new Dictionary<string, string>();
     var isAdmin = User.IsInRole("admin");
 }
-
 @if (User.Identity.IsAuthenticated)
 {
     <div class="row">
@@ -55,7 +52,6 @@
                             </button>
                         </span>
                     }
-                    
                 </div>
             </div>
         }
