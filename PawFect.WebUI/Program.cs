@@ -4,7 +4,9 @@ using PawFect.Business.Abstract;
 using PawFect.Business.Concrete;
 using PawFect.DataAccess.Abstract;
 using PawFect.DataAccess.Concrete.EfCore;
+using PawFect.WebUI.Filters;
 using PawFect.WebUI.Identity;
+using PawFect.WebUI.Session;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
@@ -14,6 +16,25 @@ builder.Services.AddDbContext<ApplicationIdentityDbContext>(options =>
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationIdentityDbContext>()
     .AddDefaultTokenProviders();
+
+
+
+// Session ve Cache yapýlandýrmasý
+builder.Services.AddDistributedMemoryCache(); // In-memory cache kullanarak session saklama
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromDays(7); // Session süresi 7 gün olarak ayarlanýyor
+    options.Cookie.HttpOnly = true; // Güvenlik için HttpOnly cookie ayarý
+    options.Cookie.IsEssential = true; // Cookie'nin GDPR uyumluluðu için isEssential parametresi ekleniyor
+});
+builder.Services.AddControllersWithViews(options =>
+{
+    options.Filters.Add<SessionCategoryFilter>(); // Filtreyi burada ekliyoruz
+});
+
+
+
+
 //SeedIdentity
 var userManager = builder.Services.BuildServiceProvider().GetService<UserManager<ApplicationUser>>();
 var roleManager = builder.Services.BuildServiceProvider().GetService<RoleManager<IdentityRole>>();
@@ -38,6 +59,7 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.SignIn.RequireConfirmedEmail = true;
     options.SignIn.RequireConfirmedPhoneNumber = false;
 });
+
 
 //Cookie Options
 builder.Services.ConfigureApplicationCookie(options =>
@@ -86,6 +108,7 @@ app.UseStaticFiles(); //wwwroot içindeki js css dosyalarý
 app.UseAuthentication(); //kimlik doðrulama iþlemleri
 app.UseAuthorization(); //yetkilendirme iþlemleri
 app.UseRouting();
+app.UseSession();
 
 // endpoints
 app.UseEndpoints(endpoints =>

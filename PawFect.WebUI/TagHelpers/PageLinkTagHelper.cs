@@ -8,7 +8,6 @@ namespace PawFect.WebUI.TagHelpers
     public class PageLinkTagHelper : TagHelper
     {
         public PageInfo PageModel { get; set; }
-
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
             output.TagName = "div";
