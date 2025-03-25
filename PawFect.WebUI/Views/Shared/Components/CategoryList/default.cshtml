@@ -35,29 +35,28 @@
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         var swiper = new Swiper('.category-carousel', {
-            loop: true, // Optionally enable looping
-            slidesPerView: 5, // 5 items per view by default
-            spaceBetween: 10, // Adjust the space between slides
+            loop: true, 
+            slidesPerView: 5, 
+            spaceBetween: 10, 
             navigation: {
                 nextEl: '.swiper-next',
                 prevEl: '.swiper-prev',
             },
             breakpoints: {
-                // Adjust number of items based on screen size
                 1200: {
-                    slidesPerView: 5, // 5 items for large screens
+                    slidesPerView: 5, 
                 },
                 992: {
-                    slidesPerView: 4, // 4 items for medium screens
+                    slidesPerView: 4, 
                 },
                 768: {
-                    slidesPerView: 3, // 3 items for small screens
+                    slidesPerView: 3, 
                 },
                 576: {
-                    slidesPerView: 2, // 2 items for extra small screens
+                    slidesPerView: 2, 
                 },
                 0: {
-                    slidesPerView: 1, // 1 item for very small screens
+                    slidesPerView: 1, 
                 }
             }
         });

@@ -12,60 +12,92 @@
         <div class="container-fluid">
             <div class="col-md-12">
                 <div class="row">
-                    <img src="@Url.Content("~/img/" + Model.Product.Image)" class="tab-image">
-                    @if (Model.Product.Stock == 0)
-                    {
-                        <h5 class="qty out-of-stock price">Stock Bitmiştir</h5>
-                    }
-                    else
-                    {
+                    <div class="col-md-4">
+                        <img src="@Url.Content("~/img/" + Model.Product.Image)" class="tab-image">
+                    </div>
+                    <div class="col-md-8">
+                        <h1 class="mb-3">@Model.Product.Name</h1>
                         <span class="rating">
-                            <svg width="24" height="24" class="text-primary">
+                            <svg width="30" height="30" class="text-primary">
                                 <use xlink:href="#star-solid"></use>
-                            </svg> 4.5
+                            </svg>
+                            <svg width="30" height="30" class="text-primary">
+                                <use xlink:href="#star-solid"></use>
+                            </svg>
+                            <svg width="30" height="30" class="text-primary">
+                                <use xlink:href="#star-solid"></use>
+                            </svg>
+                            <svg width="30" height="30" class="text-primary">
+                                <use xlink:href="#star-solid"></use>
+                            </svg>
+                            <svg width="30" height="30" class="text-primary">
+                                <use xlink:href="#star-solid"></use>
+                            </svg>     <span class="rating-value">4.5</span>
                         </span>
-                    }
-                    <h1 class="mb-3">@Model.Product.Name</h1>
-                    <a href="#" class="btn btn-link p-0 mb-3" style="text-decoration: none; color: #007bff; font-weight: 500; transition: color 0.3s ease;" onmouseover="this.style.color='#0056b3'" onmouseout="this.style.color='#007bff'">
-                        KATEGORİ : @Model.Category.Name.ToUpper()
-                        <img src="@Url.Content("~/img/" + Model.Category.Icon)" alt="Category Thumbnail" class="category-icon">
-                    </a>
-                    <div class="mb-3">
-                        <h4 class="text-primary mb-3">@Model.Product.Price TL</h4>
-                        @if (!User.IsInRole("admin") && User.Identity.IsAuthenticated)
+                        <h3 class="text mb-3">@Model.Product.Price TL</h3>
+
+                        @if (Model.Product.Stock == 0)
                         {
-                            <form asp-controller="Cart" asp-action="AddToCart" method="POST">
-                                <input type="hidden" name="productId" value="@Model.Product.Id" />
-                                <div class="input-group cart-group">
-                                    <input type="number" name="quantity" value="1" min="1" step="1" class="form-control quantity" />
-                                    <div class="input-group-append">
-                                        <button type="submit" class="btn btn-outline-primary btn-md ms-3">
-                                            <i class="fas fa-cart-plus"></i>
-                                            Add To Cart
-                                        </button>
+                            <h5 class="qty out-of-stock price">Stock Bitmiştir</h5>
+                            <div class="row">
+                                <ul class="nav nav-tabs mt-2" id="myTab" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link active" id="profile-tab" data-bs-toggle="tab" data-bs-target="#description" type="button" role="tab" aria-controls="profile" aria-selected="false">Description</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="home-tab" data-bs-toggle="tab" data-bs-target="#comment" type="button" role="tab" aria-controls="home" aria-selected="true">Comments</button>
+                                    </li>
+                                </ul>
+                                <div class="tab-content" id="myTabContent">
+                                    <br />
+                                    <div class="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="home-tab" style="font-style: italic;">
+                                        @Html.Raw(Model.Product.Description)
+                                    </div>
+                                    <div class="tab-pane fade" id="comment" role="tabpanel" aria-labelledby="profile-tab" data-product-id="@Model.Product.Id" data-url="@Url.Action(action: "ShowProductComments", controller: "Comment", new { id = Model.Product.Id })">
+                                        <partial name="_PartialComments" for="@Model.Comments" />
                                     </div>
                                 </div>
-                            </form>
+                            </div>
                         }
-                    </div>
-                    <div class="row">
-                        <ul class="nav nav-tabs mt-2" id="myTab" role="tablist">
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link active" id="profile-tab" data-bs-toggle="tab" data-bs-target="#description" type="button" role="tab" aria-controls="profile" aria-selected="false">Description</button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="home-tab" data-bs-toggle="tab" data-bs-target="#comment" type="button" role="tab" aria-controls="home" aria-selected="true">Comments</button>
-                            </li>
-                        </ul>
-                        <div class="tab-content" id="myTabContent">
-                            <br />
-                            <div class="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="home-tab" style="font-style: italic;">
-                                @Html.Raw(Model.Product.Description)
+                        else
+                        {
+                            <div class="mb-3">
+                                @if (!User.IsInRole("admin") && User.Identity.IsAuthenticated)
+                                {
+                                    <form asp-controller="Cart" asp-action="AddToCart" method="POST">
+                                        <input type="hidden" name="productId" value="@Model.Product.Id" />
+                                        <div class="input-group cart-group">
+                                            <input type="number" name="quantity" value="1" min="1" step="1" class="form-control quantity" />
+                                            <div class="input-group-append">
+                                                <button type="submit" class="btn btn-outline-primary btn-md ms-3">
+                                                    <i class="fas fa-cart-plus"></i>
+                                                    Add To Cart
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                }
                             </div>
-                            <div class="tab-pane fade" id="comment" role="tabpanel" aria-labelledby="profile-tab" data-product-id="@Model.Product.Id" data-url="@Url.Action(action: "ShowProductComments", controller: "Comment", new { id = Model.Product.Id })">
-                                <partial name="_PartialComments" for="@Model.Comments" />
+                            <div class="row">
+                                <ul class="nav nav-tabs mt-2" id="myTab" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link active" id="profile-tab" data-bs-toggle="tab" data-bs-target="#description" type="button" role="tab" aria-controls="profile" aria-selected="false">Description</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="home-tab" data-bs-toggle="tab" data-bs-target="#comment" type="button" role="tab" aria-controls="home" aria-selected="true">Comments</button>
+                                    </li>
+                                </ul>
+                                <div class="tab-content" id="myTabContent">
+                                    <br />
+                                    <div class="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="home-tab" style="font-style: italic;">
+                                        @Html.Raw(Model.Product.Description)
+                                    </div>
+                                    <div class="tab-pane fade" id="comment" role="tabpanel" aria-labelledby="profile-tab" data-product-id="@Model.Product.Id" data-url="@Url.Action(action: "ShowProductComments", controller: "Comment", new { id = Model.Product.Id })">
+                                        <partial name="_PartialComments" for="@Model.Comments" />
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                        }
                     </div>
                 </div>
             </div>
@@ -83,107 +115,146 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="/js/plugins.js"></script>
-    <script>
-        CommentBodyId = "#comment"
-        var productId = -1
-        function imageBox(smallImg) {
-            var fullImg = document.getElementById("image-box")
-            fullImg.src = smallImg.src
+    <style>
+        .rating {
+            font-size: 16px;
         }
-        $(document).ready(function () {
-            var url = $("#comment").data("url")
-            $("#comment").load(url)
-            productId = $("#comment").data("product-id")
-            $(CommentBodyId).load("/Comment/ShowProductComments?id="+productId)
-        })
-        window.addEventListener('load', function () {
-            const preloader = document.querySelector('.preloader-wrapper');
-            preloader.style.display = 'none';
-        });
 
-        function doComment(btn, e, commentId, spanId) {
-            var button = $(btn)
-            var mode = button.data("edit-mode")
-            var editableContent = $("#comment_text_" + commentId)
-
-            if (e == 'new_clicked') {
-                var txt = $("#new_comment_text").val()
-
-                $.ajax({
-                    method: "POST",
-                    url: '/Comment/Create',
-                    data: { 'text': txt, 'productId': productId }
-                }).done(function (data) {
-                    if (data.result) {
-                        $(CommentBodyId).load("/Comment/ShowProductComments?id=" + productId)
-                    }
-                    else {
-                        alert("Yorum yapılırken bir hata oluştu!")
-                    }
-                }).fail(function (error) {
-                    alert("Sunucuda bir hata oluştu!")
-                })
+            .rating .rating-value {
+                font-size: 18px;
+                font-weight: bold;
+                color: #ff9900;
+                margin-left: 5px;
             }
-            else if (e == 'delete_clicked') {
-                var dialog_res = confirm("Yorum Silinsin mi?")
 
-                if (!dialog_res) return false
+        .cart-group .form-control {
+            width: auto;
+            max-width: 50px;
+            flex-grow: 0;
+        }
 
-                $.ajax({
-                    method: "POST",
-                    url: '/Comment/Delete?id=' + commentId,
-                }).done(function (data) {
-                    if (data.result) {
-                        $(CommentBodyId).load("/Comment/ShowProductComments?id=" + productId)
-                    }
-                    else {
-                        alert("Yorum Silinemedi!")
-                    }
-                }).fail(function (error) {
-                    alert("Sunucuda bir hata oluştu!")
-                })
+        .cart-group .input-group-append {
+            margin-left: 10px;
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .image-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            max-height: 600px;
+        }
+
+        .tab-image {
+            position: relative;
+            max-width: 100%;
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+
+        h1.mb-3 {
+            margin-top: 40px;
+            font-size: 2.3rem;
+            font-weight: bold;
+            color: #343a40;
+        }
+
+        h3.text.mb-3 {
+            margin-top: 20px;
+            margin-bottom: 20px;
+            font-size: 1.9rem;
+            font-weight: bold;
+            color: #343a40;
+        }
+
+        a.btn-link {
+            text-decoration: none;
+            color: #343a40;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+            a.btn-link:hover {
+                color: crimson;
             }
-            else if(e == 'edit_clicked') {
-                if (!mode) {
-                    button.data("edit-mode", true)
-                    button.removeClass("btn-warning")
-                    button.addClass("btn-success")
-                    var btnSpan = button.find("span")
-                    btnSpan.removeClass("fa-edit")
-                    btnSpan.addClass("fa-check")
-                    editableContent.addClass("editable-content")
-                    editableContent.addClass("editableComment")
-                    $(spanId).attr("contenteditable",true)
+
+        h5.qty.out-of-stock.price {
+            margin-top: 20px;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            padding: 10px;
+        }
+
+        .cart-group .form-control {
+            font-size: 18px;
+            padding: 10px;
+            border-radius: 5px;
+            width: auto;
+            margin-top: 10px;
+        }
+
+        .cart-group .btn {
+            font-size: 14px;
+            font-weight: bold;
+            padding: 10px 20px;
+            text-transform: uppercase;
+            background-color: crimson;
+            border-color: #007bff;
+            color: white;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+        }
+
+            .cart-group .btn:hover {
+                background-color: darkred;
+                border-color: aqua;
+            }
+
+        .nav-tabs {
+            border-bottom: 2px solid #007bff;
+            margin-bottom: 20px;
+            justify-content: flex-start;
+        }
+
+            .nav-tabs .nav-item .nav-link {
+                color: #007bff;
+                font-size: 1.1rem;
+                padding: 10px 20px;
+                transition: color 0.3s ease;
+            }
+
+                .nav-tabs .nav-item .nav-link:hover {
+                    color: #0056b3;
                 }
-                else {
-                    button.data("edit-mode", false)
-                    button.removeClass("btn-success")
-                    button.addClass("btn-warning")
-                    var btnSpan = button.find("span")
-                    btnSpan.removeClass("fa-check")
-                    btnSpan.addClass("fa-edit")
-                    editableContent.removeClass("editable-content")
-                    editableContent.removeClass("editableComment")
-                    $(spanId).attr("contenteditable", true)
 
-                    var txt = $(spanId).text().trim(' ')
-
-                    $.ajax({
-                        method: "POST",
-                        url: '/Comment/Edit',
-                        data: { 'text': txt, 'id': commentId }
-                    }).done(function (data) {
-                        if (data.result) {
-                            $(CommentBodyId).load("/Comment/ShowProductComments?id=" + productId)
-                        }
-                        else {
-                            alert("Yorum Güncellenemedi!")
-                        }
-                    }).fail(function (error) {
-                        alert("Sunucuda bir hata oluştu!")
-                    })
+                .nav-tabs .nav-item .nav-link.active {
+                    color: #fff;
+                    background-color: #007bff;
+                    border-color: #007bff;
                 }
-            }
-        }</script>
+
+        .tab-content {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            font-size: 1rem;
+            color: #555;
+        }
+
+        .tab-pane {
+            padding: 10px;
+        }
+    </style>
 </body>
 </html>
