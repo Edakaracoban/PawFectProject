@@ -1,92 +1,120 @@
 ﻿@model CartModel
-
 @{
-    ViewData["title"] = "Cart";
+    Layout = null;
 }
-<h1>Cart</h1>
-<hr />
-<div class="row">
-    <div class="col-md-8">
-        @if (Model.CartItems.Count > 0)
-        {
-            <div class="text-center">
-                <h4>Cart Items</h4>
-            </div>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Product Name</th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Quantity</th>
-                        <th scope="col">Total</th>
-                        <th scope="col"></th>
+<!DOCTYPE html>
+<html lang="tr">
+@await Component.InvokeAsync("_HeadLayout")
+<body>
+    @await Component.InvokeAsync("_SvgLayout")
+    <partial name="_navbar" />
+    <div class="py-5">
+        <div class="container-fluid">
+            <div class="col-md-12">
+                <div class="row">
+                    <h1>Cart</h1>
+                    <div class="row">
+                        <div class="col-md-8">
+                            @if (Model.CartItems.Count > 0)
+                            {
+                                <div class="text-center">
+                                    <h2 class="mb-4">Cart Items</h2>
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">#</th>
+                                                    <th scope="col">Product Name</th>
+                                                    <th scope="col">Price</th>
+                                                    <th scope="col">Quantity</th>
+                                                    <th scope="col">Total</th>
+                                                    <th scope="col"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var item in Model.CartItems)
+                                                {
+                                                    <tr>
+                                                        <th scope="row"><img src="~/img/@item.Image" width="80" /></th>
+                                                        <td>@item.Name</td>
+                                                        <td>@item.Price</td>
+                                                        <td>@item.Quantity</td>
+                                                        <td>@((@item.Quantity * item.Price).ToString("c"))</td>
+                                                        <td>
+                                                            <form asp-controller="Cart" asp-action="DeleteFromCart" method="POST" style="display:inline">
+                                                                <input type="hidden" name="productId" value="@item.ProductId" />
+                                                                <button type="submit" class="btn btn-danger btn-sm">
+                                                                    <i class="fa fa-times fa-fw"></i>
+                                                                </button>
+                                                            </form>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="alert alert-warning">
+                                    <h4>No Product in Cart</h4>
+                                </div>
+                            }
+                        </div>
 
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model.CartItems)
-                    {
-                        <tr>
-                            <th scope="row"><img src="~/img/@item.Image" width="80"/></th>
-                            <td>@item.Name</td>
-                            <td>@item.Price</td>
-                            <td>@item.Quantity</td>
-                            <td>@((@item.Quantity * item.Price).ToString("c"))</td>
-                            <td>
-                                <form asp-controller="Cart" asp-action="DeleteFromCart" method="POST" style="display:inline">
-                                    <input type="hidden" name="productId" value="@item.ProductId" />
-                                    <button type="submit" class="btn btn-danger btn-sm">
-                                        <i class="fa fa-times fa-fw"></i>
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                    }
+                        <div class="col-md-4">
+                            @if (Model.CartItems.Count > 0)
+                            {
+                                <div class="text-left">
+                                    <h4>Cart Summary</h4>
+                                </div>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Cart Total</th>
+                                            <th>@Model.TotalPrice().ToString("c")</th>
+                                        </tr>
+                                        <tr>
+                                            <th>Shipping</th>
+                                            <th>Free</th>
+                                        </tr>
+                                        <tr>
+                                            <th>Order Total</th>
+                                            <th><strong>@Model.TotalPrice().ToString("c")</strong></th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                                <div>
+                                    <a href="/" class="btn btn-primary">
+                                        <i class="fa fa-arrow-circle-left fa-fw"></i> Continue Shopping
+                                    </a>
+                                    <a href="/checkout" class="btn btn-primary">
+                                        Checkout <i class="fa fa-arrow-circle-right fa-fw"></i>
+                                    </a>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-                </tbody>
-            </table>
-        }
-        else
-        {
-            <div class="alert alert-warning">
-                <h4>No Product in Cart</h4>
+    <footer class="py-5">
+        <div class="container-fluid">
+            <div class="row">
+                @await Component.InvokeAsync("_FooterViewComponents")
             </div>
-        }
-    </div>
-    <div class="col-md-4">
-        @if (Model.CartItems.Count > 0)
-        {
-            <div class="text-left">
-                <h4>Cart Summary</h4>
-            </div>
-        }
-        @if(Model.CartItems.Count > 0)
-        {
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Cart Total</th>
-                        <th>@Model.TotalPrice().ToString("c")</th>
-                    </tr>
-                    <tr>
-                        <th>Shipping</th>
-                        <th>Free</th>
-                    </tr>
-                    <tr>
-                        <th>Order Total</th>
-                        <th><strong>@Model.TotalPrice().ToString("c")</strong></th>
-                    </tr>
-                </thead>
-            </table>
-            <div>
-                <a href="/" class="btn btn-primary">
-                    <i class="fa fa-arrow-circle-left fa-fw"></i> Continue Shopping    
-                </a>
-                <a href="/checkout" class="btn btn-primary">
-                    Checkout  <i class="fa fa-arrow-circle-right fa-fw"></i>
-                </a>
-            </div>
-        }
-    </div>
-</div>
+        </div>
+    </footer>
+    <script src="~/modules/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/modules/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="~/js/site.js"></script>
+    <script src="/js/plugins.js"></script>
+</body>
+</html>

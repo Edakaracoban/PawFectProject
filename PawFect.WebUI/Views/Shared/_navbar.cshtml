@@ -63,7 +63,7 @@
                         </a>
                     </div>
                     <div class="d-lg-none">
-                        <a href="/Shop/List" class="rounded-circle bg-light p-2 mx-1 login-link">
+                        <a href="/Cart/Index" class="rounded-circle bg-light p-2 mx-1 login-link">
                             <svg width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#cart"></use></svg>
                         </a>
                     </div>
@@ -102,9 +102,9 @@
                                 </a>
                             </li>
                             <li class="cart text-end d-none d-lg-block">
-                                <a href="/Shop/List" class="border-0 bg-transparent d-flex flex-column gap-2 lh-1 text-decoration-none login-link">
+                                <a href="/Cart/Index" class="border-0 bg-transparent d-flex flex-column gap-2 lh-1 text-decoration-none login-link">
                                     <span class="fs-6 text-muted">Sepetiniz</span>
-                                    <span class="cart-total fs-5 fw-bold">₺1290.00</span>
+                                    <span id="cartTotal" class="cart-total fs-5 fw-bold">₺0.00</span> 
                                 </a>
                             </li>
                             <div class="d-lg-none">
@@ -175,7 +175,23 @@
             document.getElementById('search-form').submit();
         }
     });
+    function updateCartTotal() {
+        $.ajax({
+            url: '/Cart/GetTotalPrice',  // Controller'daki GetTotalPrice metoduna istek gönderiyoruz
+            method: 'POST',
+            success: function (data) {
+                // Fiyatı, cartTotal öğesine güncelliyoruz
+                $('#cartTotal').text('₺' + data.toFixed(2)); // Fiyatı iki ondalıklı formatta güncelliyoruz
+            }
+        });
+    }
+    // Sayfa yüklendiğinde ilk fiyatı alalım
+    $(document).ready(function() {
+        updateCartTotal();
+    });
 </script>
+
+
 <style>
     #search-container {
         display: none;
