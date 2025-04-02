@@ -73,5 +73,11 @@ namespace PawFect.WebUI.Controllers
             return Json(cartModel.TotalPrice);  // Artık Property olduğundan direkt olarak alabiliyoruz
         }
 
+        public IActionResult AddToCart(int productId, int quantity)
+        {
+            _cartService.AddToCart(_userManager.GetUserId(User), productId, quantity);
+            return RedirectToAction("Index");
+        }
+
     }
 }
