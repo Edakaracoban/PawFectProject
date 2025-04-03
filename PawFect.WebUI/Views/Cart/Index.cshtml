@@ -38,8 +38,10 @@
                                                         <th scope="row"><img src="~/img/@item.Image" width="80" /></th>
                                                         <td>@item.Name</td>
                                                         <td>@item.Price</td>
-                                                        <td>@item.Quantity</td>
-                                                        <td>@((@item.Quantity * item.Price).ToString("c"))</td>
+                                                        <td>
+                                                            <input type="number" name="quantity" value="@item.Quantity" min="1" step="1" class="form-control quantity" data-product-id="@item.ProductId" />
+                                                        </td>
+                                                        <td class="total-price" data-product-id="@item.ProductId">@((@item.Quantity * item.Price).ToString("c", System.Globalization.CultureInfo.GetCultureInfo("tr-TR")))</td>
                                                         <td>
                                                             <form asp-controller="Cart" asp-action="DeleteFromCart" method="POST" style="display:inline">
                                                                 <input type="hidden" name="productId" value="@item.ProductId" />
@@ -69,32 +71,32 @@
                                 <div class="text-center">
                                     <h2 class="mb-4">Cart Summary</h2>
                                     <div class="table-responsive">
-                                <table class="table table-striped table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th>Cart Total</th>
-                                            <th>@Model.TotalPrice().ToString("c")</th>
-                                        </tr>
-                                        <tr>
-                                            <th>Shipping</th>
-                                            <th>Free</th>
-                                        </tr>
-                                        <tr>
-                                            <th>Order Total</th>
-                                            <th><strong>@Model.TotalPrice().ToString("c")</strong></th>
-                                        </tr>
-                                    </thead>
-                                </table>
+                                        <table class="table table-striped table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>Cart Total</th>
+                                                    <th id="cart-total">@Model.TotalPrice().ToString("c", System.Globalization.CultureInfo.GetCultureInfo("tr-TR"))</th>
+                                                </tr>
+                                                <tr>
+                                                    <th>Shipping</th>
+                                                    <th>Free</th>
+                                                </tr>
+                                                <tr>
+                                                    <th><strong id="name"> Order Total</strong></th>
+                                                    <th><strong id="order-total">@Model.TotalPrice().ToString("c", System.Globalization.CultureInfo.GetCultureInfo("tr-TR"))</strong></th>
+                                                </tr>
+                                            </thead>
+                                        </table>
                                     </div>
-                                <div>
-                                    <a href="/" class="btn btn-primary">
-                                        <i class="fa fa-arrow-circle-left fa-fw"></i> Continue Shopping
-                                    </a>
-                                    <a href="/checkout" class="btn btn-primary">
-                                        Checkout <i class="fa fa-arrow-circle-right fa-fw"></i>
-                                    </a>
+                                    <div>
+                                        <a href="/" class="btn btn-primary">
+                                            <i class="fa fa-arrow-circle-left fa-fw"></i> Continue Shopping
+                                        </a>
+                                        <a href="/checkout" class="btn btn-primary">
+                                            Checkout <i class="fa fa-arrow-circle-right fa-fw"></i>
+                                        </a>
+                                    </div>
                                 </div>
-                                    </div>
                             }
                         </div>
                     </div>
@@ -118,5 +120,143 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="~/js/site.js"></script>
     <script src="/js/plugins.js"></script>
+
+    <script>
+                // Function to update the total price of the cart
+        function updateCartTotal() {
+            let total = 0;
+
+            // Loop through each product to update the total
+            document.querySelectorAll('.total-price').forEach(priceElement => {
+                const priceText = priceElement.innerText.replace('₺', '').trim();
+
+                // Convert to number, handle potential parsing issues
+                const price = parseFloat(priceText.replace(/\s+/g, '').replace(',', '.'));
+
+                if (!isNaN(price)) {
+                    total += price;
+                }
+            });
+
+            // Update the Cart Total
+            const cartTotalElement = document.getElementById('cart-total');
+            cartTotalElement.innerText = `₺${total.toFixed(2)}`;
+
+            // Update the Order Total (same as cart total for now)
+            const orderTotalElement = document.getElementById('order-total');
+            orderTotalElement.innerText = `₺${total.toFixed(2)}`;
+        }
+
+        // Listen for changes in quantity inputs
+        document.querySelectorAll('.quantity').forEach(input => {
+            input.addEventListener('input', function() {
+                // Get the product ID and new quantity
+                const productId = this.getAttribute('data-product-id');
+                const quantity = parseInt(this.value, 10);
+                const priceText = this.closest('tr').querySelector('td:nth-child(3)').innerText.replace('₺', '').trim();
+
+                // Convert the price to a number
+                const price = parseFloat(priceText.replace(/\s+/g, '').replace(',', '.'));
+
+                // Calculate the new total price
+                const totalPrice = (quantity * price).toFixed(2);
+
+                // Update the total price in the corresponding <td>
+                const totalPriceElement = document.querySelector(`.total-price[data-product-id="${productId}"]`);
+                totalPriceElement.innerText = `₺${totalPrice}`;
+
+                // Update the cart and order totals
+                updateCartTotal();
+            });
+        });
+
+        // Initial update of the cart and order totals
+        updateCartTotal();
+                // Save cart data to sessionStorage
+        function saveCartToSession() {
+            const cartItems = [];
+
+            document.querySelectorAll('.total-price').forEach(priceElement => {
+                const productId = priceElement.getAttribute('data-product-id');
+                const quantity = document.querySelector(`input[data-product-id="${productId}"]`).value;
+                const price = priceElement.innerText.replace('₺', '').trim();
+
+                // Store product data in the cartItems array
+                cartItems.push({
+                    productId: productId,
+                    quantity: quantity,
+                    price: price
+                });
+            });
+
+            // Store the entire cart in sessionStorage as a JSON string
+            sessionStorage.setItem('cart', JSON.stringify(cartItems));
+        }
+
+        // Retrieve cart data from sessionStorage
+        function loadCartFromSession() {
+            const cart = JSON.parse(sessionStorage.getItem('cart'));
+
+            if (cart) {
+                cart.forEach(item => {
+                    // Update the quantity input field
+                    const quantityInput = document.querySelector(`input[data-product-id="${item.productId}"]`);
+                    if (quantityInput) {
+                        quantityInput.value = item.quantity;
+                    }
+
+                    // Update the total price
+                    const totalPriceElement = document.querySelector(`.total-price[data-product-id="${item.productId}"]`);
+                    if (totalPriceElement) {
+                        totalPriceElement.innerText = `₺${(item.quantity * parseFloat(item.price)).toFixed(2)}`;
+                    }
+                });
+
+                // Update the overall cart and order totals
+                updateCartTotal();
+            }
+        }
+
+        // Listen for quantity input changes and save to sessionStorage
+        document.querySelectorAll('.quantity').forEach(input => {
+            input.addEventListener('input', function() {
+                const productId = this.getAttribute('data-product-id');
+                const quantity = parseInt(this.value, 10);
+                const priceText = this.closest('tr').querySelector('td:nth-child(3)').innerText.replace('₺', '').trim();
+                const price = parseFloat(priceText.replace(/\s+/g, '').replace(',', '.'));
+
+                // Update the total price in the corresponding <td>
+                const totalPriceElement = document.querySelector(`.total-price[data-product-id="${productId}"]`);
+                totalPriceElement.innerText = `₺${(quantity * price).toFixed(2)}`;
+
+                // Save updated cart to sessionStorage
+                saveCartToSession();
+
+                // Update the cart totals
+                updateCartTotal();
+            });
+        });
+
+        // On page load, load cart data from sessionStorage
+        window.addEventListener('load', loadCartFromSession);
+
+
+    </script>
+
+    <style>
+        #order-total {
+            font-size: 1.5rem; /* Larger text */
+            color: #d9534f; /* Red color */
+            font-weight: bold; /* Make the text bold */
+            text-transform: uppercase; /* Optionally, you can add this to make it uppercase */
+        }
+
+        #name {
+            font-size: 1.5rem; /* Larger text */
+            color: #d9534f; /* Red color */
+            font-weight: bold; /* Make the text bold */
+            text-transform: uppercase; /* Optionally, you can add this to make it uppercase */
+        }
+    </style>
 </body>
 </html>

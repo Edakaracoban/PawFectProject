@@ -24,7 +24,7 @@
                 <form asp-controller="Cart" asp-action="AddToCart" method="POST">
                     <input type="hidden" name="productId" value="@Model.Id" />
                     <div class="input-group cart-group">
-                        <input type="number" name="quantity" value="1" min="1" step="1" class="form-control quantity" />
+                        <input type="hidden" name="quantity" value="1"  />
                         <div class="input-group-append">
                             <button type="submit" class="btn btn-outline-danger btn-md ms-3">
                                 <i class="fas fa-cart-plus"></i>
