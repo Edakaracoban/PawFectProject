@@ -45,7 +45,7 @@
                                                         <td>
                                                             <form asp-controller="Cart" asp-action="DeleteFromCart" method="POST" style="display:inline">
                                                                 <input type="hidden" name="productId" value="@item.ProductId" />
-                                                                <button type="submit" class="btn btn-danger btn-sm">
+                                                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirmDelete();">
                                                                     <i class="fa fa-times fa-fw"></i>
                                                                 </button>
                                                             </form>
@@ -64,7 +64,6 @@
                                 </div>
                             }
                         </div>
-
                         <div class="col-md-4">
                             @if (Model.CartItems.Count > 0)
                             {
@@ -122,15 +121,12 @@
     <script src="/js/plugins.js"></script>
 
     <script>
-                // Function to update the total price of the cart
         function updateCartTotal() {
             let total = 0;
 
-            // Loop through each product to update the total
             document.querySelectorAll('.total-price').forEach(priceElement => {
                 const priceText = priceElement.innerText.replace('₺', '').trim();
 
-                // Convert to number, handle potential parsing issues
                 const price = parseFloat(priceText.replace(/\s+/g, '').replace(',', '.'));
 
                 if (!isNaN(price)) {
@@ -138,41 +134,32 @@
                 }
             });
 
-            // Update the Cart Total
             const cartTotalElement = document.getElementById('cart-total');
             cartTotalElement.innerText = `₺${total.toFixed(2)}`;
 
-            // Update the Order Total (same as cart total for now)
             const orderTotalElement = document.getElementById('order-total');
             orderTotalElement.innerText = `₺${total.toFixed(2)}`;
         }
 
-        // Listen for changes in quantity inputs
         document.querySelectorAll('.quantity').forEach(input => {
             input.addEventListener('input', function() {
-                // Get the product ID and new quantity
+
                 const productId = this.getAttribute('data-product-id');
                 const quantity = parseInt(this.value, 10);
                 const priceText = this.closest('tr').querySelector('td:nth-child(3)').innerText.replace('₺', '').trim();
 
-                // Convert the price to a number
                 const price = parseFloat(priceText.replace(/\s+/g, '').replace(',', '.'));
 
-                // Calculate the new total price
                 const totalPrice = (quantity * price).toFixed(2);
 
-                // Update the total price in the corresponding <td>
                 const totalPriceElement = document.querySelector(`.total-price[data-product-id="${productId}"]`);
                 totalPriceElement.innerText = `₺${totalPrice}`;
 
-                // Update the cart and order totals
                 updateCartTotal();
             });
         });
-
-        // Initial update of the cart and order totals
         updateCartTotal();
-                // Save cart data to sessionStorage
+
         function saveCartToSession() {
             const cartItems = [];
 
@@ -180,82 +167,62 @@
                 const productId = priceElement.getAttribute('data-product-id');
                 const quantity = document.querySelector(`input[data-product-id="${productId}"]`).value;
                 const price = priceElement.innerText.replace('₺', '').trim();
-
-                // Store product data in the cartItems array
                 cartItems.push({
                     productId: productId,
                     quantity: quantity,
                     price: price
                 });
             });
-
-            // Store the entire cart in sessionStorage as a JSON string
             sessionStorage.setItem('cart', JSON.stringify(cartItems));
         }
 
-        // Retrieve cart data from sessionStorage
         function loadCartFromSession() {
             const cart = JSON.parse(sessionStorage.getItem('cart'));
-
             if (cart) {
                 cart.forEach(item => {
-                    // Update the quantity input field
                     const quantityInput = document.querySelector(`input[data-product-id="${item.productId}"]`);
                     if (quantityInput) {
                         quantityInput.value = item.quantity;
                     }
-
-                    // Update the total price
                     const totalPriceElement = document.querySelector(`.total-price[data-product-id="${item.productId}"]`);
                     if (totalPriceElement) {
                         totalPriceElement.innerText = `₺${(item.quantity * parseFloat(item.price)).toFixed(2)}`;
                     }
                 });
-
-                // Update the overall cart and order totals
                 updateCartTotal();
             }
         }
 
-        // Listen for quantity input changes and save to sessionStorage
         document.querySelectorAll('.quantity').forEach(input => {
             input.addEventListener('input', function() {
                 const productId = this.getAttribute('data-product-id');
                 const quantity = parseInt(this.value, 10);
                 const priceText = this.closest('tr').querySelector('td:nth-child(3)').innerText.replace('₺', '').trim();
                 const price = parseFloat(priceText.replace(/\s+/g, '').replace(',', '.'));
-
-                // Update the total price in the corresponding <td>
                 const totalPriceElement = document.querySelector(`.total-price[data-product-id="${productId}"]`);
                 totalPriceElement.innerText = `₺${(quantity * price).toFixed(2)}`;
-
-                // Save updated cart to sessionStorage
                 saveCartToSession();
-
-                // Update the cart totals
                 updateCartTotal();
             });
         });
 
-        // On page load, load cart data from sessionStorage
-        window.addEventListener('load', loadCartFromSession);
-
-
+          function confirmDelete() {
+            return confirm("Silmek istediğinizden emin misiniz?");
+        }
     </script>
 
-    <style>
+    <style>  
         #order-total {
-            font-size: 1.5rem; /* Larger text */
-            color: #d9534f; /* Red color */
-            font-weight: bold; /* Make the text bold */
-            text-transform: uppercase; /* Optionally, you can add this to make it uppercase */
+            font-size: 1.5rem; 
+            color: #d9534f; 
+            font-weight: bold;
+            text-transform: uppercase;
         }
-
         #name {
-            font-size: 1.5rem; /* Larger text */
-            color: #d9534f; /* Red color */
-            font-weight: bold; /* Make the text bold */
-            text-transform: uppercase; /* Optionally, you can add this to make it uppercase */
+            font-size: 1.5rem;
+            color: #d9534f; 
+            font-weight: bold;
+            text-transform: uppercase; 
         }
     </style>
 </body>

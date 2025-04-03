@@ -57,7 +57,6 @@ namespace PawFect.Business.Concrete
             }
         }
 
-
         public Product GetProductById(int productId)
         {
             return _productDal.GetProductById(productId);
