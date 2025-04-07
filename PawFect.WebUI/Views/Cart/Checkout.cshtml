@@ -1,126 +1,222 @@
 ﻿@model OrderModel
 @{
-    ViewData["title"] = "Checkout";
+    Layout = null;
 }
-@section Scripts {
-    <script src="~/modules/jquery-validation/dist/jquery.validate.js"></script>
-    <script src="~/modules/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
-}
-
-<h1>Checkout</h1>
-<hr/>
-<form action="/checkout" method="POST">
-    <div class="row">
-        <div class="col-md-8">
-            <h4>Order Details</h4>
-            <div class="row">
-                <div class="col-md-6">
-                    <label asp-for="@Model.FirstName"></label>
-                    <input asp-for="@Model.FirstName" value="" class="form-control"/>
-                </div>
-                <div class="col-md-6">
-                    <label asp-for="@Model.LastName"></label>
-                    <input asp-for="@Model.LastName" value="" class="form-control" />
-                </div>
-            </div>
-            <div class="mb-3">
-                <label asp-for="@Model.Address"></label>
-                <textarea asp-for="@Model.Address" value="" class="form-control"></textarea>
-            </div>
-            <div class="mb-3">
-                <label asp-for="@Model.OrderNote"></label>
-                <textarea asp-for="@Model.OrderNote" value="" class="form-control"></textarea>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <label asp-for="@Model.City"></label>
-                    <input asp-for="@Model.City" value="" class="form-control" />
-                </div>
-                <div class="col-md-6">
-                    <label asp-for="@Model.Phone"></label>
-                    <input asp-for="@Model.Phone" value="" class="form-control" />
-                </div>
-                <div class="col-md-6">
-                    <label asp-for="@Model.Email"></label>
-                    <input asp-for="@Model.Email" value="" class="form-control" />
-                </div>
-            </div>
-            <hr/>
-            <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="save-info" />
-                <label for="save-info" class="custom-control-label">Save this information for next time</label>
-            </div>
-            <hr class="mb-4"/>
-            <div class="d-block my-3">
-                <div class="custom-control custom-checkbox">
-                    <input type="radio" class="custom-control-input" id="credit" name="paymentMethod" onclick="PaymentMethodChangeEvent('credit')" value="credit" checked required />
-                    <label for="credit" class="custom-control-label">Credit Card</label>
-                </div>
-                <div class="custom-control custom-checkbox">
-                    <input type="radio" class="custom-control-input" id="eft" name="paymentMethod" onclick="PaymentMethodChangeEvent('eft')" value="eft" required />
-                    <label for="eft" class="custom-control-label">Eft</label>
-                </div>
-            </div>
-            <div id="payment-box">
-               <h4 class="mb-4">Payment</h4>
-               <div class="row">
-                   <div class="col-md-6 mb-3">
-                        <label asp-for="@Model.CardName"></label>
-                        <input asp-for="@Model.CardName" value="" class="form-control" />
-                   </div>
-                    <div class="col-md-6 mb-3">
-                        <label asp-for="@Model.CardNumber"></label>
-                        <input asp-for="@Model.CardNumber" value="" class="form-control" />
-                    </div>
-               </div>
-                <div class="row">
-                    <div class="col-md-4 mb-3">
-                        <label asp-for="@Model.ExprationMonth"></label>
-                        <input asp-for="@Model.ExprationMonth" value="" class="form-control" />
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <label asp-for="@Model.ExprationYear"></label>
-                        <input asp-for="@Model.ExprationYear" value="" class="form-control" />
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <label asp-for="@Model.CVV"></label>
-                        <input asp-for="@Model.CVV" value="" class="form-control" />
-                    </div>
-                </div>
-            </div>
-            <hr />
-            <button type="submit" class="btn btn-primary btn-lg btn-block">Complete Order</button>
-        </div>
-        <div class="col-md-4">
-            <h4 class="mb-4">
-                <span class="text-muted">Your Cart</spanc>
-            </h4>
-            <ul class="list-group mb-3">
-                @if(Model.CartModel?.CartItems != null)
-                {
-                    @foreach (var item in Model.CartModel.CartItems)
-                    {
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <div>
-                                <h6 class="my-5">
-                                    @item.Name
-                                    
-                                </h6>
+<!DOCTYPE html>
+<html lang="tr">
+@await Component.InvokeAsync("_HeadLayout")
+<body>
+    @await Component.InvokeAsync("_SvgLayout")
+    <partial name="_navbar" />
+    <div class="py-5">
+        <div class="container-fluid">
+            <div class="col-md-12">
+                <h1 style="color:#d9534f;">Checkout</h1>
+                <div class="custom-mt"></div>
+                <div class="row mt-10">
+                    <div class="row">
+                        <form action="/checkout" method="POST">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <h4>Order Details</h4>
+                                    <hr />
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label asp-for="@Model.FirstName"></label>
+                                            <input asp-for="@Model.FirstName" class="form-control" />
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label asp-for="@Model.LastName"></label>
+                                            <input asp-for="@Model.LastName" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label asp-for="@Model.Address"></label>
+                                        <textarea asp-for="@Model.Address" class="form-control"></textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label asp-for="@Model.OrderNote"></label>
+                                        <textarea asp-for="@Model.OrderNote" class="form-control"></textarea>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label asp-for="@Model.City"></label>
+                                            <input asp-for="@Model.City" class="form-control" />
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label asp-for="@Model.Phone"></label>
+                                            <input asp-for="@Model.Phone" class="form-control" />
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label asp-for="@Model.Email"></label>
+                                            <input asp-for="@Model.Email" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 custom-mt">
+                                        <h4 class="mb-4">Payment</h4>
+                                        <hr />
+                                    </div>
+                                    <div id="payment-box">
+                                        <div class="d-block my-3">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="custom-control custom-radio">
+                                                        <input type="radio" class="custom-control-input" id="credit" name="paymentMethod" onclick="PaymentMethodChangeEvent('credit')" value="credit" checked required />
+                                                        <label for="credit" class="custom-control-label">Credit Card</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="custom-control custom-radio">
+                                                        <input type="radio" class="custom-control-input" id="eft" name="paymentMethod" onclick="PaymentMethodChangeEvent('eft')" value="eft" required />
+                                                        <label for="eft" class="custom-control-label">Eft</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 mt-10">
+                                                <span>Başarılı bir ödemeyi simüle etmek için <strong>iyzico</strong> <a href="https://docs.iyzico.com/ek-bilgiler/test-kartlari" target="_blank">Test Kartları</a> kullanılabilir.</span><br />
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label asp-for="@Model.CardName"></label>
+                                                <input asp-for="@Model.CardName" class="form-control" />
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label asp-for="@Model.CardNumber"></label>
+                                                <input asp-for="@Model.CardNumber" class="form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4 mb-3">
+                                                <label asp-for="@Model.ExprationMonth"></label>
+                                                <input asp-for="@Model.ExprationMonth" class="form-control" />
+                                            </div>
+                                            <div class="col-md-4 mb-3">
+                                                <label asp-for="@Model.ExprationYear"></label>
+                                                <input asp-for="@Model.ExprationYear" class="form-control" />
+                                            </div>
+                                            <div class="col-md-4 mb-3">
+                                                <label asp-for="@Model.CVV"></label>
+                                                <input asp-for="@Model.CVV" class="form-control" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <h4>Your Cart</h4>
+                                    <hr />
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Product Name</th>
+                                                    <th scope="col">Total Price</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @if (Model.CartModel?.CartItems != null)
+                                                {
+                                                    @foreach (var item in Model.CartModel.CartItems)
+                                                    {
+                                                        <tr>
+                                                            <td>
+                                                                @item.Name
+                                                            </td>
+                                                            <td>  @item.Price₺ x @item.Quantity</td>
+                                                        </tr>
+                                                    }
+                                                    <tr>
+                                                        <td>
+                                                            <strong id="name">Total (TL)</strong>
+                                                        </td>
+                                                        <td>  <strong id="order-total">@Model.CartModel?.TotalPrice().ToString("c")</strong>   </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table> 
+                                        <div class="mb-3">
+                                            <label for="discount-code">Enter Discount Code:</label>
+                                            <input type="text" id="discount-code" class="form-control" placeholder="Enter discount code" />
+                                            <button id="apply-discount" class="btn btn-success btn-block mt-2">Apply Discount</button>
+                                        </div>
+                                        <div class="table-responsive">
+                                            <table class="table table-striped table-bordered">
+                                                <div class="col-md-4">
+                                                    <button type="submit" class="btn btn-primary btn-lg btn-block" style="width:495px;">Complete Order</button>
+                                                </div>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                   
                             </div>
-                            <span class="text-muted">@item.Price ₺ <small>x @(item.Quantity)</small></span>
-                        </li>
-                    }
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <span>Total (TL)</span>
-                        <strong>@Model.CartModel?.TotalPrice().ToString("c")</strong>
-                    </li>
-                }
-            </ul>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="col-md-6 mt-10">
-        <br />
-        <span>Başarılı bir ödemeyi simüle etmek için  <a href="https://docs.iyzico.com/ek-bilgiler/test-kartlari" target="_blank">Test Kartları</a> kullanılabilir.</span><br />
-       
-    </div>
-</form>
+    <div class="custom-mt"></div>
+    <div class="custom-mt"></div>
+    <footer class="py-5">
+        <div class="container-fluid">
+            <div class="row">
+                @await Component.InvokeAsync("_FooterViewComponents")
+            </div>
+        </div>
+    </footer>
+    <script>
+        function PaymentMethodChangeEvent(paymentType) {
+            var paymentBox = document.getElementById("payment-box");
+            if (paymentType == "credit") {
+               paymentBox.style.display = "block"
+            }
+            else {
+                paymentBox.style.display = "none"
+            }
+        }</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script>
+        <script>
+            document.getElementById('apply-discount').addEventListener('click', function () {
+                var discountCode = document.getElementById('discount-code').value.trim().toUpperCase();
+                var totalPriceElement = document.getElementById('order-total');
+                var originalTotal = @Model.CartModel?.TotalPrice(); // Get the original total price from the backend
+
+                // Check if the discount code is correct
+                if (discountCode === 'INDIRIM25') {
+                    var discountedTotal = originalTotal * 0.75; 
+                    totalPriceElement.innerHTML = discountedTotal.toFixed(2) + '₺'; 
+                } else {
+                    var originalTotal = @Model.CartModel?.TotalPrice();
+                    alert('Invalid discount code!');
+                }
+            });
+    </script>
+    </script>
+    <style>
+        #order-total {
+            font-size: 1.5rem;
+            color: #d9534f;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        #name {
+            font-size: 1.5rem;
+            color: #d9534f;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .custom-mt {
+            margin-top: 50px; /* Adjust this value as needed */
+        }
+    </style>
+</body>
+</html>
+
+

@@ -50,5 +50,25 @@ namespace PawFect.WebUI.Controllers
             return RedirectToAction("Index");
         }
 
+        public IActionResult Checkout()
+        {
+            var cart = _cartService.GetCartByUserId(_userManager.GetUserId(User));
+
+            OrderModel orderModel = new OrderModel();
+            orderModel.CartModel = new CartModel()
+            {
+                CartId = cart.Id,
+                CartItems = cart.CartItems.Select(x => new CartItemModel()
+                {
+                    CartItemId = x.Id,
+                    ProductId = x.Product.Id,
+                    Name = x.Product.Name,
+                    Price = x.Product.Price,
+                    Image = x.Product.Image,
+                    Quantity = x.Quantity
+                }).ToList()
+            };
+            return View(orderModel);
+        }
     }
 }
