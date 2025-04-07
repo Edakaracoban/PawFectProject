@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using PawFect.Business.Abstract;
 using PawFect.Entities;
 using PawFect.WebUI.Identity;
 using PawFect.WebUI.Models;
+using System.Drawing.Text;
 
 namespace PawFect.WebUI.Controllers
 {
@@ -70,5 +70,57 @@ namespace PawFect.WebUI.Controllers
             };
             return View(orderModel);
         }
+
+        [HttpPost]
+        public IActionResult Checkout(OrderModel orderModel, string paymentMethod)
+        {
+            ModelState.Remove("CartModel");
+
+            if (ModelState.IsValid) //önyüzde alanlar dolduruldu mu?
+            {
+                var userId = _userManager.GetUserId(User);
+                var cart = _cartService.GetCartByUserId(userId);
+
+                orderModel.CartModel = new CartModel()
+                {
+                    CartId = cart.Id,
+                    CartItems = cart.CartItems.Select(x => new CartItemModel()
+                    {
+                        CartItemId = x.Id,
+                        ProductId = x.Product.Id,
+                        Name = x.Product.Name,
+                        Price = x.Product.Price,
+                        Image = x.Product.Image,
+                        Quantity = x.Quantity
+                    }).ToList()
+                };
+
+                if (paymentMethod=="credit")
+                {
+                    var payment = PaymentProccess(orderModel);
+                    if (payment.Result.Status =="success")
+                    {
+                        SaveOrder(orderModel, userId);
+                        ClearCart(cart.Id.ToString());
+                        TempData["Message"] = "Your order has been completed successfully";
+                    }
+                    else
+                    {
+                        TempData["Message"] = "Your order could not be completed";
+                    }
+                }
+                else //eft için olan kısımda payment proccess kullanılmıyor.
+                {
+                    SaveOrder(orderModel, userId);
+                    ClearCart(cart.Id.ToString());
+                    TempData["Message"] = "Your order has been completed successfully";
+                }
+            }
+            return View(orderModel);
+        }
+        private void ClearCart(string cartId)
+        {
+            _cartService.ClearCart(Convert.ToInt32(cartId));
+        } 
     }
 }

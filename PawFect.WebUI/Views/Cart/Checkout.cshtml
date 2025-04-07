@@ -2,6 +2,16 @@
 @{
     Layout = null;
 }
+@{
+    var message = TempData["Message"];
+    if (message != null)
+    {
+        <div id="messageBox" class="alert alert-success alert-dismissible fade show" role="alert">
+            <h4>@message</h4>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+}
 <!DOCTYPE html>
 <html lang="tr">
 @await Component.InvokeAsync("_HeadLayout")
@@ -148,7 +158,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                   
                             </div>
                         </form>
                     </div>
@@ -156,8 +165,7 @@
             </div>
         </div>
     </div>
-    <div class="custom-mt"></div>
-    <div class="custom-mt"></div>
+    <div class="custom-mt2"></div>
     <footer class="py-5">
         <div class="container-fluid">
             <div class="row">
@@ -182,13 +190,10 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script>
-        <script>
             document.getElementById('apply-discount').addEventListener('click', function () {
                 var discountCode = document.getElementById('discount-code').value.trim().toUpperCase();
                 var totalPriceElement = document.getElementById('order-total');
-                var originalTotal = @Model.CartModel?.TotalPrice(); // Get the original total price from the backend
-
-                // Check if the discount code is correct
+                var originalTotal = @Model.CartModel?.TotalPrice(); 
                 if (discountCode === 'INDIRIM25') {
                     var discountedTotal = originalTotal * 0.75; 
                     totalPriceElement.innerHTML = discountedTotal.toFixed(2) + '₺'; 
@@ -198,8 +203,26 @@
                 }
             });
     </script>
-    </script>
     <style>
+        #messageBox {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1050;
+            width: 100%;
+            max-width: 500px;
+            height: 100px;
+            background-color: lightcoral;
+            padding: 15px;
+            margin: 20px;
+        }
+
+        .alert-custom-text-center {
+            height: 100px;
+            text-align: center;
+            font-weight: bold;
+        }
         #order-total {
             font-size: 1.5rem;
             color: #d9534f;
@@ -213,7 +236,11 @@
             text-transform: uppercase;
         }
         .custom-mt {
-            margin-top: 50px; /* Adjust this value as needed */
+            margin-top: 50px;
+        }
+
+        .custom-mt2 {
+            margin-top: 100px;
         }
     </style>
 </body>
