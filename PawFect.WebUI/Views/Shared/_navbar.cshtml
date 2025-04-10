@@ -29,16 +29,6 @@
                             }
                         </select>
                     </div>
-                    @* <div class="col-md-4 d-none d-md-block"> *@
-                    @*     <select class="form-select border-0 bg-transparent" id="category-select" name="category"> *@
-                    @*         <option value="">Tüm Kategoriler</option> *@
-                    @*         <option value="Kedi">Kedi</option> *@
-                    @*         <option value="Köpek">Köpek</option> *@
-                    @*         <option value="Kuş">Kuş</option> *@
-                    @*         <option value="Akvaryum">Akvaryum</option> *@
-                    @*         <option value="Hamster ve Tavşan">Hamster ve Tavşan</option> *@
-                    @*     </select> *@
-                    @* </div> *@
                     <div class="col-11 col-md-7" id="search-container" style="display: none; display: flex; align-items: center;">
                         <form id="search-form" asp-action="Search" asp-controller="Home" method="POST" class="w-100 d-flex">
                             <input type="text" class="form-control border-0 bg-transparent login-link" placeholder="Ara..." name="query" id="search-input" />
@@ -191,8 +181,6 @@
         updateCartTotal();
     });
 </script>
-
-
 <style>
     #search-container {
         display: none;

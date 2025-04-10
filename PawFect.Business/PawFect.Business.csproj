@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\PawFect.DataAccess\PawFect.DataAccess.csproj" />
     <ProjectReference Include="..\PawFect.Entities\PawFect.Entities.csproj" />
   </ItemGroup>

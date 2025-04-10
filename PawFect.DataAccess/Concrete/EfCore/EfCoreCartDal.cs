@@ -6,12 +6,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace PawFect.DataAccess.Concrete.EfCore//sepetle ilgili CRUD İŞLEMLERİ
 {
     public class EfCoreCartDal : EfCoreGenericRepository<Cart, DataContext>, ICartDal
     {
-
         public void ClearCart(int cartId)//sepeti içindeki tüm itemleri silme
         {
             using (var context = new DataContext())
@@ -74,6 +74,5 @@ namespace PawFect.DataAccess.Concrete.EfCore//sepetle ilgili CRUD İŞLEMLERİ
             }
 
         }
-
     }
 }

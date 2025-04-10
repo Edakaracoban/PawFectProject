@@ -1,10 +1,16 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Iyzipay;
+using Iyzipay.Model;
+using Iyzipay.Request;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using PawFect.Business.Abstract;
 using PawFect.Entities;
 using PawFect.WebUI.Identity;
 using PawFect.WebUI.Models;
+using PawFect.WebUI.Session;
 using System.Drawing.Text;
+using System.Net;
 
 namespace PawFect.WebUI.Controllers
 {
@@ -95,10 +101,10 @@ namespace PawFect.WebUI.Controllers
                     }).ToList()
                 };
 
-                if (paymentMethod=="credit")
+                if (paymentMethod == "credit")
                 {
                     var payment = PaymentProccess(orderModel);
-                    if (payment.Result.Status =="success")
+                    if (payment.Result.Status == "success")
                     {
                         SaveOrder(orderModel, userId);
                         ClearCart(cart.Id.ToString());
@@ -116,11 +122,175 @@ namespace PawFect.WebUI.Controllers
                     TempData["Message"] = "Your order has been completed successfully";
                 }
             }
-            return View(orderModel);
+            return RedirectToAction("Index", "Cart");
         }
         private void ClearCart(string cartId)
         {
             _cartService.ClearCart(Convert.ToInt32(cartId));
-        } 
+        }
+        //iyzikoyu kullanarak istek atar.//iyzipay kütüphanesi kullanılır.
+        private async Task<Payment> PaymentProccess(OrderModel orderModel)
+        {
+            Options options = new Options()
+            {
+                BaseUrl = "https://sandbox-api.iyzipay.com", //test ortamı
+                ApiKey = "sandbox-cNnJEaoyNt0sCREL4nOq8PajTLQwWeXz",
+                SecretKey = "sandbox-cmJxJfaGlVarqNV3c5ZQcMTwVNh8qswx"
+            };
+
+            string externalIpString = new WebClient().DownloadString("http://icanhazip.com").Replace("\\r\\n", "").Replace("\\n", "").Trim();
+            var externalIp = IPAddress.Parse(externalIpString); //dış Ip
+
+            CreatePaymentRequest request = new CreatePaymentRequest();
+            request.Locale = Locale.TR.ToString(); //dil
+            request.ConversationId = Guid.NewGuid().ToString(); //her işlem için benzersiz bir id oluşturur.
+            request.Price = orderModel.CartModel.TotalPrice().ToString().Split(',')[0];//toplam fiyat
+            request.PaidPrice = orderModel.CartModel.TotalPrice().ToString().Split(',')[0]; //ödenecek fiyat
+            request.Currency = Currency.TRY.ToString(); //para birimi
+            request.Installment = 1; //taksit sayısı
+            request.BasketId = orderModel.CartModel.CartId.ToString(); //sepet id
+            request.PaymentChannel = PaymentChannel.WEB.ToString(); //ödemeyi nereden yapıyor
+            request.PaymentGroup = PaymentGroup.PRODUCT.ToString(); //ürün grubu
+
+            PaymentCard paymentCard = new PaymentCard()
+            {
+                CardHolderName = orderModel.CardName,
+                CardNumber = orderModel.CardNumber,
+                ExpireMonth = orderModel.ExprationMonth,
+                ExpireYear = orderModel.ExprationYear,
+                Cvc = orderModel.CVV,
+                RegisterCard = 0
+            };
+            request.PaymentCard = paymentCard; //kart bilgileri
+
+            Buyer buyer = new Buyer()
+            {
+                Id =_userManager.GetUserId(User),
+                Name = orderModel.FirstName,
+                Surname = orderModel.LastName,
+                GsmNumber = orderModel.Phone,
+                Email = orderModel.Email,
+                IdentityNumber = "12345678901",
+                RegistrationAddress = orderModel.Address,
+                Ip = externalIp.ToString(),
+                City = orderModel.City,
+                Country = "Turkey",
+                ZipCode = "34000"
+            };
+            request.Buyer = buyer; //alıcı bilgileri
+
+            Address address = new Address()
+            {
+                ZipCode = "34000",
+                ContactName = orderModel.FirstName + " " + orderModel.LastName,
+                City = orderModel.City,
+                Country = "Turkey",
+                Description = orderModel.Address
+            };
+            request.ShippingAddress = address; //gönderim adresi
+            request.BillingAddress = address; //fatura adresi
+
+            List<BasketItem> basketItems = new List<BasketItem>();
+            BasketItem basketItem;
+
+            foreach (var cartItem in orderModel.CartModel.CartItems)
+            {
+                basketItem = new BasketItem()
+                {
+                    Id = cartItem.ProductId.ToString(),
+                    Name = cartItem.Name,
+                    Category1 = _productService.GetProductDetails(cartItem.ProductId).Category.Id.ToString(),
+                    ItemType = BasketItemType.PHYSICAL.ToString(),
+                    Price = (cartItem.Price * cartItem.Quantity).ToString().Split(',')[0]
+                };
+                basketItems.Add(basketItem);
+            }
+            request.BasketItems = basketItems; //sepet ürünleri
+
+            Payment payment = await Payment.Create(request, options); //ödemeyi oluşturur.
+            if (payment.Status == "success")
+            {
+                return payment;
+            }
+            else
+            {
+                return null;
+            }
+        }
+        // EFT
+        private void SaveOrder(OrderModel model, string userId)
+        {
+            Order order = new Order()
+            {
+                OrderNumber = Guid.NewGuid().ToString(),
+                PaymentTypes = EnumPaymentTypes.Eft,
+                PaymentToken = Guid.NewGuid().ToString(),
+                ConversionId = Guid.NewGuid().ToString(),
+                PaymentId = Guid.NewGuid().ToString(),
+                OrderNote = model.OrderNote,
+                OrderDate = DateTime.Now,
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                UserName = model.UserName,
+                Address = model.Address,
+                City = model.City,
+                Email = model.Email,
+                Phone = model.Phone,
+                UserId = userId
+            };
+
+            foreach (var cartItem in model.CartModel.CartItems)
+            {
+                var orderItem = new Entities.OrderItem()
+                {
+                    Price = cartItem.Price,
+                    Quantity = cartItem.Quantity,
+                    ProductId = cartItem.ProductId,
+                };
+
+                order.OrderItems.Add(orderItem);
+            }
+
+            _orderService.Create(order);
+
+        }
+
+        // Credit Card
+        private void SaveOrder(OrderModel model, Task<Payment> payment, string userId)
+        {
+            Order order = new Order()
+            {
+                OrderNumber = Guid.NewGuid().ToString(),
+                PaymentTypes = EnumPaymentTypes.CreditCard,
+                PaymentToken = Guid.NewGuid().ToString(),
+                ConversionId = payment.Result.ConversationId,
+                PaymentId = payment.Result.PaymentId,
+                UserName = model.UserName,
+                OrderNote = model.OrderNote,
+                OrderDate = DateTime.Now,
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                Address = model.Address,
+                City = model.City,
+                Email = model.Email,
+                Phone = model.Phone,
+                UserId = userId
+            };
+
+            foreach (var cartItem in model.CartModel.CartItems)
+            {
+                var orderItem = new Entities.OrderItem()
+                {
+                    Price = cartItem.Price,
+                    Quantity = cartItem.Quantity,
+                    ProductId = cartItem.ProductId,
+                };
+
+                order.OrderItems.Add(orderItem); //sepetin içindeki item değerlerini orderitem'a ekle
+            }
+
+            _orderService.Create(order);
+        }
+
     }
 }

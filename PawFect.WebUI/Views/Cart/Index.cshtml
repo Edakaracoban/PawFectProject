@@ -2,6 +2,16 @@
 @{
     Layout = null;
 }
+@{
+    var message = TempData["Message"];
+    if (message != null)
+    {
+        <div id="messageBox" class="alert alert-success alert-dismissible fade show" role="alert">
+            <h4>@message</h4>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+}
 <!DOCTYPE html>
 <html lang="tr">
 @await Component.InvokeAsync("_HeadLayout")
@@ -121,7 +131,6 @@
     <script>
         function updateCartTotal() {
             let total = 0;
-
             document.querySelectorAll('.total-price').forEach(priceElement => {
                 const priceText = priceElement.innerText.replace('₺', '').trim();
 
@@ -131,7 +140,6 @@
                     total += price;
                 }
             });
-
             const cartTotalElement = document.getElementById('cart-total');
             cartTotalElement.innerText = `₺${total.toFixed(2)}`;
 
@@ -152,78 +160,48 @@
 
                 const totalPriceElement = document.querySelector(`.total-price[data-product-id="${productId}"]`);
                 totalPriceElement.innerText = `₺${totalPrice}`;
-
-                updateCartTotal();
+                   updateCartTotal();
             });
         });
-        updateCartTotal();
-
-        function saveCartToSession() {
-            const cartItems = [];
-
-            document.querySelectorAll('.total-price').forEach(priceElement => {
-                const productId = priceElement.getAttribute('data-product-id');
-                const quantity = document.querySelector(`input[data-product-id="${productId}"]`).value;
-                const price = priceElement.innerText.replace('₺', '').trim();
-                cartItems.push({
-                    productId: productId,
-                    quantity: quantity,
-                    price: price
-                });
-            });
-            sessionStorage.setItem('cart', JSON.stringify(cartItems));
-        }
-
-        function loadCartFromSession() {
-            const cart = JSON.parse(sessionStorage.getItem('cart'));
-            if (cart) {
-                cart.forEach(item => {
-                    const quantityInput = document.querySelector(`input[data-product-id="${item.productId}"]`);
-                    if (quantityInput) {
-                        quantityInput.value = item.quantity;
-                    }
-                    const totalPriceElement = document.querySelector(`.total-price[data-product-id="${item.productId}"]`);
-                    if (totalPriceElement) {
-                        totalPriceElement.innerText = `₺${(item.quantity * parseFloat(item.price)).toFixed(2)}`;
-                    }
-                });
-                updateCartTotal();
-            }
-        }
-
-        document.querySelectorAll('.quantity').forEach(input => {
-            input.addEventListener('input', function() {
-                const productId = this.getAttribute('data-product-id');
-                const quantity = parseInt(this.value, 10);
-                const priceText = this.closest('tr').querySelector('td:nth-child(3)').innerText.replace('₺', '').trim();
-                const price = parseFloat(priceText.replace(/\s+/g, '').replace(',', '.'));
-                const totalPriceElement = document.querySelector(`.total-price[data-product-id="${productId}"]`);
-                totalPriceElement.innerText = `₺${(quantity * price).toFixed(2)}`;
-                saveCartToSession();
-                updateCartTotal();
-            });
-        });
-
+     
           function confirmDelete() {
             return confirm("Silmek istediğinizden emin misiniz?");
         }
     </script>
+    <style>
+        #messageBox {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1050;
+            width: 100%;
+            max-width: 500px;
+            height: 100px;
+            background-color: lightcoral;
+            padding: 15px;
+            margin: 20px;
+        }
+        .alert-custom-text-center {
+            height: 100px;
+            text-align: center;
+            font-weight: bold;
+        }
 
-    <style>  
         #order-total {
-            font-size: 1.5rem; 
-            color: #d9534f; 
+            font-size: 1.5rem;
+            color: #d9534f;
             font-weight: bold;
             text-transform: uppercase;
         }
         #name {
             font-size: 1.5rem;
-            color: #d9534f; 
+            color: #d9534f;
             font-weight: bold;
-            text-transform: uppercase; 
+            text-transform: uppercase;
         }
         .custom-mt {
-            margin-top: 50px; /* Adjust this value as needed */
+            margin-top: 50px;
         }
     </style>
 </body>
