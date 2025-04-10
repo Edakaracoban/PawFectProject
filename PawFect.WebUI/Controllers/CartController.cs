@@ -291,6 +291,47 @@ namespace PawFect.WebUI.Controllers
 
             _orderService.Create(order);
         }
+        public IActionResult GetOrders()
+        {
+            var userId = _userManager.GetUserId(User);
+            var UserName = _userManager.GetUserName(User);
+
+            var orders = _orderService.GetOrders(userId, UserName);
+
+
+            var orderListModel = new List<OrderListModel>();
+
+            OrderListModel orderModel;
+
+            foreach (var order in orders)
+            {
+                orderModel = new OrderListModel();
+                orderModel.OrderId = order.Id;
+                orderModel.Address = order.Address;
+                orderModel.OrderNumber = order.OrderNumber;
+                orderModel.OrderDate = order.OrderDate;
+                orderModel.PaymentTypes = order.PaymentTypes;
+                orderModel.OrderNote = order.OrderNote;
+                orderModel.City = order.City;
+                orderModel.Email = order.Email;
+                orderModel.FirstName = order.FirstName;
+                orderModel.LastName = order.LastName;
+                orderModel.Phone = order.Phone;
+
+                orderModel.OrderItems = order.OrderItems.Select(x => new OrderItemModel()
+                {
+                    OrderItemId = x.Id,
+                    Name = x.Product.Name,
+                    Price = x.Price,
+                    Quantity = x.Quantity,
+                    Image = x.Product.Image
+
+                }).ToList();
+
+                orderListModel.Add(orderModel);
+            }
+            return View(orderListModel);
+        }
 
     }
 }
