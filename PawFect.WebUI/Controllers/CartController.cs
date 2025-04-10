@@ -317,6 +317,7 @@ namespace PawFect.WebUI.Controllers
                 orderModel.FirstName = order.FirstName;
                 orderModel.LastName = order.LastName;
                 orderModel.Phone = order.Phone;
+                orderModel.UserName = order.UserName;
 
                 orderModel.OrderItems = order.OrderItems.Select(x => new OrderItemModel()
                 {

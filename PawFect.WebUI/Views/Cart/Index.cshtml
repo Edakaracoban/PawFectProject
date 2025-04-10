@@ -21,6 +21,9 @@
     <div class="py-5">
         <div class="container-fluid">
             <div class="col-md-12">
+                <div class="custom-mt"></div>
+                <a href="/cart/getorders" class="btn btn-warning btn-sm custom-order-btn">MY PREVIOUS ORDERS</a>
+                <div class="custom-mt"></div>
                 <div class="row">
                     <h1 style="color:#d9534f;">Cart</h1>
                     <div class="custom-mt"></div>
@@ -169,6 +172,27 @@
         }
     </script>
     <style>
+        .custom-order-btn {
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: 2px solid #ffc107;
+            background: linear-gradient(135deg, #ffce3d, #ffb300);
+            color: #212529;
+            box-shadow: 0 4px 10px rgba(255, 193, 7, 0.3);
+            transition: all 0.3s ease-in-out;
+            letter-spacing: 0.5px;
+        }
+
+            .custom-order-btn:hover {
+                background: linear-gradient(135deg, #ffb300, #ffa000);
+                color: white;
+                box-shadow: 0 6px 15px rgba(255, 152, 0, 0.5);
+                transform: scale(1.05);
+                text-decoration: none;
+            }
         #messageBox {
             position: fixed;
             top: 50%;
