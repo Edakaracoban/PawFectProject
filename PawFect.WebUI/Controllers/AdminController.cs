@@ -235,9 +235,9 @@ namespace PawFect.WebUI.Controllers
         {
             var entity = new Category()
             {
-                Id=model.Id,
+                Id = model.Id,
                 Name = model.Name,
-                Icon=model.Icon
+                Icon = model.Icon
             };
             _categoryService.Create(entity);
             return RedirectToAction("CategoryList");
@@ -272,7 +272,7 @@ namespace PawFect.WebUI.Controllers
         [HttpPost]
         public IActionResult DeleteCategory(int categoryId)
         {
-            if (categoryId == 0 )
+            if (categoryId == 0)
             {
                 TempData["Message"] = "Geçersiz kategori ID.";
                 return RedirectToAction("CategoryList");
@@ -296,5 +296,47 @@ namespace PawFect.WebUI.Controllers
             TempData["SuccessMessage"] = "Kategori başarıyla silindi.";
             return RedirectToAction("CategoryList");
         }
+
+        public IActionResult GetOrders()
+        {
+            var userId = _userManager.GetUserId(User);
+            var UserName = _userManager.GetUserName(User);
+
+            var orders = _orderService.GetOrders(userId, UserName);
+
+            var orderListModel = new List<OrderListModel>();
+
+            foreach (var order in orders)
+            {
+                var orderModel = new OrderListModel()
+                {
+                    OrderId = order.Id,
+                    UserName = order.UserName,
+                    Address = order.Address,
+                    OrderNumber = order.OrderNumber,
+                    OrderDate = order.OrderDate,
+                    PaymentTypes = order.PaymentTypes,
+                    OrderNote = order.OrderNote,
+                    City = order.City,
+                    Email = order.Email,
+                    FirstName = order.FirstName,
+                    LastName = order.LastName,
+                    Phone = order.Phone,
+                    OrderItems = order.OrderItems.Select(x => new OrderItemModel()
+                    {
+                        OrderItemId = x.Id,
+                        Name = x.Product.Name,
+                        Price = x.Price,
+                        Quantity = x.Quantity,
+                        Image = x.Product.Image
+                    }).ToList()
+                };
+
+                orderListModel.Add(orderModel);
+            }
+
+            return View(orderListModel);
+        }
+
     }
 }

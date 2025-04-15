@@ -291,7 +291,7 @@ namespace PawFect.WebUI.Controllers
 
             _orderService.Create(order);
         }
-        public IActionResult GetOrders()
+        public IActionResult GetMyOrders()
         {
             var userId = _userManager.GetUserId(User);
             var UserName = _userManager.GetUserName(User);

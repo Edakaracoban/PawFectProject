@@ -16,31 +16,14 @@ namespace PawFect.WebUI.Models
         public string Phone { get; set; }
         public string Email { get; set; }
         public string OrderNote { get; set; }
-        public string DiscountCode { get; set; }
-        public decimal DiscountAmount { get; set; } = 0; // Başlangıçta indirim yok
         public List<OrderItemModel> OrderItems { get; set; }
         public decimal TotalPrice()
         {
             decimal totalPrice = OrderItems?.Sum(x => x.Price * x.Quantity) ?? 0;
-            if (DiscountAmount > 0)
-            {
-                totalPrice -= DiscountAmount;
-            }
             return totalPrice;
         }
-        public bool ApplyDiscount(string discountCode)
-        {
-
-            if (discountCode == "INDIRIM25") // %25 indirim kodu
-            {
-                DiscountAmount = TotalPrice() * 0.25m; 
-                DiscountCode = discountCode; 
-                return true; 
-            }
-            return false;
-        }
+ 
     }
-
     public class OrderItemModel
     {
         public int OrderItemId { get; set; }

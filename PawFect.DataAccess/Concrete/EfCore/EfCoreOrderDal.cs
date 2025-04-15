@@ -39,7 +39,7 @@ namespace PawFect.DataAccess.Concrete.EfCore
                     transaction.Rollback();
                     throw;
                 }
-            
+
                 context.Orders.Add(order);
                 context.SaveChanges();
 
@@ -61,15 +61,19 @@ namespace PawFect.DataAccess.Concrete.EfCore
         {
             using (var context = new DataContext())
             {
-                IQueryable<Order> ordersQuery = context.Orders // Admin kullanıcı için tüm siparişler döndürülür
-                    .Include(o => o.OrderItems)
-                    .ThenInclude(oi => oi.Product);
-
-                if (UserName != "admin" && !string.IsNullOrEmpty(userId))
+                var orders = context.Orders
+                                 .Include(i => i.OrderItems)
+                                 .ThenInclude(oi => oi.Product)
+                                 .AsQueryable();
+                if (UserName == "Admin")
                 {
-                    ordersQuery = ordersQuery.Where(o => o.UserId == userId);
+                    orders = orders;
                 }
-                return ordersQuery.ToList();
+                else if (!string.IsNullOrEmpty(userId))
+                {
+                    orders = orders.Where(i => i.UserId == userId);
+                }
+                return orders.ToList();
             }
         }
     }
